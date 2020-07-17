@@ -1,25 +1,82 @@
-import React, { Component } from 'react';
-import { Menu, Button } from 'antd';
-import { PieChartOutlined } from '@ant-design/icons'
+import React, { Component } from "react";
+import { Menu } from "antd";
+import { Link, withRouter } from "react-router-dom";
 
 class MenuNav extends Component {
-    render() {
+  // state = {
+  //   openKeys: []
+  // };
+  componentDidMount() {
+  }
+  // handleClick(e) {
+  //   this.setState({
+  //     selectedKeys: [e.key]
+  //   });
+  // }
+  // handleOpenChange(e) {
+  //   this.setState({
+  //     openKeys: e
+  //   });
+  // }
+  menuCreate(routes) {
+    return routes.map(router => {
+      // 隐藏菜单
+      if (router.hidden) return null;
+      if (router.children && router.children.length > 0) {
         return (
-            <Menu theme="dark" mode="inline">
-                <Menu.Item key="1" icon={<PieChartOutlined />}>nav1</Menu.Item>
-                <Menu.Item key="2" icon={<PieChartOutlined />}>nav2</Menu.Item>
-                <Menu.Item key="3" icon={<PieChartOutlined />}>nav3</Menu.Item>
-                <Menu.SubMenu key="sub1" icon={<PieChartOutlined />} title="Navigation">
-                    <Menu.Item key="4">nav4</Menu.Item>
-                    <Menu.Item key="5">nav5</Menu.Item>
-                </Menu.SubMenu>
-                <Menu.SubMenu key="sub2" icon={<PieChartOutlined />} title="Navigation">
-                    <Menu.Item key="6">nav4</Menu.Item>
-                    <Menu.Item key="7">nav5</Menu.Item>
-                </Menu.SubMenu>
-            </Menu>
-        )
-    }
+          <Menu.SubMenu key={router.key} icon={router.meta.icon} title={router.meta.name}>
+            {this.menuCreate(router.children)}
+          </Menu.SubMenu>
+        );
+      } else {
+        return (
+          <Menu.Item key={router.key} icon={router.icon}>
+            <Link to={router.path}>{router.meta.name}</Link>
+          </Menu.Item>
+        );
+      }
+    });
+  }
+  menuSelect(routes, path) {
+    let defaultOpenKeys = [],
+      defaultSelectedKeys = [];
+    let patharr = path.split("/").filter(v => v);
+    // 深度遍历
+    patharr.forEach((_, index) => {
+      let route = routes.find(
+        rt => rt.path === `/${patharr.slice(0, index + 1).join("/")}`
+      );
+      if (!route) {}
+      else if (route.children && route.children.length > 0) {
+        routes = route.children;
+        defaultOpenKeys.push(route.key);
+      } else {
+        defaultSelectedKeys.push(route.key);
+      }
+    });
+    return { defaultOpenKeys, defaultSelectedKeys };
+  }
+  render() {
+    let { location: { pathname: path }, routes } = this.props;
+    let { defaultOpenKeys, defaultSelectedKeys } = this.menuSelect(routes, path);
+    // console.log(defaultOpenKeys, selectedKeys);
+    // let { openKeys } = this.state;
+    return (
+      <Menu
+        theme="dark"
+        mode="inline"
+        // onOpenChange={e => {
+        //   this.handleOpenChange(e);
+        // }}
+        defaultOpenKeys={defaultOpenKeys}
+        defaultSelectedKeys={defaultSelectedKeys}
+        // openKeys={openKeys}
+        // selectedKeys={selectedKeys}
+      >
+        {this.menuCreate(routes)}
+      </Menu>
+    );
+  }
 }
 
-export default MenuNav;
+export default withRouter(MenuNav);

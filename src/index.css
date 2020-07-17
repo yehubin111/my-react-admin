@@ -1,14 +1,120 @@
-@import '~antd/dist/antd.css';
+@import "~antd/dist/antd.css";
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+p,
+h1 {
+  margin: 0;
+}
+
+/*横向*/
+.rf {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.rfw {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+/*纵向*/
+.cf {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+
+.jc {
+  justify-content: center;
+}
+
+.jsb {
+  justify-content: space-between;
+}
+
+.jfs {
+  justify-content: flex-start;
+}
+
+.jfe {
+  justify-content: flex-end;
+}
+
+.ac {
+  align-items: center;
+}
+
+.afs {
+  align-items: flex-start;
+}
+
+.afe {
+  align-items: flex-end;
+}
+
+.c-gray777 {
+  color: #777;
+}
+
+.c-red {
+  color: #ff4141;
+}
+
+.l-t {
+  text-decoration: line-through;
+}
+
+.elps {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.ant-table-container table > thead > tr:first-child th:first-child {
+  padding-left: 24px;
+}
+.ant-table-tbody > tr > td:first-child {
+  padding-left: 24px;
+}
+
+span.button {
+  color: #1890ff;
+  cursor: pointer;
+  outline: none;
+  background-color: transparent;
+}
+
+.form .input {
+  min-width: 180px;
+  max-width: 240px;
+  flex-grow: 1;
+}
+.form .select {
+  min-width: 180px;
+  max-width: 240px;
+  flex-grow: 1;
+}
+.form .range {
+  min-width: 360px;
+  max-width: 420px;
+  flex-grow: 1;
+}
+.form .timerange {
+  min-width: 400px;
+  max-width: 460px;
+  flex-grow: 1;
 }
