@@ -126,7 +126,7 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
     * 首字母大写的驼峰命名方式 比如 class Axios { }
 
 
-全局组件
+### 全局组件
 
 
 
