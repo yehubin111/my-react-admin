@@ -115,15 +115,15 @@ redux | request | 网络请求api（service文件夹下，封装网络请求api�
 	| save | 保存数据（actions文件夹下，存储数据到reducers专用） | saveUserList 保存用户列表
 组件 | on | 传递给组件的方法映射（建议不要超过2个单词） | onChange/onSubmit
 	| handle | 传递给组件的回调函数 | handleChange/handleSubmit
-2.变量
-a)驼峰命名方式
-b)不要与功能方法、组件回调方法命名规则冲突
-3.常量
-a)全大写，下划线分割 比如PROCESS_ENV
+2. 变量
+    * 驼峰命名方式
+    * 不要与功能方法、组件回调方法命名规则冲突
+3. 常量
+    * 全大写，下划线分割 比如PROCESS_ENV
 4. 组件
-a)首字母大写的驼峰命名方式 比如 BannerTable
+    * 首字母大写的驼峰命名方式 比如 BannerTable
 5. 类
-a)首字母大写的驼峰命名方式 比如 class Axios { }
+    * 首字母大写的驼峰命名方式 比如 class Axios { }
 
 
 全局组件
