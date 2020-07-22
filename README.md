@@ -100,11 +100,13 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
     * index.js 入口文件
     * setupProxy.js 配置网络请求域名代理
 
-二、命名规范
-1.函数方法
-a)驼峰命名方式
-b)动作+语义化的动作对象
-场景	动作关键字	说明	举例
+##### 二、命名规范
+1. 函数方法
+    * 驼峰命名方式
+    * 动作+语义化的动作对象
+
+场景 | 动作关键字 | 说明 | 举例
+---- | ---- | ---- | ----
 页面	get	获取数据	getBannerList 获取banner管理列表数据
 	change	改变状态（多用于页面内弹框的显示隐藏操作）	changeAddStatus 改变新增动作弹框状态
 	set	设置数据	setSortData 设置筛选数据
