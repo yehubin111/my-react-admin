@@ -70,7 +70,7 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 
 # React-Admin后台管理系统开发文档
 
-### 技术选型
+### `技术选型`
 * 基础框架：react
 * 脚手架：create-react-app (cra)
 * 路由：react-router
