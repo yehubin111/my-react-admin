@@ -111,11 +111,10 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 	| change | 改变状态（多用于页面内弹框的显示隐藏操作） | changeAddStatus 改变新增动作弹框状态
 	| set | 设置数据 | setSortData 设置筛选数据
 	| to | 其他操作（edit，create，delete）页面操作相关方法 | toEditBanner 去编辑banner
-redux	request	网络请求api（service文件夹下，封装网络请求api专用）	requestBannerList 
-requestBannerListStatus
-	save	保存数据（actions文件夹下，存储数据到reducers专用）	saveUserList 保存用户列表
-组件	on	传递给组件的方法映射（建议不要超过2个单词）	onChange/onSubmit
-	handle	传递给组件的回调函数	handleChange/handleSubmit
+redux | request | 网络请求api（service文件夹下，封装网络请求api专用） | requestBannerList requestBannerListStatus
+	| save | 保存数据（actions文件夹下，存储数据到reducers专用） | saveUserList 保存用户列表
+组件 | on | 传递给组件的方法映射（建议不要超过2个单词） | onChange/onSubmit
+	| handle | 传递给组件的回调函数 | handleChange/handleSubmit
 2.变量
 a)驼峰命名方式
 b)不要与功能方法、组件回调方法命名规则冲突
