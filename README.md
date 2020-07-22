@@ -82,7 +82,7 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 
 
 ### 开发规范
-###### 一、主要目录结构
+##### 一、主要目录结构
 1. public
     * 主要存放无需编译的js文件、favicon等静态文件资源
 2. src
