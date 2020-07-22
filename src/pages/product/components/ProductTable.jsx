@@ -1,21 +1,42 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import styles from "./comp.module.scss";
+import { requestProductAudit, requestProductStand } from "service/product";
 
-import { Table, Popconfirm, Space } from "antd";
+import { Table, Popconfirm, Space, message } from "antd";
 import ImageView from "components/ImageView";
 
 
 const ManageTable = props => {
     const { pageSize, pageIndex,
+        onInit,
         loading,
-        paginationOnChange,
+        onPaginationChange,
+        selectedRowKeys,
+        onSelect,
+        history,
         productData: { total, list: dataSource }, statusList } = props;
     const [viewImages, setViewImages] = useState([]);
     const [viewStatus, changeViewStatus] = useState(false);
-    const [selectedRowKeys, changeSelectedRowKeys] = useState([]);
+    // const [selectedRowKeys, changeSelectedRowKeys] = useState([]);
 
+    // 上下架
+    const toChangeProductStatus = async (status, id) => {
+        let payload = {
+            isStand: status,
+            ids: id
+        };
+        if (status === 0) {
+            await requestProductStand(payload);
+        } else {
+            await requestProductAudit(payload);
+        }
+        message.success(`${status === 0 ? '上架' : '下架'}成功`);
+        // 重置列表数据
+        onInit();
+    }
     const columns = [
         {
             title: "图片",
@@ -103,11 +124,11 @@ const ManageTable = props => {
             render: (text, record) => (
                 <Space size="middle">
                     <span className="button" onClick={() => {
-
+                        history.push("/product/public?id=" + record.id);
                     }}>编辑</span>
                     <Popconfirm placement="topRight" title={`是否${record.shelfStatus === 1 ? "下架" : "上架"}该商品`}
                         onConfirm={() => {
-                            this.changeStatus(Number(!record.shelfStatus), record.id);
+                            toChangeProductStatus(record.shelfStatus, record.id);
                         }} okText="是" cancelText="否">
                         <span className="button">{record.shelfStatus === 1 ? "下架" : "上架"}</span>
                     </Popconfirm>
@@ -118,7 +139,7 @@ const ManageTable = props => {
     const rowSelection = {
         selectedRowKeys,
         onChange: (keys) => {
-            console.log(keys);
+            onSelect(keys);
         }
     }
     return (
@@ -138,7 +159,7 @@ const ManageTable = props => {
                     current: pageIndex,
                     showTotal: total => `共 ${total} 条`,
                     onChange: (page, pageSize) => {
-                        paginationOnChange({
+                        onPaginationChange({
                             pageIndex: page,
                             pageSize
                         })
@@ -159,4 +180,4 @@ const mapStatetoProps = state => {
     }
 }
 
-export default connect(mapStatetoProps, {})(ManageTable);
+export default connect(mapStatetoProps, {})(withRouter(ManageTable));

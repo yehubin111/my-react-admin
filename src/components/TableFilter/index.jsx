@@ -16,7 +16,7 @@ const FormFilter = (props) => {
         setForm && setForm(form);
     }, [])
 
-    const formReset = () => {
+    const toResetForm = () => {
         form.resetFields();
         // 重置数据回调
         onReset && onReset();
@@ -82,7 +82,7 @@ const FormFilter = (props) => {
                     <Space size="middle">
                         <Button
                             htmlType="button"
-                            onClick={formReset}
+                            onClick={toResetForm}
                         >
                             重 置
                         </Button>

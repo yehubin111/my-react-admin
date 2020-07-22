@@ -4,7 +4,7 @@ import { Switch, Route, Router, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
 import defaultConfig from "defaultConfig";
-import { loginOut } from 'actions';
+import { toLoginOut } from 'actions';
 
 import {
   LockOutlined,
@@ -66,6 +66,17 @@ const moduleRouter = [
           icon: ""
         },
         key: "productManage"
+      },
+      {
+        path: "/product/public",
+        component: "/product/public",
+        hidden: true,
+        noLimit: true,
+        meta: {
+          name: "编辑商品",
+          icon: ""
+        },
+        key: "productEdit"
       }
     ]
   },
@@ -220,13 +231,13 @@ export const routerConfig = [...moduleRouter, ...baseRouter];
 
 class RouteConfig extends Component {
   // 路由权限判断
-  limitMenus() {
+  getLimitMenus() {
     let menus = [];
     let { userInfo: baseStorage, token } = this.props;
     let limits = token && baseStorage.backMenuList ? baseStorage.backMenuList : [];
 
     // 尝试过循环，不太好实现子路由为空不添加父路由的逻辑，所以选择递归
-    function limitCycle(lms, rts, ms) {
+    function toCycleLimit(lms, rts, ms) {
       rts.forEach(rt => {
         // noLimit为true的直接添加，否则按照name匹配权限路由
         if (rt.noLimit) {
@@ -238,7 +249,7 @@ class RouteConfig extends Component {
               // 由于引用，会影响原数组
               let child = rt.children;
               rt.children = [];
-              limitCycle(limit.backMenuList, child, rt.children);
+              toCycleLimit(limit.backMenuList, child, rt.children);
             }
             if (rt.children && rt.children.length > 0)
               rt.redirect = rt.children[0].path;
@@ -248,11 +259,11 @@ class RouteConfig extends Component {
         }
       })
     }
-    limitCycle(limits, moduleRouter, menus);
+    toCycleLimit(limits, moduleRouter, menus);
     // 为了兼容缓存无菜单的情况，需要返回结果
     return menus;
   }
-  redirectLink(menus) {
+  setRedirectLink(menus) {
     /**
      * basic重定向逻辑
      * 如果获取到权限路由，并且可以拿到受权限约束的路由，则basic重定向路径未该页面
@@ -267,10 +278,10 @@ class RouteConfig extends Component {
     return redirect;
   }
   render() {
-    const { loginOut, token } = this.props;
-    let menus = this.limitMenus();
+    const { toLoginOut, token } = this.props;
+    let menus = this.getLimitMenus();
     // 设置basic重定向地址
-    this.redirectLink(menus);
+    this.setRedirectLink(menus);
 
     return (
       <Router history={history}>
@@ -288,10 +299,10 @@ class RouteConfig extends Component {
                   key={router.key}
                   render={() => {
                     // 拿到权限路由之后，渲染子路由
-                    menus = this.limitMenus();
+                    menus = this.getLimitMenus();
                     // 路由加载的时候，判断token是否存在
                     if (!token && !router.noLimit) {
-                      loginOut(router.path);
+                      toLoginOut(router.path);
                       return;
                     };
                     return React.createElement(component, {
@@ -318,4 +329,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { loginOut })(RouteConfig)
+export default connect(mapStateToProps, { toLoginOut })(RouteConfig)

@@ -29,7 +29,7 @@ const EditableCell = ({ editable, dataIndex, record, title, children, handleSave
         handleSave({ ...record, ...Object.fromEntries(valuesFilter) });
         changeEditing(!editing);
     }
-    const toggleEdit = () => {
+    const toToggleEdit = () => {
         changeEditing(!editing);
         form.setFieldsValue({
             [dataIndex]: record[dataIndex]
@@ -53,7 +53,7 @@ const EditableCell = ({ editable, dataIndex, record, title, children, handleSave
                 </FormItem>
             )
             : (
-                <div onClick={toggleEdit} className={styles["editable-cell-value-wrap"]}>{children}</div>
+                <div onClick={toToggleEdit} className={styles["editable-cell-value-wrap"]}>{children}</div>
             )
     }
     return (

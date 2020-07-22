@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 import styles from './comp.module.scss';
 import logo from '../../assets/images/logo.png';
-import { loginOut } from 'actions';
+import { toLoginOut } from 'actions';
 
 import { Dropdown, Menu, Space, Button, Tag } from 'antd';
 import { MenuUnfoldOutlined, MenuFoldOutlined, ExportOutlined, CloseOutlined } from '@ant-design/icons';
@@ -12,12 +12,12 @@ import { MenuUnfoldOutlined, MenuFoldOutlined, ExportOutlined, CloseOutlined } f
 
 class TopInfo extends Component {
     render() {
-        const { onMenu, collapsed, userInfo, loginOut, location } = this.props;
+        const { onMenu, collapsed, userInfo, toLoginOut, location } = this.props;
         const menu = (
             <Menu>
                 <Menu.Item>
                     <p className={styles.downmenu} onClick={() => {
-                        loginOut(location.pathname);
+                        toLoginOut(location.pathname);
                     }}><ExportOutlined /> 退出登录</p>
                 </Menu.Item>
             </Menu>
@@ -58,4 +58,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, { loginOut })(withRouter(TopInfo));
+export default connect(mapStateToProps, { toLoginOut })(withRouter(TopInfo));

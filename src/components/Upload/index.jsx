@@ -17,6 +17,7 @@ const ImageUpload = props => {
     })
     const [previewStatus, changePreview] = useState(false);
     const [uploadStatus, changeUploadStatus] = useState(false);
+    const [uploadLock, changeUploadLock] = useState(false);
     const data = {
         token
     }
@@ -37,6 +38,12 @@ const ImageUpload = props => {
         changePreview(true);
     }
     const handleChange = (files) => {
+        // 防止value的改变引起编辑逻辑
+        changeUploadLock(true);
+        setTimeout(() => {
+            changeUploadLock(false);
+        }, 300)
+
         changeFileList(files.fileList);
         // 格式化返回数据
         let data = files.fileList.map(file => file.response && `${qnUrl}${file.response.key}`)
@@ -46,29 +53,35 @@ const ImageUpload = props => {
         changePreview(false);
     }
     const handleCheck = (file, checkFileList) => {
-        if (limit && checkFileList.length > limit - fileList.length) {
+        if (!limit) return Promise.resolve();
+        else if (checkFileList.length > limit - fileList.length) {
             message.warning("超过图片上传最大数量");
-            return Promise.reject();
+            return Promise.reject("");
+        } else if (checkFileList.length === limit - fileList.length) {
+            setTimeout(() => {
+                changeUploadStatus(false)
+            }, 400)
         }
     }
     // 已上传数量大于或者等于限制数量，隐藏上传按钮
     useEffect(() => {
-        if (limit && fileList.length >= limit)
-            changeUploadStatus(false)
-        else
+        if (limit && fileList.length < limit)
             changeUploadStatus(true)
     }, [limit, fileList])
     // 编辑的时候数据初始化
     useEffect(() => {
-        if (value) {
-            changeFileList(value.split(",").map(image => (
+        if (value && !uploadLock) {
+            let files = value.split(",").map(image => (
                 {
                     url: image,
                     uid: image,
                     status: 'done',
                     name: "图片"
                 }
-            )))
+            ))
+            changeFileList(files);
+            if (files.length >= limit)
+                changeUploadStatus(false);
         }
     }, [value])
 
@@ -82,7 +95,7 @@ const ImageUpload = props => {
                 onChange={handleChange}
                 beforeUpload={handleCheck}
                 data={data}
-                multiple={multiple}
+                multiple={true}
             >
                 {
                     uploadStatus && (

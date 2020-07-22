@@ -9,8 +9,8 @@ const FormItem = Form.Item;
 const AddInviteCode = (props) => {
     const { visible, onCancel, onOk, editId, userInvitationData: { list } } = props;
     const [form] = Form.useForm();
-    const [theme, changeTheme] = useState("新增");
-    function modalCancel() {
+    const [theme, setTheme] = useState("新增");
+    function handleCancel() {
         form.resetFields();
         onCancel();
     }
@@ -21,7 +21,7 @@ const AddInviteCode = (props) => {
             form.setFieldsValue({
                 codeName: editData.codeName
             })
-            changeTheme("编辑");
+            setTheme("编辑");
         }
     }, [editId]);
     return (
@@ -29,7 +29,7 @@ const AddInviteCode = (props) => {
             onOk={() => {
                 form.submit();
             }}
-            onCancel={modalCancel}
+            onCancel={handleCancel}
         >
             <Form form={form} onFinish={values => {
                 if (editId) values.id = editId;
@@ -37,7 +37,7 @@ const AddInviteCode = (props) => {
                     .then(() => {
                         message.success(`${theme}成功`);
                         onOk();
-                        modalCancel();
+                        handleCancel();
                     })
             }}>
                 <FormItem

@@ -5,7 +5,7 @@ const { TextArea } = Input;
 
 const BatchSearch = props => {
     const { visible, onOk, onCancel } = props;
-    const [ids, changeIds] = useState("");
+    const [ids, setIds] = useState("");
 
     return (
         <Modal title="批量查找商品" visible={visible}
@@ -13,13 +13,13 @@ const BatchSearch = props => {
             cancelText="取消"
             onOk={() => {
                 onOk(ids.replace(/\n/g, ","));
-                changeIds("");
+                setIds("");
             }} onCancel={() => {
                 onCancel();
-                changeIds("");
+                setIds("");
             }}>
             <TextArea row={4} value={ids} placeholder="请输入需要查找的商品ID，多商品以回车区分" onChange={e => {
-                changeIds(e.target.value);
+                setIds(e.target.value);
             }} />
         </Modal>
     )

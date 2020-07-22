@@ -98,22 +98,17 @@ span.button {
   background-color: transparent;
 }
 
-.form .input {
+.form .ant-input {
   min-width: 180px;
   max-width: 240px;
   flex-grow: 1;
 }
-.form .select {
+.form .ant-select {
   min-width: 180px;
   max-width: 240px;
   flex-grow: 1;
 }
-.form .range {
-  min-width: 360px;
-  max-width: 420px;
-  flex-grow: 1;
-}
-.form .timerange {
+.form .ant-picker-range {
   min-width: 400px;
   max-width: 460px;
   flex-grow: 1;

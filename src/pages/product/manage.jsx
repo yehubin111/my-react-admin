@@ -32,6 +32,7 @@ class ProductManage extends Component {
         searchStatus: false,
         filters: {}, // 商品筛选条件
         ids: "", // 批量查找商品
+        selectedRowKeys: [],
         payload: {
             auditStatus: 1,
             pageIndex: 1,
@@ -40,11 +41,11 @@ class ProductManage extends Component {
     }
     componentDidMount() {
         // 基础数据
-        this.initSort();
+        this.getSortData();
         // 列表数据
-        this.initData(this.state.payload);
+        this.getListData(this.state.payload);
     }
-    initData(payload) {
+    getListData(payload) {
         this.setState({
             loading: true
         })
@@ -57,7 +58,7 @@ class ProductManage extends Component {
                 saveProductList(response);
             })
     }
-    initSort() {
+    getSortData() {
         // 品牌
         requestBrandList().then(response => {
             this.setState({
@@ -91,9 +92,10 @@ class ProductManage extends Component {
     }
     handleMenuClick(e) {
         console.log(e);
+        this.setState({ selectedRowKeys: [] })
     }
     render() {
-        const { brandList, seasonList, ruleList, payload, loading, searchStatus, filterForm } = this.state;
+        const { brandList, seasonList, ruleList, payload, loading, searchStatus, filterForm, selectedRowKeys } = this.state;
         const { storeList, luxuryList, saleList, sexList, statusList } = this.props;
 
         const filterConfig = [
@@ -209,17 +211,13 @@ class ProductManage extends Component {
                         ...this.state.payload,
                         ...this.state.filters
                     }
-                    this.initData(payload);
+                    this.getListData(payload);
                 }} />
                 <TableHeader ctrl={
                     <Space size="middle">
                         <Button type="primary"
                             onClick={() => {
                                 requestProductExport(this.state.payload)
-                                    .then(response => {
-                                        message.success("导出成功");
-                                        exportExcelFromData(response);
-                                    })
                             }}
                         >
                             批量导出
@@ -242,16 +240,21 @@ class ProductManage extends Component {
                     pageIndex={payload.pageIndex}
                     pageSize={payload.pageSize}
                     loading={loading}
-                    paginationOnChange={(page) => {
+                    onInit={() => {
+                        this.getListData(this.state.payload);
+                    }}
+                    selectedRowKeys={selectedRowKeys}
+                    onSelect={(select) => {
+                        this.setState({ selectedRowKeys: select });
+                    }}
+                    onPaginationChange={(page) => {
                         let payload = {
                             ...this.state.payload,
                             pageIndex: page.pageIndex,
                             pageSize: page.pageSize
                         }
-                        this.setState({
-                            payload
-                        })
-                        this.initData(payload);
+                        this.setState({ payload })
+                        this.getListData(payload);
                     }} />
                 <BatchSearch visible={searchStatus} onOk={(ids) => {
                     this.setState({
@@ -266,7 +269,7 @@ class ProductManage extends Component {
                         ...this.state.payload,
                         ids
                     }
-                    this.initData(payload);
+                    this.getListData(payload);
                 }} onCancel={() => {
                     this.setState({
                         searchStatus: false

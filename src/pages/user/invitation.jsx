@@ -20,7 +20,7 @@ class Invitation extends Component {
         editId: 0
     }
     componentDidMount() {
-        this.initData(this.state.payload);
+        this.getListData(this.state.payload);
     }
     handleFilter(values) {
         let payload = {
@@ -31,9 +31,9 @@ class Invitation extends Component {
         this.setState({
             payload
         })
-        this.initData(payload);
+        this.getListData(payload);
     }
-    async initData(payload) {
+    async getListData(payload) {
         const { saveInvitationList } = this.props;
         const response = await requestInvitecodeList(payload);
         if (response) {
@@ -141,7 +141,7 @@ class Invitation extends Component {
                             this.setState({
                                 payload
                             });
-                            this.initData(payload);
+                            this.getListData(payload);
                         }
                     }}
                 ></Table>

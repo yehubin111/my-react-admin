@@ -29,7 +29,6 @@ const Column = ({ value = {}, onChange, topicData }) => {
             <RadioGroup options={options} value={value.columnType} />
             <Select
                 placeholder="请选择绑定专题"
-                className="select"
                 value={value.columnContent}
                 onChange={handleChange}
             >{
@@ -45,7 +44,7 @@ const AddBanner = (props) => {
     const { visible, editId, bannerList: { list }, onOk, onCancel, topicData, saveTopic } = props;
     const [loading, changeLoading] = useState(false);
     const [form] = Form.useForm();
-    const [theme, changeTheme] = useState("新增");
+    const [theme, setTheme] = useState("新增");
     const layout = {
         labelCol: { span: 6 },
         wrapperCol: { span: 15 },
@@ -59,7 +58,7 @@ const AddBanner = (props) => {
     };
     const timeFormat = "YYYY-MM-DD HH:mm:ss";
 
-    function modalCancel() {
+    function handleCancel() {
         form.resetFields();
         onCancel();
     }
@@ -86,7 +85,7 @@ const AddBanner = (props) => {
             },
             shelfStatus: Boolean(banner.shelfStatus)
         })
-        changeTheme("编辑");
+        setTheme("编辑");
     }, [editId])
 
     const handleSubmit = (values) => {
@@ -107,7 +106,7 @@ const AddBanner = (props) => {
             .then(() => {
                 message.success(`${theme}成功`);
                 changeLoading(false);
-                modalCancel();
+                handleCancel();
                 onOk();
             })
     }
@@ -116,7 +115,7 @@ const AddBanner = (props) => {
         <Modal form={form} title={`${theme}banner`} visible={visible} okText="确定" cancelText="取消"
             width={600}
             confirmLoading={loading}
-            onCancel={modalCancel}
+            onCancel={handleCancel}
             onOk={() => {
                 form.submit();
             }}
@@ -130,7 +129,7 @@ const AddBanner = (props) => {
                     name="columnTitle"
                     rules={[{ required: true, message: 'banner标题不能为空' }]}
                 >
-                    <Input placeholder="请输入标题，最多20个字" className="input" />
+                    <Input placeholder="请输入标题，最多20个字" />
                 </FormItem>
                 <FormItem
                     label="图片"
@@ -146,7 +145,6 @@ const AddBanner = (props) => {
                     rules={[{ required: true, message: '请选择展示时间' }]}
                 >
                     <RangePicker
-                        className="timerange"
                         format={timeFormat}
                         showTime
                         placeholder={['开始时间', '截止时间']}
@@ -156,6 +154,7 @@ const AddBanner = (props) => {
                     label="绑定类型"
                     name="column"
                     rules={[{
+                        required: true,
                         validator: (rule, value) => {
                             if (value.columnContent) {
                                 return Promise.resolve();

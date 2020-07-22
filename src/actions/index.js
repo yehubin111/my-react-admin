@@ -16,7 +16,7 @@ export const saveQiniuInfo = response => {
   }
 }
 // 退出登录
-export const loginOut = response => {
+export const toLoginOut = response => {
   return {
     type: constants.LOGINOUT,
     response

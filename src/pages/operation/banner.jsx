@@ -14,22 +14,22 @@ import AddBanner from "./components/AddBanner";
 
 const Banner = (props) => {
     const { bannerStatus, bannerList: { list: dataSource, total }, saveBannerList } = props;
-    const [payload, changePayload] = useState({
+    const [payload, setPayload] = useState({
         isBanner: 0,
         pageIndex: 1,
         pageSize: 20
     })
     const [addStatus, changeAddStatus] = useState(false);
-    const [editId, changeEditId] = useState("");
+    const [editId, setEditId] = useState("");
     const [viewImages, setViewImages] = useState([]);
     const [viewStatus, changeViewStatus] = useState(false);
 
-    const initData = async (payload) => {
+    const getListData = async (payload) => {
         const response = await requestBannerList(payload);
         if (response)
             saveBannerList(response)
     }
-    const editChange = (row) => {
+    const handleEditChange = (row) => {
         const newData = [...dataSource];
         const bannerIndex = newData.findIndex(banner => banner.id === row.id);
         newData.splice(bannerIndex, 1, row);
@@ -39,14 +39,14 @@ const Banner = (props) => {
             total
         })
     }
-    const sortChange = () => {
+    const setSort = () => {
         let params = {
             columns: dataSource.map(banner => ({ id: banner.id, sort: banner.sort }))
         };
         requestBannerSort(params)
             .then(() => {
                 message.success("保存排序成功");
-                initData(payload);
+                getListData(payload);
             });
     }
     const changeStatus = (status, id) => {
@@ -58,10 +58,10 @@ const Banner = (props) => {
         requestChangeBannerStatus(params)
             .then(() => {
                 message.success(`${status === 1 ? '上架' : '下架'}成功`);
-                initData(payload);
+                getListData(payload);
             })
     }
-    const delBanner = (id) => {
+    const toDelBanner = (id) => {
         let payload = {
             id,
             delStatus: 1,
@@ -70,12 +70,12 @@ const Banner = (props) => {
         requestChangeBannerStatus(payload)
             .then(() => {
                 message.success('删除成功');
-                initData(payload);
+                getListData(payload);
             })
     }
 
     useEffect(() => {
-        initData(payload);
+        getListData(payload);
     }, [])
 
     const filterConfig = [
@@ -145,7 +145,7 @@ const Banner = (props) => {
             render: (text, record) => (
                 <Space size="middle">
                     <span className="button" onClick={() => {
-                        changeEditId(record.id);
+                        setEditId(record.id);
                         changeAddStatus(true)
                     }}>编辑</span>
                     <Popconfirm placement="topRight" title={`是否${record.shelfStatus === 1 ? "下架" : "上架"}该banner`}
@@ -156,7 +156,7 @@ const Banner = (props) => {
                     </Popconfirm>
                     <Popconfirm placement="topRight" title="是否删除该banner"
                         onConfirm={() => {
-                            delBanner(record.id)
+                            toDelBanner(record.id)
                         }} okText="是" cancelText="否">
                         <span className="button">删除</span>
                     </Popconfirm>
@@ -176,8 +176,8 @@ const Banner = (props) => {
                     ...payload,
                     ...values
                 }
-                changePayload(options);
-                initData(options);
+                setPayload(options);
+                getListData(options);
             }} />
             <TableHeader ctrl={
                 <Space size="middle">
@@ -187,7 +187,7 @@ const Banner = (props) => {
                         新增banner
                     </Button>
                     <Button type="primary" onClick={() => {
-                        sortChange();
+                        setSort();
                     }}>
                         保存排序
                     </Button>
@@ -200,7 +200,7 @@ const Banner = (props) => {
                     x: 1300
                 }}
                 rowKey="id"
-                onEditChange={editChange}
+                onEditChange={handleEditChange}
                 pagination={{
                     pageSize: payload.pageSize,
                     total,
@@ -209,8 +209,8 @@ const Banner = (props) => {
                     onChange: (page, pageSize) => {
                         payload.pageIndex = page;
                         payload.pageSize = pageSize;
-                        changePayload(payload);
-                        initData(payload);
+                        setPayload(payload);
+                        getListData(payload);
                     }
                 }}
             />
@@ -218,10 +218,10 @@ const Banner = (props) => {
                 changeViewStatus(false);
             }} />
             <AddBanner visible={addStatus} editId={editId} onCancel={() => {
-                changeEditId("");
+                setEditId("");
                 changeAddStatus(false)
             }} onOk={() => {
-                initData(payload);
+                getListData(payload);
             }} />
         </>
     )

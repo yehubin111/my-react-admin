@@ -19,7 +19,7 @@ class User extends Component {
     }
   };
   componentDidMount() {
-    this.initData(this.state.payload);
+    this.getListData(this.state.payload);
   }
   handleFilter(values) {
     values.filtrateSTime = values.filtrateTime
@@ -37,9 +37,9 @@ class User extends Component {
     this.setState({
       payload
     });
-    this.initData(payload);
+    this.getListData(payload);
   }
-  async initData(payload) {
+  async getListData(payload) {
     const { saveUserList } = this.props;
     const response = await requestUserList(payload);
     if (response) {
@@ -119,7 +119,7 @@ class User extends Component {
               this.setState({
                 payload
               });
-              this.initData(payload);
+              this.getListData(payload);
             }
           }}
         ></Table>

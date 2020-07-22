@@ -35,7 +35,7 @@ class BasicLayout extends Component {
           </div>
           <MenuNav routes={routes} />
         </Sider>
-        <Layout className={styles.layout}>
+        <Layout className={[styles.layout, styles.navLayout]}>
           <Header className={styles.header}>
             <TopInfo
               collapsed={this.state.collapsed}
