@@ -71,14 +71,14 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 # React-Admin后台管理系统开发文档
 
 ### 技术选型
-基础框架：react
-脚手架：create-react-app (cra)
-路由：react-router
-状态管理：react-redux
-网络请求：axios
-css预处理：sass scss
-组件库：antd
-ui风格参考：https://preview.pro.ant.design/
+* 基础框架：react
+* 脚手架：create-react-app (cra)
+* 路由：react-router
+* 状态管理：react-redux
+* 网络请求：axios
+* css预处理：sass scss
+* 组件库：antd
+* ui风格参考：[ant-pro](https://preview.pro.ant.design/) 
 
 
 开发规范
