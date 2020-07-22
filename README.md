@@ -86,19 +86,19 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 1. public
     * 主要存放无需编译的js文件、favicon等静态文件资源
 2. src
-* actions 存放redux actions操作
-* assets 存放项目图片、css等一些静态资源
-* components 全局通用组件
-* constants redux动作命名规范
-* layouts 结构布局相关组件
-* pages 页面
-* reducers redux状态处理存放
-* router 路由配置、一级路由生成
-* service 网络请求api封装
-* utils 工具类js
-* defaultConfig.js 项目基本配置文件
-* index.js 入口文件
-* setupProxy.js 配置网络请求域名代理
+    * actions 存放redux actions操作
+    * assets 存放项目图片、css等一些静态资源
+    * components 全局通用组件
+    * constants redux动作命名规范
+    * layouts 结构布局相关组件
+    * pages 页面
+    * reducers redux状态处理存放
+    * router 路由配置、一级路由生成
+    * service 网络请求api封装
+    * utils 工具类js
+    * defaultConfig.js 项目基本配置文件
+    * index.js 入口文件
+    * setupProxy.js 配置网络请求域名代理
 
 二、命名规范
 1.函数方法
