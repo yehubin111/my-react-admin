@@ -6,7 +6,7 @@ import { requestTopicList } from 'service/common';
 import { requestChangeBannerStatus } from 'service/operation';
 import { saveTopic } from 'actions';
 
-import { Modal, Form, Radio, Select, message, DatePicker } from "antd";
+import { Modal, Form, Radio, Select, message } from "antd";
 import MainFormItems from "components/MainFormItems";
 const { Option } = Select;
 const { Group: RadioGroup } = Radio;
@@ -39,8 +39,8 @@ const Column = ({ value = {}, onChange, topicData }) => {
         </div>
     )
 }
-const AddBanner = (props) => {
-    const { visible, editData: banner, bannerList: { list }, onOk, onCancel, topicData, saveTopic } = props;
+const AddPrograma = (props) => {
+    const { visible, editData: programa, bannerList: { list }, onOk, onCancel, topicData, saveTopic } = props;
     const [loading, changeLoading] = useState(false);
     const [form] = Form.useForm();
     const [theme, setTheme] = useState("新增");
@@ -69,26 +69,26 @@ const AddBanner = (props) => {
             })
     }, []);
     useEffect(() => {
-        if (!banner.id) return;
+        if (!programa.id) return;
         form.setFieldsValue({
-            columnTitle: banner.columnTitle,
-            columnPic: banner.columnPic,
+            columnTitle: programa.columnTitle,
+            columnPic: programa.columnPic,
             time: [
-                moment(new Date(banner.startTime), timeFormat),
-                moment(new Date(banner.endTime), timeFormat)
+                moment(new Date(programa.startTime), timeFormat),
+                moment(new Date(programa.endTime), timeFormat)
             ],
             column: {
-                columnType: banner.columnType,
-                columnContent: banner.columnContent * 1
+                columnType: programa.columnType,
+                columnContent: programa.columnContent * 1
             },
-            shelfStatus: Boolean(banner.shelfStatus)
+            shelfStatus: Boolean(programa.shelfStatus)
         })
         setTheme("编辑");
-    }, [banner])
+    }, [programa])
 
     const handleSubmit = (values) => {
         let payload = {
-            isBanner: 0,
+            isBanner: 1,
             ...values,
             ...values.column
         }
@@ -98,7 +98,7 @@ const AddBanner = (props) => {
         delete payload.time;
         delete payload.column;
         // 编辑
-        if (banner.id) payload.id = banner.id;
+        if (programa.id) payload.id = programa.id;
 
         requestChangeBannerStatus(payload)
             .then(() => {
@@ -108,13 +108,13 @@ const AddBanner = (props) => {
                 onOk();
             })
     }
-
+    
     const items = [
         {
-            label: "banner标题",
+            label: "专栏标题",
             name: "columnTitle",
             type: "input",
-            rules: [{ required: true, message: 'banner标题不能为空' }],
+            rules: [{ required: true, message: '专栏标题不能为空' }],
             placeholder: "请输入标题，最多20个字"
         },
         {
@@ -161,7 +161,7 @@ const AddBanner = (props) => {
     ]
 
     return (
-        <Modal form={form} title={`${theme}banner`} visible={visible} okText="确定" cancelText="取消"
+        <Modal form={form} title={`${theme}专栏`} visible={visible} okText="确定" cancelText="取消"
             width={600}
             confirmLoading={loading}
             onCancel={handleCancel}
@@ -175,9 +175,9 @@ const AddBanner = (props) => {
             }}>
                 <MainFormItems items={items} />
                 {/* <FormItem
-                    label="banner标题"
+                    label="专栏标题"
                     name="columnTitle"
-                    rules={[{ required: true, message: 'banner标题不能为空' }]}
+                    rules={[{ required: true, message: '专栏标题不能为空' }]}
                 >
                     <Input placeholder="请输入标题，最多20个字" />
                 </FormItem>
@@ -185,7 +185,7 @@ const AddBanner = (props) => {
                     label="图片"
                     name="columnPic"
                     rules={[{ required: true, message: '请上传图片' }]}
-                    extra="图片尺寸为1035*600，支持jpg、png、jpeg格式文件"
+                    extra="图片尺寸为1035*540，支持jpg、png、jpeg格式文件"
                 >
                     <Upload />
                 </FormItem>
@@ -235,4 +235,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, { saveTopic })(AddBanner);
+export default connect(mapStateToProps, { saveTopic })(AddPrograma);

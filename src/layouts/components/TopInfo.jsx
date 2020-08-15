@@ -23,11 +23,11 @@ class TopInfo extends Component {
             </Menu>
         )
         return (
-            <div className={`rf jfe ac ${styles.top}`}>
-                {/* {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+            <div className={`rf jsb ac ${styles.top}`}>
+                {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
                     className: styles.menu,
                     onClick: onMenu
-                })} */}
+                })}
                 {/* <Space size="small" className={styles["cache-list"]}> */}
                     {/* <Tag className={styles.cache} closeIcon={<CloseOutlined />} closable onClose={() => {}}>
                         商品管理

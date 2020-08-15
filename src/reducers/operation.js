@@ -3,8 +3,8 @@ import moment from 'moment';
 import constants from "../constants";
 
 const defaultBannerStatus = [
-    { key: 1, name: "上架" },
-    { key: 0, name: "下架" }
+    { key: 1, label: "上架" },
+    { key: 0, label: "下架" }
 ]
 export const bannerStatus = (state = defaultBannerStatus, action = {}) => {
     return state;
@@ -22,7 +22,7 @@ export const bannerList = (state = defaultBannerList, action = {}) => {
             list.forEach(banner => {
                 banner.showTimeFormat = `${moment(banner.startTime).format('YYYY-MM-DD HH:mm:ss')} 至 ${moment(banner.endTime).format('YYYY-MM-DD HH:mm:ss')}`;
                 banner.modifyTimeFormat = moment(banner.modifyTime).format('YYYY-MM-DD HH:mm:ss');
-                banner.shelfStatusName = defaultBannerStatus.find(status => status.key === banner.shelfStatus).name;
+                banner.shelfStatusName = defaultBannerStatus.find(status => status.key === banner.shelfStatus).label;
             })
             return (
                 state = {

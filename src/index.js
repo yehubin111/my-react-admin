@@ -10,6 +10,10 @@ import defaultConfig from './defaultConfig';
 import storage from 'redux-persist/lib/storage';
 import { persistStore, persistReducer } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
+// import moment from "moment";
+// import 'moment/locale/zh-cn';
+import { ConfigProvider } from 'antd';
+import zhCN from 'antd/es/locale/zh_CN';
 
 const persistConfig = {
   key: defaultConfig.productName,
@@ -26,10 +30,13 @@ const persistor = persistStore(
 )
 
 const render = Component => {
+  // moment.locale('zh-cn');
   ReactDOM.render(
     <Provider store={store}>
       <PersistGate persistor={persistor}>
+        <ConfigProvider locale={zhCN}>
         <Component />
+        </ConfigProvider>
       </PersistGate>
     </Provider>,
     document.getElementById('root')

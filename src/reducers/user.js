@@ -28,17 +28,20 @@ const defaultInvitationList = {
   list: [],
   total: 0
 }
-const statusList = [
+const defaultInvitationStatus = [
   { key: 1, name: '作废' },
   { key: 0, name: '正常' }
 ]
+export const invitationStatus = (state = defaultInvitationStatus, action = {}) => {
+  return state;
+}
 export const userInvitationData = (state = defaultInvitationList, action = {}) => {
   let { type, response } = action;
   switch (type) {
     case constants.SAVEINVITATIONLIST:
       let list = response.list;
       list.forEach(invite => {
-        invite.statusName = statusList.find(status => status.key === invite.delStatus).name;
+        invite.statusName = defaultInvitationStatus.find(status => status.key === invite.delStatus).name;
       })
       return (state = {
         list,

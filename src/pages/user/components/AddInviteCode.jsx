@@ -3,27 +3,39 @@ import { connect } from 'react-redux';
 
 import { requestChangeInvitecode } from 'service/user';
 
-import { Modal, Form, Input, message } from 'antd';
-const FormItem = Form.Item;
+import { Modal, Form, message } from 'antd';
+import MainFormItems from "components/MainFormItems";
 
 const AddInviteCode = (props) => {
-    const { visible, onCancel, onOk, editId, userInvitationData: { list } } = props;
+    const { visible, onCancel, onOk, editData } = props;
     const [form] = Form.useForm();
     const [theme, setTheme] = useState("新增");
+    const config = {
+        labelCol: { span: 5 },
+        wrapperCol: { span: 17 }
+    }
     function handleCancel() {
         form.resetFields();
         onCancel();
     }
 
     useEffect(() => {
-        if (editId) {
-            let editData = list.find(invite => invite.id === editId);
+        if (editData.id) {
             form.setFieldsValue({
                 codeName: editData.codeName
             })
             setTheme("编辑");
         }
-    }, [editId]);
+    }, [editData]);
+
+    const formItems = [
+        {
+            label: "渠道/用途",
+            name: "codeName",
+            rules: [{ required: true, message: '请输入邀请码名称' }],
+            type: "input"
+        }
+    ]
     return (
         <Modal title={`${theme}邀请码`} visible={visible} okText="确 定" cancelText="取 消"
             onOk={() => {
@@ -31,8 +43,8 @@ const AddInviteCode = (props) => {
             }}
             onCancel={handleCancel}
         >
-            <Form form={form} onFinish={values => {
-                if (editId) values.id = editId;
+            <Form className="form" {...config} form={form} onFinish={values => {
+                if (editData.id) values.id = editData.id;
                 requestChangeInvitecode(values)
                     .then(() => {
                         message.success(`${theme}成功`);
@@ -40,16 +52,7 @@ const AddInviteCode = (props) => {
                         handleCancel();
                     })
             }}>
-                <FormItem
-                    label="渠道/用途"
-                    name="codeName"
-                    rules={[{ required: true, message: '请输入邀请码名称' }]}
-                >
-                    <Input
-                        placeholder="渠道/用途"
-                        allowClear
-                    />
-                </FormItem>
+                <MainFormItems items={formItems} />
             </Form>
         </Modal>
     )

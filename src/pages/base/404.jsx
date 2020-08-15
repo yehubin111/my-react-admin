@@ -2,7 +2,7 @@ import React from 'react';
 import { Result, Button } from 'antd';
 import { withRouter } from "react-router-dom";
 
-import styles from "./pages.module.scss";
+import styles from "./page.module.scss";
 
 const NoMatch = (props) => {
     return (

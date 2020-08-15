@@ -23,3 +23,15 @@ export function requestProductAudit(payload = {}) {
 export function requestProductStand(payload = {}) {
     return Axios.post("productstand", payload)
 }
+// 编辑获取商品详情
+export function requestGetSpuDetail(payload = {}) {
+    return Axios.post("spuGetDetial", payload)
+}
+// 编辑商品
+export function requestSpuEdit(payload = {}) {
+    return Axios.post("spuUpdate", payload)
+}
+// 类目管理
+export function requestCategoryList(payload = {}) {
+    return Axios.post("catelist", payload)
+}

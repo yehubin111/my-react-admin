@@ -12,7 +12,7 @@ import { PlusOutlined } from "@ant-design/icons";
 // import EditTable from "components/EditTable";
 import MainTable from "components/MainTable";
 import ImageView from "components/ImageView";
-import AddBanner from "./components/AddBanner";
+import AddPrograma from "./components/AddPrograma";
 
 const Banner = (props) => {
     const { bannerStatus, saveBannerList } = props;
@@ -29,7 +29,7 @@ const Banner = (props) => {
     const tableRef = useRef();
 
     const getListData = payload => {
-        payload.isBanner = 0;
+        payload.isBanner = 1;
         return requestBannerList(payload);
     }
     const handleEditChange = (data) => {
@@ -72,7 +72,7 @@ const Banner = (props) => {
 
     const filterConfig = [
         {
-            label: "banner名称",
+            label: "专栏标题",
             placeholder: "",
             type: "input",
             name: "columnTitle"
@@ -108,7 +108,7 @@ const Banner = (props) => {
             }
         },
         {
-            title: "banner名称",
+            title: "专栏标题",
             dataIndex: "columnTitle"
         },
         {
@@ -140,7 +140,7 @@ const Banner = (props) => {
                         }} okText="是" cancelText="否">
                         <span className="button">{record.shelfStatus === 1 ? "下架" : "上架"}</span>
                     </Popconfirm>
-                    <Popconfirm placement="topRight" title="是否删除该banner"
+                    <Popconfirm placement="topRight" title="是否删除该专栏"
                         onConfirm={() => {
                             toDelBanner(record.id)
                         }} okText="是" cancelText="否">
@@ -166,7 +166,7 @@ const Banner = (props) => {
                         <Button type="primary" icon={<PlusOutlined />} onClick={() => {
                             changeAddStatus(true)
                         }}>
-                            新增banner
+                            新增专栏
                         </Button>
                         <Button type="primary" onClick={() => {
                             setSort();
@@ -185,53 +185,10 @@ const Banner = (props) => {
                     onEditChange: handleEditChange
                 }}
             />
-            {/* <TableFilter config={filterConfig} onSearch={(values) => {
-                let options = {
-                    ...payload,
-                    ...values
-                }
-                setPayload(options);
-                getListData(options);
-            }} />
-            <TableHeader ctrl={
-                <Space size="middle">
-                    <Button type="primary" icon={<PlusOutlined />} onClick={() => {
-                        changeAddStatus(true)
-                    }}>
-                        新增banner
-                    </Button>
-                    <Button type="primary" onClick={() => {
-                        setSort();
-                    }}>
-                        保存排序
-                    </Button>
-                </Space>
-            } />
-            <EditTable
-                dataSource={dataSource}
-                columns={columns}
-                scroll={{
-                    x: 1300
-                }}
-                rowKey="id"
-                onEditChange={handleEditChange}
-                pagination={{
-                    pageSize: payload.pageSize,
-                    total,
-                    current: payload.pageIndex,
-                    showTotal: total => `共 ${total} 条`,
-                    onChange: (page, pageSize) => {
-                        payload.pageIndex = page;
-                        payload.pageSize = pageSize;
-                        setPayload(payload);
-                        getListData(payload);
-                    }
-                }}
-            /> */}
             <ImageView images={viewImages} visible={viewStatus} onCancel={() => {
                 changeViewStatus(false);
             }} />
-            <AddBanner visible={addStatus} editData={editData} onCancel={() => {
+            <AddPrograma visible={addStatus} editData={editData} onCancel={() => {
                 setEditData({});
                 changeAddStatus(false)
             }} onOk={() => {

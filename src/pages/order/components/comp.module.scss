@@ -1,0 +1,33 @@
+.baseinfo {
+  font-size: 14px;
+  line-height: 28px;
+}
+.order {
+  background-color: #fff;
+  padding: 0 24px 24px;
+}
+.empty {
+  background-color: #fff;
+  margin: 0;
+  padding: 32px 0;
+}
+.code {
+//   font-weight: bold;
+}
+.status {
+  color: red;
+}
+.pagination {
+  margin: 16px 0;
+  float: right;
+}
+.ant-table-container {
+  table > thead > tr:first-child {
+    th {
+      font-weight: normal;
+      &:first-child {
+        padding-left: 16px;
+      }
+    }
+  }
+}

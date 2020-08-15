@@ -1,106 +1,106 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import moment from 'moment';
 
 import { saveUserList } from "actions";
 import { requestUserList } from "service/user";
 
-import { Table } from "antd";
-import TableFilter from "components/TableFilter";
+// import { Table } from "antd";
+import MainTable from "components/MainTable";
+// import TableFilter from "components/TableFilter";
 
 class User extends Component {
   state = {
-    payload: {
-      inviteCode: "",
-      phone: "",
-      filtrateSTime: "",
-      filtrateETime: "",
-      pageIndex: 1,
-      pageSize: 10
-    }
   };
   componentDidMount() {
-    this.getListData(this.state.payload);
   }
-  handleFilter(values) {
-    values.filtrateSTime = values.filtrateTime
-      ? values.filtrateTime[0].format("YYYY-MM-DD") + " 00:00:00"
+  // handleFilter(values) {
+  //   values.filtrateSTime = values.filtrateTime
+  //     ? values.filtrateTime[0].format("YYYY-MM-DD") + " 00:00:00"
+  //     : "";
+  //   values.filtrateETime = values.filtrateTime
+  //     ? values.filtrateTime[1].format("YYYY-MM-DD") + " 23:59:59"
+  //     : "";
+  //   delete values.filtrateTime;
+  //   let payload = {
+  //     ...this.state.payload,
+  //     pageIndex: 1,
+  //     ...values
+  //   };
+  //   this.setState({
+  //     payload
+  //   });
+  //   this.getListData(payload);
+  // }
+  getListData(payload) {
+    payload.filtrateSTime = payload.filtrateTime
+      ? payload.filtrateTime[0].format("YYYY-MM-DD") + " 00:00:00"
       : "";
-    values.filtrateETime = values.filtrateTime
-      ? values.filtrateTime[1].format("YYYY-MM-DD") + " 23:59:59"
+    payload.filtrateETime = payload.filtrateTime
+      ? payload.filtrateTime[1].format("YYYY-MM-DD") + " 23:59:59"
       : "";
-    delete values.filtrateTime;
-    let payload = {
-      ...this.state.payload,
-      pageIndex: 1,
-      ...values
-    };
-    this.setState({
-      payload
-    });
-    this.getListData(payload);
-  }
-  async getListData(payload) {
-    const { saveUserList } = this.props;
-    const response = await requestUserList(payload);
-    if (response) {
-      saveUserList(response)
-    }
+    delete payload.filtrateTime;
+    return requestUserList(payload);
   }
   render() {
-    const {
-      userManageData: { list: dataSource, total }
-    } = this.props;
-    const { pageIndex, pageSize } = this.state.payload;
+    // const {
+    //   userManageData: { list: dataSource, total }
+    // } = this.props;
+    // const { pageIndex, pageSize } = this.state.payload;
     const columns = [
       {
         title: "注册手机号",
-        dataIndex: "phone",
-        key: "phone"
+        dataIndex: "phone"
       },
       {
         title: "注册时间",
         dataIndex: "createTime",
-        key: "createTime"
+        render: (text, record) => moment(record.createTime).format('YYYY-MM-DD HH:mm:ss')
       },
       {
         title: "注册邀请码",
-        dataIndex: "inviteCode",
-        key: "inviteCode"
+        dataIndex: "inviteCode"
       },
       {
         title: "消费次数",
-        dataIndex: "consumptionNum",
-        key: "consumptionNum"
+        dataIndex: "consumptionNum"
       },
       {
         title: "累计消费金额",
-        dataIndex: "consumptionMoney",
-        key: "consumptionMoney"
+        dataIndex: "consumptionMoney"
       }
     ];
     const filterConfig = [
       {
-        title: "邀请码",
+        label: "邀请码",
         placeholder: "",
         type: "input",
-        key: "inviteCode"
+        name: "inviteCode"
       },
       {
-        title: "注册手机号",
+        label: "注册手机号",
         placeholder: "",
         type: "input",
-        key: "phone"
+        name: "phone"
       },
       {
-        title: "",
+        label: "",
         placeholder: ["开始时间", "结束时间"],
         type: "dateRange",
-        key: "filtrateTime"
+        name: "filtrateTime"
       }
     ]
     return (
       <>
-        <TableFilter config={filterConfig} onSearch={(values) => {
+        <MainTable
+          filterConfig={filterConfig}
+          onRequest={payload => this.getListData(payload)}
+          tableConfig={{
+            columns,
+            rowKey: "id"
+          }}
+        />
+        {/* <TableFilter config={filterConfig} onSearch={(values) => {
           this.handleFilter(values);
         }} />
         <Table
@@ -122,7 +122,7 @@ class User extends Component {
               this.getListData(payload);
             }
           }}
-        ></Table>
+        ></Table> */}
       </>
     );
   }
@@ -130,7 +130,7 @@ class User extends Component {
 
 const mapStateToProps = state => {
   return {
-    userManageData: state.userManageData
+    // userManageData: state.userManageData
   };
 };
 

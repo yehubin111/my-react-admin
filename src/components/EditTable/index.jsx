@@ -65,7 +65,7 @@ class EditTable extends Component {
     render() {
         const { onEditChange, ...props } = this.props;
 
-        this.props.columns.forEach(col => {
+        this.props.columns && this.props.columns.forEach(col => {
             if (col.editable)
                 col.onCell = record => ({
                     record,

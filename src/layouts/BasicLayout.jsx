@@ -20,14 +20,15 @@ class BasicLayout extends Component {
   componentDidMount() { }
   render() {
     const { routes, redirectFrom, redirectTo, redirectKey } = this.props;
+    const { collapsed } = this.state;
     return (
       <Layout>
         <Sider
           breakpoint="lg"
-          collapsed={this.state.collapsed}
+          collapsed={collapsed}
           className={styles.sider}
           onBreakpoint={() => {
-            
+
           }}
         >
           <div className={`rf jc ${styles.logo}`}>
@@ -35,7 +36,11 @@ class BasicLayout extends Component {
           </div>
           <MenuNav routes={routes} />
         </Sider>
-        <Layout className={[styles.layout, styles.navLayout]}>
+        {/*  style={{marginLeft: !collapsed ? "200px" : "80px"}} */}
+        <Layout
+          className={[styles.layout, styles.navLayout]}
+          style={{ marginLeft: !collapsed ? "200px" : "80px" }}
+        >
           <Header className={styles.header}>
             <TopInfo
               collapsed={this.state.collapsed}

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import md5 from 'js-md5';
 import { withRouter } from "react-router-dom";
 
-import styles from "./pages.module.scss";
+import styles from "./page.module.scss";
 import defaultConfig from "defaultConfig";
 import { saveUserInfo, saveQiniuInfo } from 'actions';
 import { requestToLogin, requestQiniuToken } from 'service/base';

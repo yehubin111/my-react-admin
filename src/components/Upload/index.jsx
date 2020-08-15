@@ -16,7 +16,7 @@ const ImageUpload = props => {
         title: ""
     })
     const [previewStatus, changePreview] = useState(false);
-    const [uploadStatus, changeUploadStatus] = useState(false);
+    const [uploadStatus, changeUploadStatus] = useState(true);
     const [uploadLock, changeUploadLock] = useState(false);
     const data = {
         token
@@ -46,7 +46,10 @@ const ImageUpload = props => {
 
         changeFileList(files.fileList);
         // 格式化返回数据
-        let data = files.fileList.map(file => file.response && `${qnUrl}${file.response.key}`)
+        let data = files.fileList.map(file => {
+            if (file.response && file.response.key) return `${qnUrl}${file.response.key}`
+            else if (file.url) return file.url
+        })
         onChange(data.join(','));
     }
     const handlePreviewCancel = () => {
@@ -67,20 +70,20 @@ const ImageUpload = props => {
     useEffect(() => {
         if (limit && fileList.length < limit)
             changeUploadStatus(true)
-    }, [limit, fileList])
+    }, [fileList])
     // 编辑的时候数据初始化
     useEffect(() => {
         if (value && !uploadLock) {
-            let files = value.split(",").map(image => (
+            let files = value.split(",").map((image, index) => (
                 {
                     url: image,
-                    uid: image,
+                    uid: index,
                     status: 'done',
                     name: "图片"
                 }
             ))
             changeFileList(files);
-            if (files.length >= limit)
+            if (limit && files.length >= limit)
                 changeUploadStatus(false);
         }
     }, [value])
@@ -95,7 +98,7 @@ const ImageUpload = props => {
                 onChange={handleChange}
                 beforeUpload={handleCheck}
                 data={data}
-                multiple={true}
+                multiple={multiple}
             >
                 {
                     uploadStatus && (

@@ -1,22 +1,25 @@
 import React from "react";
-import { withRouter, Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { connect } from "react-redux";
+
+import { typeOf } from "utils/common";
 
 import styles from "./comp.module.scss";
 import { Breadcrumb } from "antd";
 
 const ThemeTitle = props => {
-  let {
-    location: { pathname: path },
-    routes
-  } = props;
+  let { routes } = props;
+  let { pathname: path } = useLocation();
   let patharr = path.split("/").filter(v => v);
+  // 匹配
+  let reg = /\/\:.+\??/;
   return (
     <div className={styles.themetitle}>
       <Breadcrumb>
         {patharr.map((_, index) => {
+          if (typeOf(routes) != "Array") return;
           let route = routes.find(
-            rt => rt.path === `/${patharr.slice(0, index + 1).join("/")}`
+            rt => rt.path.replace(reg, "") === `/${patharr.slice(0, index + 1).join("/")}`
           );
           if (!route) return null;
           else if (route.children && route.children.length > 0) {
@@ -46,4 +49,4 @@ const mapStateToProps = state => {
   return {};
 };
 
-export default connect(mapStateToProps, {})(withRouter(ThemeTitle));
+export default connect(mapStateToProps, {})(ThemeTitle);

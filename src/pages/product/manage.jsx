@@ -11,11 +11,12 @@ import {
     requestProductExport
 } from 'service/product';
 import { saveProductList } from "actions";
-import { exportExcelFromData } from "utils/common";
+// import { exportExcelFromData } from "utils/common";
 
-import { Button, Space, Dropdown, Menu, message } from "antd";
-import TableFilter from "components/TableFilter";
-import TableHeader from "components/TableHeader";
+import { Button, Space, Dropdown, Menu } from "antd";
+import MainTable from "components/MainTable";
+// import TableFilter from "components/TableFilter";
+// import TableHeader from "components/TableHeader";
 import ProductTable from "./components/ProductTable";
 import BatchSearch from "./components/BatchSearch";
 
@@ -27,36 +28,33 @@ class ProductManage extends Component {
         brandList: [],
         seasonList: [],
         ruleList: [],
-        filterForm: null, // 筛选栏form表单实例
         loading: false,
         searchStatus: false,
-        filters: {}, // 商品筛选条件
         ids: "", // 批量查找商品
         selectedRowKeys: [],
-        payload: {
-            auditStatus: 1,
-            pageIndex: 1,
-            pageSize: 20
-        }
+        tableRef: React.createRef()
     }
     componentDidMount() {
         // 基础数据
         this.getSortData();
         // 列表数据
-        this.getListData(this.state.payload);
+        // this.getListData(this.state.payload);
     }
-    getListData(payload) {
-        this.setState({
-            loading: true
-        })
-        const { saveProductList } = this.props;
-        requestProductManage(payload)
-            .then(response => {
-                this.setState({
-                    loading: false
-                })
-                saveProductList(response);
+    getListData(payload, type) {
+        payload.auditStatus = 1;
+        if (type !== "filter")
+            payload = {
+                ...payload,
+                ids: this.state.ids
+            }
+        else 
+            this.setState({
+                ids: ""
             })
+        return requestProductManage(payload);
+    }
+    setSelectRows(rows) {
+        console.log(rows);
     }
     getSortData() {
         // 品牌
@@ -65,7 +63,7 @@ class ProductManage extends Component {
                 brandList: response.list.map(brand => ({
                     ...brand,
                     key: brand.id,
-                    name: [brand.nameZh, brand.nameEn].filter(v => v).join("-")
+                    label: [brand.nameZh, brand.nameEn].filter(v => v).join("-")
                 }))
             })
         });
@@ -75,7 +73,7 @@ class ProductManage extends Component {
                 seasonList: response.list.map(season => ({
                     ...season,
                     key: season.id,
-                    name: season.nameZh
+                    label: season.nameZh
                 }))
             })
         });
@@ -85,7 +83,7 @@ class ProductManage extends Component {
                 ruleList: response.list.map(rule => ({
                     ...rule,
                     key: rule.id,
-                    name: rule.rulesName
+                    label: rule.rulesName
                 }))
             })
         });
@@ -95,95 +93,95 @@ class ProductManage extends Component {
         this.setState({ selectedRowKeys: [] })
     }
     render() {
-        const { brandList, seasonList, ruleList, payload, loading, searchStatus, filterForm, selectedRowKeys } = this.state;
+        const { brandList, seasonList, ruleList, tableRef, searchStatus } = this.state;
         const { storeList, luxuryList, saleList, sexList, statusList } = this.props;
 
         const filterConfig = [
             {
-                title: "商品ID",
+                label: "商品ID",
                 placeholder: "",
                 type: "input",
-                key: "id"
+                name: "id"
             },
             {
-                title: "原厂货号",
+                label: "原厂货号",
                 placeholder: "",
                 type: "input",
-                key: "manufactureCode"
+                name: "manufactureCode"
             },
             {
-                title: "商品名称",
+                label: "商品名称",
                 placeholder: "",
                 type: "input",
-                key: "spuName"
+                name: "spuName"
             },
             {
-                title: "Barcode",
+                label: "Barcode",
                 placeholder: "",
                 type: "input",
-                key: "barcode"
+                name: "barcode"
             },
             {
-                title: "品牌",
+                label: "品牌",
                 placeholder: "",
                 type: "select",
-                key: "brandId",
+                name: "brandId",
                 data: brandList
             },
             {
-                title: "季节",
+                label: "季节",
                 placeholder: "",
                 type: "select",
-                key: "season",
+                name: "season",
                 data: seasonList
             },
             {
-                title: "发货仓库",
+                label: "发货仓库",
                 placeholder: "",
                 type: "select",
-                key: "storage",
+                name: "storage",
                 data: storeList
             },
             {
-                title: "奢侈品属性",
+                label: "奢侈品属性",
                 placeholder: "",
                 type: "select",
-                key: "luxury",
+                name: "luxury",
                 data: luxuryList
             },
             {
-                title: "销售属性",
+                label: "销售属性",
                 placeholder: "",
                 type: "select",
-                key: "saleAttribute",
+                name: "saleAttribute",
                 data: saleList
             },
             {
-                title: "性别",
+                label: "性别",
                 placeholder: "",
                 type: "select",
-                key: "sexId",
+                name: "sexId",
                 data: sexList
             },
             {
-                title: "采购规则",
+                label: "采购规则",
                 placeholder: "",
                 type: "select",
-                key: "rulesId",
+                name: "rulesId",
                 data: ruleList
             },
             {
-                title: "状态",
+                label: "状态",
                 placeholder: "",
                 type: "select",
-                key: "shelfStatus",
+                name: "shelfStatus",
                 data: statusList
             },
             {
-                title: "",
+                label: "",
                 placeholder: ["创建开始日期", "创建结束日期"],
                 type: "dateRange",
-                key: "filtrateTime"
+                name: "filtrateTime"
             }
         ];
         const menu = (
@@ -198,7 +196,37 @@ class ProductManage extends Component {
         )
         return (
             <>
-                <TableFilter config={filterConfig} setForm={form => {
+                <MainTable
+                    tableRef={tableRef}
+                    filterConfig={filterConfig}
+                    headerCtrl={
+                        <Space size="middle">
+                            <Button type="primary"
+                                onClick={() => {
+                                    requestProductExport(this.state.payload)
+                                }}
+                            >
+                                批量导出
+                            </Button>
+                            <Button type="primary"
+                                onClick={() => {
+                                    this.setState({
+                                        searchStatus: true
+                                    })
+                                }}
+                            >
+                                批量查找商品
+                            </Button>
+                            <DropdownButton type="primary" overlay={menu}>
+                                批量操作
+                            </DropdownButton>
+                        </Space>
+                    }
+                    onRequest={(payload, type) => this.getListData(payload, type)}
+                    onSelect={rows => this.setSelectRows(rows)}
+                    tableRender={ProductTable}
+                />
+                {/* <TableFilter config={filterConfig} setForm={form => {
                     this.setState({
                         filterForm: form
                     })
@@ -212,8 +240,8 @@ class ProductManage extends Component {
                         ...this.state.filters
                     }
                     this.getListData(payload);
-                }} />
-                <TableHeader ctrl={
+                }} /> */}
+                {/* <TableHeader ctrl={
                     <Space size="middle">
                         <Button type="primary"
                             onClick={() => {
@@ -235,8 +263,8 @@ class ProductManage extends Component {
                             批量操作
                         </DropdownButton>
                     </Space>
-                } />
-                <ProductTable
+                } /> */}
+                {/* <ProductTable
                     pageIndex={payload.pageIndex}
                     pageSize={payload.pageSize}
                     loading={loading}
@@ -255,21 +283,17 @@ class ProductManage extends Component {
                         }
                         this.setState({ payload })
                         this.getListData(payload);
-                    }} />
+                    }} /> */}
                 <BatchSearch visible={searchStatus} onOk={(ids) => {
                     this.setState({
                         ids,
-                        searchStatus: false,
-                        filters: {}
+                        searchStatus: false
                     })
-                    // 重置筛选表单
-                    filterForm.resetFields();
-
-                    let payload = {
-                        ...this.state.payload,
-                        ids
-                    }
-                    this.getListData(payload);
+                    setTimeout(() => {
+                        // 重置筛选表单
+                        tableRef.current.resetFields();
+                        tableRef.current.reload();
+                    }, 0)
                 }} onCancel={() => {
                     this.setState({
                         searchStatus: false

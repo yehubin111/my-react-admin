@@ -2,7 +2,7 @@ import Axios from "utils/request";
 
 // 用户管理列表
 export function requestUserList(payload = {}) {
-    return Axios.post('userlist', payload)
+    return Axios.post('userGetList', payload)
 }
 // 邀请码管理列表
 export function requestInvitecodeList(payload = {}) {

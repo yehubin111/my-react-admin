@@ -68,7 +68,7 @@ const moduleRouter = [
         key: "productManage"
       },
       {
-        path: "/product/public",
+        path: "/product/public/:productId",
         component: "/product/public",
         hidden: true,
         noLimit: true,
@@ -77,7 +77,16 @@ const moduleRouter = [
           icon: ""
         },
         key: "productEdit"
-      }
+      },
+      {
+        path: "/product/category",
+        component: "/product/category",
+        meta: {
+          name: "类目管理",
+          icon: ""
+        },
+        key: "productCategory"
+      },
     ]
   },
   {
@@ -98,6 +107,33 @@ const moduleRouter = [
           icon: ""
         },
         key: "operationBanner"
+      },
+      {
+        path: "/operation/programa",
+        component: "/operation/programa",
+        meta: {
+          name: "专栏管理",
+          icon: ""
+        },
+        key: "operationPrograma"
+      },
+      {
+        path: "/operation/topic",
+        component: "/operation/topic",
+        meta: {
+          name: "专题库管理",
+          icon: ""
+        },
+        key: "operationTopic"
+      },
+      {
+        path: "/operation/system",
+        component: "/operation/system",
+        meta: {
+          name: "运营配置",
+          icon: ""
+        },
+        key: "operationSystem"
       }
     ]
   },

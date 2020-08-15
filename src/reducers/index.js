@@ -4,6 +4,7 @@ import * as user from './user';
 import * as operation from './operation';
 import * as common from './common';
 import * as product from './product';
+import * as order from './order';
 
 export const persistReducers = ["qiniuInfo", "userInfo"];
 export default combineReducers({
@@ -11,5 +12,6 @@ export default combineReducers({
     ...user,
     ...operation,
     ...common,
-    ...product
+    ...product,
+    ...order
 });

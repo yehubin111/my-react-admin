@@ -87,7 +87,7 @@ h1 {
 .ant-table-container table > thead > tr:first-child th:first-child {
   padding-left: 24px;
 }
-.ant-table-tbody > tr > td:first-child {
+.ant-table .ant-table-container table > tbody > tr > td:first-child {
   padding-left: 24px;
 }
 
@@ -97,8 +97,11 @@ span.button {
   outline: none;
   background-color: transparent;
 }
+span.button:hover {
+  color: #379fff;
+}
 
-.form .ant-input {
+/* .form .ant-input {
   min-width: 180px;
   max-width: 240px;
   flex-grow: 1;
@@ -112,4 +115,4 @@ span.button {
   min-width: 400px;
   max-width: 460px;
   flex-grow: 1;
-}
+} */

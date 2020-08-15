@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import moment from "moment";
 
 import styles from "./comp.module.scss";
 import { requestProductAudit, requestProductStand } from "service/product";
@@ -10,14 +11,9 @@ import ImageView from "components/ImageView";
 
 
 const ManageTable = props => {
-    const { pageSize, pageIndex,
-        onInit,
-        loading,
-        onPaginationChange,
-        selectedRowKeys,
-        onSelect,
+    const { pagination, dataSource, loading, rowSelection, onInit,
         history,
-        productData: { total, list: dataSource }, statusList } = props;
+        statusList } = props;
     const [viewImages, setViewImages] = useState([]);
     const [viewStatus, changeViewStatus] = useState(false);
     // const [selectedRowKeys, changeSelectedRowKeys] = useState([]);
@@ -43,12 +39,16 @@ const ManageTable = props => {
             dataIndex: "mainPicAddressImage",
             key: "mainPicAddressImage",
             render: (text, record) => {
-                return <img src={record.mainPicAddressImage} width="100" onClick={() => {
+                let mainPicAddressImage = record.mainPicAddress
+                ? record.mainPicAddress.split(',')[0] + '?imageView2/0/w/100'
+                : "";
+                return <img src={mainPicAddressImage} width="100" onClick={() => {
                     let images = record.mainPicAddress.split(',');
                     setViewImages(images);
                     changeViewStatus(true);
                 }} />
-            }
+            },
+            width: 140
         },
         {
             title: "商品信息",
@@ -65,7 +65,8 @@ const ManageTable = props => {
                         <p className={styles.baseinfo}>类目：{record.categoryName}</p>
                     </>
                 )
-            }
+            },
+            width: 300
         },
         {
             title: "采购价",
@@ -103,7 +104,7 @@ const ManageTable = props => {
             key: "status",
             render: (text, record) => {
                 let status = statusList.find(status => status.key === record.shelfStatus);
-                return <span>{status ? status.name : ""}</span>
+                return <span>{status ? status.label : ""}</span>
             }
         },
         {
@@ -112,8 +113,8 @@ const ManageTable = props => {
             key: "time",
             render: (text, record) => {
                 return <>
-                    <p>{record.createTime}</p>
-                    <p>{record.publishTime}</p>
+                    <p>{moment(record.createTime).format("YYYY-MM-DD HH:mm:ss")}</p>
+                    <p>{moment(record.publishTime).format("YYYY-MM-DD HH:mm:ss")}</p>
                 </>
             }
         },
@@ -124,7 +125,7 @@ const ManageTable = props => {
             render: (text, record) => (
                 <Space size="middle">
                     <span className="button" onClick={() => {
-                        history.push("/product/public?id=" + record.id);
+                        history.push("/product/public/" + record.id);
                     }}>编辑</span>
                     <Popconfirm placement="topRight" title={`是否${record.shelfStatus === 1 ? "下架" : "上架"}该商品`}
                         onConfirm={() => {
@@ -136,12 +137,7 @@ const ManageTable = props => {
             )
         }
     ];
-    const rowSelection = {
-        selectedRowKeys,
-        onChange: (keys) => {
-            onSelect(keys);
-        }
-    }
+    
     return (
         <>
             <Table
@@ -153,18 +149,7 @@ const ManageTable = props => {
                 }}
                 rowKey="id"
                 loading={loading}
-                pagination={{
-                    pageSize,
-                    total,
-                    current: pageIndex,
-                    showTotal: total => `共 ${total} 条`,
-                    onChange: (page, pageSize) => {
-                        onPaginationChange({
-                            pageIndex: page,
-                            pageSize
-                        })
-                    }
-                }}
+                pagination={pagination}
             />
             <ImageView images={viewImages} visible={viewStatus} onCancel={() => {
                 changeViewStatus(false);

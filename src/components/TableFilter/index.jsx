@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { Button, Input, Select, DatePicker, Form, Space } from "antd";
 
@@ -9,19 +9,22 @@ const { Option } = Select;
 const { Item: FormItem } = Form;
 
 const FormFilter = (props) => {
-    const { config, onSearch, onReset, setForm } = props;
+    const { config, onFilter, filterRef } = props;
     const [form] = Form.useForm();
-
-    useEffect(() => {
-        setForm && setForm(form);
-    }, [])
 
     const toResetForm = () => {
         form.resetFields();
-        // 重置数据回调
-        onReset && onReset();
         // 清空之后再次提交请求列表数据
         form.submit();
+    }
+    // 可供外部调用的清空筛选栏操作
+    const toOnlyReset = () => {
+        form.resetFields();
+    }
+    if (filterRef) {
+        filterRef.current = {
+            resetFields: toOnlyReset
+        }
     }
 
     return (
@@ -30,17 +33,18 @@ const FormFilter = (props) => {
             className={`rfw ${styles.sort}`}
             layout="inline"
             onFinish={values => {
-                onSearch(values);
+                onFilter(values);
             }}
         >
             {
                 config.map(cfg => {
                     let child, className;
-                    switch (cfg.type) {
+                    let { type, placeholder, data, label, ...item } = cfg;
+                    switch (type) {
                         case "input":
                             className = styles.sortinput;
                             child = <Input
-                                placeholder={cfg.placeholder ? cfg.placeholder : cfg.title}
+                                placeholder={placeholder ? placeholder : label}
                                 className={styles.line}
                                 allowClear
                             />;
@@ -48,12 +52,12 @@ const FormFilter = (props) => {
                         case "select":
                             className = styles.sortinput;
                             child = <Select
-                                placeholder={cfg.placeholder ? cfg.placeholder : cfg.title}
+                                placeholder={placeholder ? placeholder : label}
                                 className={styles.line}
                                 allowClear>{
-                                    cfg.data.map((dt, index) => (
+                                    data && data.map((dt, index) => (
                                         typeof dt === "object"
-                                            ? <Option key={dt.key} value={dt.key}>{dt.name}</Option>
+                                            ? <Option key={dt.key} value={dt.key}>{dt.label}</Option>
                                             : <Option key={index} value={dt}>{dt}</Option>
                                     ))
                                 }
@@ -65,15 +69,15 @@ const FormFilter = (props) => {
                                 format="YYYY-MM-DD"
                                 className={styles.line}
                                 allowClear
-                                placeholder={cfg.placeholder}
+                                placeholder={placeholder}
                             />;
                             break;
                         default:
                             break;
                     }
-
+                    item.key = item.key ? item.key : item.name;
                     return (
-                        <FormItem name={cfg.key} key={cfg.key} className={className}>{child}</FormItem>
+                        <FormItem className={className} {...item}>{child}</FormItem>
                     )
                 })
             }

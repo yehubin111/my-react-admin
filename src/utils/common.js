@@ -3,6 +3,11 @@ import React from 'react';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { Modal } from 'antd';
 
+// 类型判断
+export function typeOf(obj) {
+    return Object.prototype.toString.call(obj).slice(8, -1)
+}
+
 export function easyModal(message, fn) {
     Modal.confirm({
         title: '提示',
