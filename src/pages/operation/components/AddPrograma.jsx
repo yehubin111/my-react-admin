@@ -40,7 +40,7 @@ const Column = ({ value = {}, onChange, topicData }) => {
     )
 }
 const AddPrograma = (props) => {
-    const { visible, editData: programa, bannerList: { list }, onOk, onCancel, topicData, saveTopic } = props;
+    const { visible, editData: programa, onOk, onCancel, topicData, saveTopic } = props;
     const [loading, changeLoading] = useState(false);
     const [form] = Form.useForm();
     const [theme, setTheme] = useState("新增");
@@ -230,8 +230,7 @@ const AddPrograma = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        topicData: state.topicData,
-        bannerList: state.bannerList
+        topicData: state.topicData
     }
 }
 

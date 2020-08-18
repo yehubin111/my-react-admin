@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 import styles from "./index.module.scss"
 import './index.css';
@@ -61,7 +61,7 @@ const MainForm = props => {
                             break;
                         case "dateRange":
                             child = <RangePicker
-                                format="YYYY-MM-DD"
+                                // format="YYYY-MM-DD"
                                 className={styles.sortrange}
                                 allowClear
                                 placeholder={placeholder}

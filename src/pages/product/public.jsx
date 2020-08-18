@@ -12,8 +12,9 @@ import {
 } from "service/common";
 import { requestGetSpuDetail, requestSpuEdit } from "service/product";
 
-import { Form, Card, Input, Space, Cascader, Table, Button, message } from "antd";
+import { Form, Card, Input, Space, Table, Button, message } from "antd";
 import MainFormItems from "components/MainFormItems";
+import Category from "components/Category";
 // const { Item: FormItem } = Form;
 // const { Option } = Select;
 // const { TextArea } = Input;
@@ -39,66 +40,6 @@ const Measure = ({ value = {}, onChange }) => {
             handleChange("height", e.target.value)
         }} />
     </Space>
-}
-// 商品类目
-const Cate = ({ value = [], onChange }) => {
-    const [cateList, setCateList] = useState([]);
-    const [lock, changeLock] = useState(false);
-    const getCategoryList = (payload) => {
-        return requestCategoryList(payload);
-    }
-    const toLoadData = options => {
-        let targetOption = options[0];
-        targetOption.loading = true;
-        let payload = {
-            categoryLevel: 2,
-            parentId: targetOption.value
-        }
-        getCategoryList(payload)
-            .then(response => {
-                targetOption.loading = false;
-                targetOption.children = response.list.map(cate => ({ value: cate.id, label: cate.nameZh }));
-                setCateList([...cateList]);
-            })
-    }
-    const handleChange = (e) => {
-        onChange(e);
-    }
-    useEffect(() => {
-        if (value.length > 0 && !lock) {
-            changeLock(true);
-
-            let categoryList = cateList;
-            value.forEach((cateId, index) => {
-                if (index < value.length - 1) {
-                    let payload = {
-                        categoryLevel: index + 2,
-                        parentId: cateId
-                    }
-                    getCategoryList(payload)
-                        .then(response => {
-                            let category = categoryList.find(cate => cate.value === cateId);
-                            categoryList = category.children = response.list.map(cate => ({ value: cate.id, label: cate.nameZh, isLeaf: index === value.length - 2 }));
-                        })
-                }
-            })
-        }
-    }, [value])
-    useEffect(() => {
-        // 类目
-        let payload = {
-            categoryLevel: 1,
-            parentId: 0
-        }
-        getCategoryList(payload)
-            .then(response => {
-                let list = response.list.map(cate => ({ value: cate.id, label: cate.nameZh, isLeaf: false }))
-                setCateList(list);
-            })
-    }, [])
-    return <Cascader value={value} options={cateList} onChange={(e) => {
-        handleChange(e);
-    }} loadData={toLoadData} />
 }
 // 尺码
 const Size = ({ value = [] }) => {
@@ -139,6 +80,7 @@ const Public = props => {
     const [seasonList, setSeasonList] = useState([]);
     const [storageList, setStorageList] = useState([]);
     const [rulesList, setRulesList] = useState([]);
+    const [cateList, setCateList] = useState([]);
     const [submitLoading, changeSubmitLoading] = useState(false);
     const style = {
         marginBottom: "20px"
@@ -173,33 +115,46 @@ const Public = props => {
         // 品牌
         requestBrandList()
             .then(response => {
-                let list = response.list.map(brand => ({ key: brand.id, label: [brand.nameEn, brand.nameZh].filter(v => v).join("-") }));
+                let list = response.list.map(brand => ({ value: brand.id, label: [brand.nameEn, brand.nameZh].filter(v => v).join("-") }));
                 setBrandList(list);
             })
         // 产地
         requestOriginList()
             .then(response => {
-                let list = response.list.map(origin => ({ key: origin.id, label: origin.nameZh }));
+                let list = response.list.map(origin => ({ value: origin.id, label: origin.nameZh }));
                 setOriginList(list);
             })
         // 季节
         requestSeasonList()
             .then(response => {
-                let list = response.list.map(season => ({ key: season.id, label: season.nameZh }));
+                let list = response.list.map(season => ({ value: season.id, label: season.nameZh }));
                 setSeasonList(list);
             })
         // 发货仓库
         requestStorageList()
             .then(response => {
-                let list = response.list.map(storage => ({ key: storage.id, label: storage.name }));
+                let list = response.list.map(storage => ({ value: storage.id, label: storage.name }));
                 setStorageList(list);
             })
         // 采购规则
         requestRulesList()
             .then(response => {
-                let list = response.list.map(rule => ({ key: rule.id, label: rule.rulesName }));
+                let list = response.list.map(rule => ({ value: rule.id, label: rule.rulesName }));
                 setRulesList(list);
             })
+        // 类目
+        let payload = {
+            categoryLevel: 1,
+            parentId: 0
+        }
+        requestCategoryList(payload).then(response => {
+            let list = response.list.map(cate => ({
+                value: cate.id,
+                label: cate.nameZh,
+                isLeaf: false
+            }))
+            setCateList(list);
+        })
     }, [productId])
 
     const col4 = {
@@ -221,7 +176,7 @@ const Public = props => {
                     return Promise.reject("请选择商品类目")
                 }
             }],
-            render: <Cate />
+            render: <Category data={cateList} />
         }
     ];
     const baseItems = [

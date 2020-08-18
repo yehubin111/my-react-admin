@@ -125,7 +125,8 @@ const MainTable = props => {
                     selectedRowKeys,
                     rowSelection,
                     loading,
-                    onInit: getListData
+                    onInit: getListData,
+                    ...tableConfig
                 })
                 : <EditTable
                     loading={loading}

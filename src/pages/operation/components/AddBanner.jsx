@@ -6,7 +6,7 @@ import { requestTopicList } from 'service/common';
 import { requestChangeBannerStatus } from 'service/operation';
 import { saveTopic } from 'actions';
 
-import { Modal, Form, Radio, Select, message, DatePicker } from "antd";
+import { Modal, Form, Radio, Select, message } from "antd";
 import MainFormItems from "components/MainFormItems";
 const { Option } = Select;
 const { Group: RadioGroup } = Radio;
@@ -40,7 +40,7 @@ const Column = ({ value = {}, onChange, topicData }) => {
     )
 }
 const AddBanner = (props) => {
-    const { visible, editData: banner, bannerList: { list }, onOk, onCancel, topicData, saveTopic } = props;
+    const { visible, editData: banner, onOk, onCancel, topicData, saveTopic } = props;
     const [loading, changeLoading] = useState(false);
     const [form] = Form.useForm();
     const [theme, setTheme] = useState("新增");
@@ -230,8 +230,7 @@ const AddBanner = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        topicData: state.topicData,
-        bannerList: state.bannerList
+        topicData: state.topicData
     }
 }
 

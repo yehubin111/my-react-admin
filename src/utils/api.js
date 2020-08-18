@@ -30,22 +30,28 @@ export default {
     upload: 'http://up.qiniu.com/', // 七牛上传
     qiniutoken: '/common/getQiniuToken', // 获取七牛token
     // base基础数据
-    basetopic: '/topic/idNameList', // 专题下拉列表
+    topicIdNameList: '/topic/idNameList', // 专题下拉列表
     brandIdNameList: '/brand/idNameList', // 品牌下拉列表
     originGetList: '/origin/getList', // 产地下拉
     seasonGetList: '/season/getList', // 季节下拉列表
-    baserule: '/rules/idNameList', // 采购规则列表
     categoryIdNameList: '/category/idNameList', // 类目下拉列表
     storageGetList: '/storage/getList', // 仓库下拉列表
     rulesIdNameList: '/rules/idNameList', // 采购规则下拉
     // 商品中心
     spulist: '/spu/getList', // 商品管理列表
-    batchexport: '/spu/export', // 批量导出
-    productaudit: '/spu/goodsAudit', // 商品下架
-    productstand: '/spu/goodsStandOrDown', // 商品上架
     catelist: '/category/getList', // 类目列表
     spuGetDetial: '/spu/getDetial', // 编辑获取商品详情
     spuUpdate: '/spu/update', // 编辑商品
+    spuExport: '/spu/export', // 商品中心批量导出
+    spuAddToTopic: '/spu/addToTopic', // 商品中心批量加入专题
+    spuGoodsAudit: '/spu/goodsAudit', // 商品中心批量审核上架
+    spuGoodsStandOrDown: '/spu/goodsStandOrDown', // 商品中心批量下架
+    spuSetRules: '/spu/setRules', // 商品中心批量设置采购规则
+    categoryUpdate: '/category/update', // 新增/编辑类目
+    rulesGetList: '/rules/getList', // 采购规则配置列表
+    rulesUpdate: '/rules/update', // 新增/编辑/删除采购规则
+    brandGetList: '/brand/getList', // 品牌管理列表
+    brandUpdate: '/brand/update', // 新增/编辑品牌
     // 用户管理
     userGetList: '/user/getList', // 用户管理列表
     invitecodelist: '/inviteCode/getList', // 邀请码管理列表

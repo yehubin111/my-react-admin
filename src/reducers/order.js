@@ -1,17 +1,17 @@
 const defaultChildExceptionStatusList = [{
-    key: 1,
+    value: 1,
     label: "已退款"
 },
 {
-    key: 2,
+    value: 2,
     label: "退款失败"
 },
 {
-    key: 3,
+    value: 3,
     label: "已退款"
 },
 {
-    key: 0,
+    value: 0,
     label: "无退款"
 }]
 
@@ -21,35 +21,35 @@ export const childExceptionStatusList = (state = defaultChildExceptionStatusList
 
 const defaultOrderStatusList = [
     {
-        key: "",
+        value: "",
         label: "全部",
         default: true
     },
     {
-        key: 0,
+        value: 0,
         label: "待支付"
     }, {
-        key: 100,
+        value: 100,
         label: "待确认"
     },
     {
-        key: 110,
+        value: 110,
         label: "待发货"
     },
     {
-        key: 200,
+        value: 200,
         label: "已发货"
     },
     {
-        key: 400,
+        value: 400,
         label: "已完成"
     },
     {
-        key: 500,
+        value: 500,
         label: "已退款"
     },
     {
-        key: 600,
+        value: 600,
         label: "已取消"
     }
 ]

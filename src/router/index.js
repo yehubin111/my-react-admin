@@ -79,6 +79,15 @@ const moduleRouter = [
         key: "productEdit"
       },
       {
+        path: "/product/audit",
+        component: "/product/audit",
+        meta: {
+          name: "待审核商品",
+          icon: ""
+        },
+        key: "productAudit"
+      },
+      {
         path: "/product/category",
         component: "/product/category",
         meta: {
@@ -86,6 +95,24 @@ const moduleRouter = [
           icon: ""
         },
         key: "productCategory"
+      },
+      {
+        path: "/product/brand",
+        component: "/product/brand",
+        meta: {
+          name: "品牌管理",
+          icon: ""
+        },
+        key: "productBrand"
+      },
+      {
+        path: "/product/rule",
+        component: "/product/rule",
+        meta: {
+          name: "采购规则配置",
+          icon: ""
+        },
+        key: "productRule"
       },
     ]
   },

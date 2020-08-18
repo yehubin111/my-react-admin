@@ -12,12 +12,12 @@ const ThemeTitle = props => {
   let { pathname: path } = useLocation();
   let patharr = path.split("/").filter(v => v);
   // 匹配
-  let reg = /\/\:.+\??/;
+  let reg = /\/:.+\??/;
   return (
     <div className={styles.themetitle}>
       <Breadcrumb>
         {patharr.map((_, index) => {
-          if (typeOf(routes) != "Array") return;
+          if (typeOf(routes) !== "Array") return;
           let route = routes.find(
             rt => rt.path.replace(reg, "") === `/${patharr.slice(0, index + 1).join("/")}`
           );

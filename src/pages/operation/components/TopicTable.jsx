@@ -65,8 +65,8 @@ const TopicTable = props => {
                 let list = response.list;
                 list.forEach(product => {
                     product.statusName = [
-                        product.shelfStatus == 0 ? "下架" : "",
-                        product.sellOutStatus == 0 ? "售罄" : ""
+                        product.shelfStatus === 0 ? "下架" : "",
+                        product.sellOutStatus === 0 ? "售罄" : ""
                     ].filter(v => v).join("/");
                 })
                 setTopicProducts({

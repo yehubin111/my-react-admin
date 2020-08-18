@@ -111,9 +111,9 @@ const OrderTable = (props) => {
             dataIndex: "isRefund",
             key: "isRefund",
             render: (text, record) => {
-                let isRefund = childExceptionStatusList.find(status => status.key === record.isRefund)
+                let isRefund = childExceptionStatusList.find(status => status.value === record.isRefund)
                 return isRefund.label
-                    + (record.isRefund == 1 || record.isRefund == 3
+                    + (record.isRefund === 1 || record.isRefund === 3
                         ? '：￥' + record.refundFee
                         : '')
             },
@@ -126,8 +126,8 @@ const OrderTable = (props) => {
         dataSource.forEach(data => {
             let father = list.find(order => order.mainOrderCode === data.mainOrderCode);
             if (!father) {
-                let orderStatus = orderStatusList.find(status => status.key == data.orderStatus);
-                let refundStatus = childExceptionStatusList.find(status => status.key === data.isRefund)
+                let orderStatus = orderStatusList.find(status => status.value === data.orderStatus);
+                let refundStatus = childExceptionStatusList.find(status => status.value === data.isRefund)
                 // let refundstatus = state.exceptionStatusArray.find(v => v.value == obj.mainIsRefund);
                 // let pay = state.payType.find(v => v.key == obj.payType);
                 father = {

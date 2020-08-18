@@ -29,8 +29,8 @@ const defaultInvitationList = {
   total: 0
 }
 const defaultInvitationStatus = [
-  { key: 1, name: '作废' },
-  { key: 0, name: '正常' }
+  { value: 1, name: '作废' },
+  { value: 0, name: '正常' }
 ]
 export const invitationStatus = (state = defaultInvitationStatus, action = {}) => {
   return state;

@@ -9,8 +9,8 @@ import MainTable from "components/MainTable";
 
 const Users = () => {
     const userStatusList = [
-        { key: 0, label: "禁用" },
-        { key: 1, label: "启用" }
+        { value: 0, label: "禁用" },
+        { value: 1, label: "启用" }
     ]
     const getListData = (payload) => {
         return requestUserList(payload)
@@ -33,7 +33,7 @@ const Users = () => {
         {
             title: "状态",
             dataIndex: "useStatus",
-            render: (text, record) => userStatusList.find(userStatus => userStatus.key === record.useStatus).label
+            render: (text, record) => userStatusList.find(userStatus => userStatus.value === record.useStatus).label
         },
         {
             title: "操作",

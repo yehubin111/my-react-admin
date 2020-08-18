@@ -2,7 +2,6 @@ import React, { useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
-import { saveBannerList } from "actions";
 import { requestBannerList, requestBannerSort, requestChangeBannerStatus } from "service/operation";
 
 import { Button, Space, message, Popconfirm } from "antd";
@@ -15,7 +14,7 @@ import ImageView from "components/ImageView";
 import AddPrograma from "./components/AddPrograma";
 
 const Banner = (props) => {
-    const { bannerStatus, saveBannerList } = props;
+    const { bannerStatus } = props;
     // const [payload, setPayload] = useState({
     //     isBanner: 0,
     //     pageIndex: 1,
@@ -123,7 +122,7 @@ const Banner = (props) => {
         {
             title: "上下架",
             dataIndex: "shelfStatusName",
-            render: (text, record) => bannerStatus.find(status => status.key === record.shelfStatus).label
+            render: (text, record) => bannerStatus.find(status => status.value === record.shelfStatus).label
         },
         {
             title: "操作",
@@ -205,4 +204,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, { saveBannerList })(Banner);
+export default connect(mapStateToProps, {})(Banner);

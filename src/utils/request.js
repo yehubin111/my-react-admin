@@ -3,6 +3,7 @@ import axios from "axios";
 import Api from "./api";
 import defaultConfig from "defaultConfig";
 import { message } from "antd";
+import { exportExcelFromData } from "utils/common";
 
 class Axios {
   axios = axios.create({
@@ -118,6 +119,8 @@ class Axios {
     };
     return new Promise((resolve, reject) => {
       this.axios(requestBody).then(response => {
+        message.success("导出成功");
+        exportExcelFromData(response);
         resolve(response);
       });
     });

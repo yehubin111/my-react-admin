@@ -38,6 +38,7 @@ const MainFormItems = props => {
     const getItems = (config) => {
         let child;
         let { type, placeholder, render, data, col, options = {}, ...item } = config;
+
         // 优先render
         if (render) child = render;
         else
@@ -59,15 +60,7 @@ const MainFormItems = props => {
                     child = <Upload {...options} />;
                     break;
                 case "radio":
-                    child = <RadioGroup {...options}>
-                        {
-                            data && data.map((dt, index) => (
-                                typeof dt === "object"
-                                    ? <Radio key={dt.key} value={dt.key}>{dt.label}</Radio>
-                                    : <Radio key={index} value={dt}>{dt}</Radio>
-                            ))
-                        }
-                    </RadioGroup>;
+                    child = <RadioGroup options={Array.isArray(data) && data} {...options} />
                     break;
                 case "select":
                     child = <Select
@@ -76,7 +69,7 @@ const MainFormItems = props => {
                     >{
                             data && data.map((dt, index) => (
                                 typeof dt === "object"
-                                    ? <Option key={dt.key} value={dt.key}>{dt.label}</Option>
+                                    ? <Option key={dt.value} value={dt.value}>{dt.label}</Option>
                                     : <Option key={index} value={dt}>{dt}</Option>
                             ))
                         }

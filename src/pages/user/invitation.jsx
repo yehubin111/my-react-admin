@@ -73,7 +73,7 @@ class Invitation extends Component {
             {
                 title: "状态",
                 dataIndex: "statusName",
-                render: (text, record) => invitationStatus.find(status => status.key === record.delStatus).name
+                render: (text, record) => invitationStatus.find(status => status.value === record.delStatus).name
             },
             {
                 title: "操作",

@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import moment from "moment";
 
 import styles from "./comp.module.scss";
-import { requestProductAudit, requestProductStand } from "service/product";
+import { requestSpuAuditStand, requestSpuDown } from "service/product";
 
 import { Table, Popconfirm, Space, message } from "antd";
 import ImageView from "components/ImageView";
@@ -13,9 +13,11 @@ import ImageView from "components/ImageView";
 const ManageTable = props => {
     const { pagination, dataSource, loading, rowSelection, onInit,
         history,
-        statusList } = props;
+        location,
+        statusList, onAudit } = props;
     const [viewImages, setViewImages] = useState([]);
     const [viewStatus, changeViewStatus] = useState(false);
+    const isAudit = location.pathname.indexOf("audit") !== -1;
     // const [selectedRowKeys, changeSelectedRowKeys] = useState([]);
 
     // 上下架
@@ -25,9 +27,9 @@ const ManageTable = props => {
             ids: id
         };
         if (status === 0) {
-            await requestProductStand(payload);
+            await requestSpuAuditStand(payload);
         } else {
-            await requestProductAudit(payload);
+            await requestSpuDown(payload);
         }
         message.success(`${status === 0 ? '上架' : '下架'}成功`);
         // 重置列表数据
@@ -40,8 +42,8 @@ const ManageTable = props => {
             key: "mainPicAddressImage",
             render: (text, record) => {
                 let mainPicAddressImage = record.mainPicAddress
-                ? record.mainPicAddress.split(',')[0] + '?imageView2/0/w/100'
-                : "";
+                    ? record.mainPicAddress.split(',')[0] + '?imageView2/0/w/100'
+                    : "";
                 return <img src={mainPicAddressImage} width="100" onClick={() => {
                     let images = record.mainPicAddress.split(',');
                     setViewImages(images);
@@ -103,18 +105,19 @@ const ManageTable = props => {
             dataIndex: "status",
             key: "status",
             render: (text, record) => {
-                let status = statusList.find(status => status.key === record.shelfStatus);
+                if (isAudit) return '待审核';
+                let status = statusList.find(status => status.value === record.shelfStatus);
                 return <span>{status ? status.label : ""}</span>
             }
         },
         {
-            title: "创建时间/上架时间",
+            title: `创建时间${!isAudit ? '/上架时间' : ''}`,
             dataIndex: "time",
             key: "time",
             render: (text, record) => {
                 return <>
                     <p>{moment(record.createTime).format("YYYY-MM-DD HH:mm:ss")}</p>
-                    <p>{moment(record.publishTime).format("YYYY-MM-DD HH:mm:ss")}</p>
+                    {!isAudit && <p>{moment(record.publishTime).format("YYYY-MM-DD HH:mm:ss")}</p>}
                 </>
             }
         },
@@ -127,17 +130,23 @@ const ManageTable = props => {
                     <span className="button" onClick={() => {
                         history.push("/product/public/" + record.id);
                     }}>编辑</span>
-                    <Popconfirm placement="topRight" title={`是否${record.shelfStatus === 1 ? "下架" : "上架"}该商品`}
-                        onConfirm={() => {
-                            toChangeProductStatus(record.shelfStatus, record.id);
-                        }} okText="是" cancelText="否">
-                        <span className="button">{record.shelfStatus === 1 ? "下架" : "上架"}</span>
-                    </Popconfirm>
+                    {
+                        isAudit
+                            ? <span className="button" onClick={() => {
+                                onAudit(record.id);
+                            }}>审核</span>
+                            : <Popconfirm placement="topRight" title={`是否${record.shelfStatus === 1 ? "下架" : "上架"}该商品`}
+                                onConfirm={() => {
+                                    toChangeProductStatus(record.shelfStatus, record.id);
+                                }} okText="是" cancelText="否">
+                                <span className="button">{record.shelfStatus === 1 ? "下架" : "上架"}</span>
+                            </Popconfirm>
+                    }
                 </Space>
             )
         }
     ];
-    
+
     return (
         <>
             <Table

@@ -53,18 +53,18 @@ export const saleList = (state = defaultSaleList, action = {}) => {
 }
 // 性别
 const defaultSexList = [
-    { key: 1, label: '男' },
-    { key: 2, label: '女' },
-    { key: 3, label: '中性' },
-    { key: 4, label: '儿童' }
+    { value: 1, label: '男' },
+    { value: 2, label: '女' },
+    { value: 3, label: '中性' },
+    { value: 4, label: '儿童' }
 ]
 export const sexList = (state = defaultSexList, action = {}) => {
     return state;
 }
 // 商品状态
 const defaultStatusList = [
-    { key: 1, label: '上架' },
-    { key: 0, label: '下架' }
+    { value: 1, label: '上架' },
+    { value: 0, label: '下架' }
 ]
 export const statusList = (state = defaultStatusList, action = {}) => {
     return state;
@@ -76,15 +76,15 @@ export const countryList = (state = defaultCountryList, action = {}) => {
 }
 // 退货服务
 const defaultRefundServiceList = [
-    { key: 0, label: "不支持无理由退货" },
-    { key: 1, label: "支持7天无理由退货" }
+    { value: 0, label: "不支持无理由退货" },
+    { value: 1, label: "支持7天无理由退货" }
 ]
 export const refundServiceList = (state = defaultRefundServiceList, action = {}) => {
     return state;
 }
 // 运费
 const defaultDeliveryList = [
-    { key: 0, label: "免运费" }
+    { value: 0, label: "免运费" }
 ]
 export const deliveryList = (state = defaultDeliveryList, action = {}) => {
     return state;

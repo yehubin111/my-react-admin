@@ -3,8 +3,8 @@ import moment from 'moment';
 import constants from "../constants";
 
 const defaultBannerStatus = [
-    { key: 1, label: "上架" },
-    { key: 0, label: "下架" }
+    { value: 1, label: "上架" },
+    { value: 0, label: "下架" }
 ]
 export const bannerStatus = (state = defaultBannerStatus, action = {}) => {
     return state;

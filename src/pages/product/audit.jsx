@@ -4,24 +4,18 @@ import { connect } from 'react-redux';
 import {
     requestBrandList,
     requestSeasonList,
-    requestRulesList,
     requestCategoryList
 } from 'service/common';
 import {
-    requestProductManage,
-    requestSpuExport
+    requestProductManage
 } from 'service/product';
 import { saveProductList } from "actions";
-// import { exportExcelFromData } from "utils/common";
 
-import { Button, Space, Dropdown, Menu, message } from "antd";
+import { Space, Dropdown, Menu, message } from "antd";
 import MainTable from "components/MainTable";
 import Category from "components/Category";
-// import TableFilter from "components/TableFilter";
-// import TableHeader from "components/TableHeader";
 import ProductTable from "./components/ProductTable";
-import BatchSearch from "./components/BatchSearch";
-import BatchCtrl from "./components/BatchCtrl";
+import BatchAudit from "./components/BatchAudit";
 
 const DropdownButton = Dropdown.Button;
 const MenuItem = Menu.Item;
@@ -30,11 +24,8 @@ class ProductManage extends Component {
     state = {
         brandList: [],
         seasonList: [],
-        ruleList: [],
         cateList: [],
         loading: false,
-        searchStatus: false,
-        ids: "", // 批量查找商品
         selectedRowKeys: [],
         tableRef: React.createRef(),
         batchStatus: false,
@@ -45,28 +36,22 @@ class ProductManage extends Component {
         // 基础数据
         this.getSortData();
     }
-    getListData(payload, type) {
-        if (payload.category) {
-            payload.firstCategoryId = payload.category[0];
-            payload.thirdCategoryId = payload.category[1];
-            delete payload.category;
+    getListData(payload) {
+        let params = {
+            ...payload
         }
-        payload.auditStatus = 1;
+        if (params.category) {
+            params.firstCategoryId = params.category[0];
+            params.thirdCategoryId = params.category[1];
+            delete params.category;
+        }
+        params.auditStatus = 0;
 
-        if (type !== "filter")
-            payload = {
-                ...payload,
-                ids: this.state.ids
-            }
-        else
-            this.setState({
-                ids: ""
-            })
         // 保存筛选条件，批量操作的时候用
         this.setState({
-            payload
+            params
         })
-        return requestProductManage(payload);
+        return requestProductManage(params);
     }
     setSelectRows(rows) {
         this.setState({ selectedRowKeys: rows })
@@ -92,16 +77,6 @@ class ProductManage extends Component {
                 }))
             })
         });
-        // 采购规则
-        requestRulesList().then(response => {
-            this.setState({
-                ruleList: response.list.map(rule => ({
-                    ...rule,
-                    value: rule.id,
-                    label: rule.rulesName
-                }))
-            })
-        });
         // 类目
         let payload = {
             categoryLevel: 1,
@@ -112,7 +87,6 @@ class ProductManage extends Component {
                 cateList: response.list.map(cate => ({
                     value: cate.id,
                     label: cate.nameZh,
-                    categoryLevel: payload.categoryLevel,
                     isLeaf: false
                 }))
             })
@@ -130,9 +104,9 @@ class ProductManage extends Component {
         });
     }
     render() {
-        const { brandList, seasonList, ruleList, tableRef, searchStatus,
+        const { brandList, seasonList, tableRef,
             batchStatus, selectedRowKeys, payload, ctrlKey, cateList } = this.state;
-        const { storeList, luxuryList, saleList, sexList, statusList } = this.props;
+        const { storeList, luxuryList, saleList, sexList } = this.props;
 
         const filterConfig = [
             {
@@ -207,20 +181,6 @@ class ProductManage extends Component {
                 data: sexList
             },
             {
-                label: "采购规则",
-                placeholder: "",
-                type: "select",
-                name: "rulesId",
-                data: ruleList
-            },
-            {
-                label: "状态",
-                placeholder: "",
-                type: "select",
-                name: "shelfStatus",
-                data: statusList
-            },
-            {
                 label: "",
                 placeholder: ["创建开始日期", "创建结束日期"],
                 type: "dateRange",
@@ -244,109 +204,29 @@ class ProductManage extends Component {
                     filterConfig={filterConfig}
                     headerCtrl={
                         <Space size="middle">
-                            <Button type="primary"
-                                onClick={() => {
-                                    requestSpuExport(this.state.payload)
-                                }}
-                            >
-                                批量导出
-                            </Button>
-                            <Button type="primary"
-                                onClick={() => {
-                                    this.setState({
-                                        searchStatus: true
-                                    })
-                                }}
-                            >
-                                批量查找商品
-                            </Button>
                             <DropdownButton type="primary" overlay={menu}>
-                                批量操作
+                                批量审核
                             </DropdownButton>
                         </Space>
                     }
                     onRequest={(payload, type) => this.getListData(payload, type)}
                     onSelect={rows => this.setSelectRows(rows)}
                     tableRender={ProductTable}
-                />
-                {/* <TableFilter config={filterConfig} setForm={form => {
-                    this.setState({
-                        filterForm: form
-                    })
-                }} onSearch={(values) => {
-                    this.setState({
-                        filters: values,
-                        ids: ""
-                    })
-                    let payload = {
-                        ...this.state.payload,
-                        ...this.state.filters
-                    }
-                    this.getListData(payload);
-                }} /> */}
-                {/* <TableHeader ctrl={
-                    <Space size="middle">
-                        <Button type="primary"
-                            onClick={() => {
-                                requestProductExport(this.state.payload)
-                            }}
-                        >
-                            批量导出
-                        </Button>
-                        <Button type="primary"
-                            onClick={() => {
-                                this.setState({
-                                    searchStatus: true
-                                })
-                            }}
-                        >
-                            批量查找商品
-                        </Button>
-                        <DropdownButton type="primary" overlay={menu}>
-                            批量操作
-                        </DropdownButton>
-                    </Space>
-                } /> */}
-                {/* <ProductTable
-                    pageIndex={payload.pageIndex}
-                    pageSize={payload.pageSize}
-                    loading={loading}
-                    onInit={() => {
-                        this.getListData(this.state.payload);
-                    }}
-                    selectedRowKeys={selectedRowKeys}
-                    onSelect={(select) => {
-                        this.setState({ selectedRowKeys: select });
-                    }}
-                    onPaginationChange={(page) => {
-                        let payload = {
-                            ...this.state.payload,
-                            pageIndex: page.pageIndex,
-                            pageSize: page.pageSize
+                    tableConfig={{
+                        onAudit: (id) => {
+                            this.setState({
+                                selectedRowKeys: [id],
+                                ctrlKey: "1",
+                                batchStatus: true
+                            })
                         }
-                        this.setState({ payload })
-                        this.getListData(payload);
-                    }} /> */}
-                <BatchSearch visible={searchStatus} onOk={(ids) => {
-                    this.setState({
-                        ids,
-                        searchStatus: false
-                    })
-                    setTimeout(() => {
-                        // 重置筛选表单
-                        tableRef.current.resetFields();
-                        tableRef.current.reload();
-                    }, 0)
-                }} onCancel={() => {
-                    this.setState({
-                        searchStatus: false
-                    })
-                }} />
-                <BatchCtrl visible={batchStatus} payload={payload}
+                    }}
+                />
+                <BatchAudit visible={batchStatus} payload={payload}
                     selectedRowKeys={selectedRowKeys}
                     ctrlKey={ctrlKey}
                     onOk={() => {
-                        tableRef.current.reload(); 
+                        tableRef.current.reload();
                     }} onCancel={() => {
                         this.setState({
                             batchStatus: false
@@ -362,8 +242,7 @@ const mapStateToProps = state => {
         storeList: state.storeList,
         luxuryList: state.luxuryList,
         saleList: state.saleList,
-        sexList: state.sexList,
-        statusList: state.statusList
+        sexList: state.sexList
     }
 }
 

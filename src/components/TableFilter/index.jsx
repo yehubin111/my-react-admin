@@ -39,42 +39,48 @@ const FormFilter = (props) => {
             {
                 config.map(cfg => {
                     let child, className;
-                    let { type, placeholder, data, label, ...item } = cfg;
-                    switch (type) {
-                        case "input":
-                            className = styles.sortinput;
-                            child = <Input
-                                placeholder={placeholder ? placeholder : label}
-                                className={styles.line}
-                                allowClear
-                            />;
-                            break;
-                        case "select":
-                            className = styles.sortinput;
-                            child = <Select
-                                placeholder={placeholder ? placeholder : label}
-                                className={styles.line}
-                                allowClear>{
-                                    data && data.map((dt, index) => (
-                                        typeof dt === "object"
-                                            ? <Option key={dt.key} value={dt.key}>{dt.label}</Option>
-                                            : <Option key={index} value={dt}>{dt}</Option>
-                                    ))
-                                }
-                            </Select>;
-                            break;
-                        case "dateRange":
-                            className = styles.sortrange;
-                            child = <RangePicker
-                                format="YYYY-MM-DD"
-                                className={styles.line}
-                                allowClear
-                                placeholder={placeholder}
-                            />;
-                            break;
-                        default:
-                            break;
-                    }
+                    let { type, placeholder, data, label, render, ...item } = cfg;
+
+                    // 优先render
+                    if (render) {
+                        className = styles.sortinput;
+                        child = render;
+                    } else
+                        switch (type) {
+                            case "input":
+                                className = styles.sortinput;
+                                child = <Input
+                                    placeholder={placeholder ? placeholder : label}
+                                    className={styles.line}
+                                    allowClear
+                                />;
+                                break;
+                            case "select":
+                                className = styles.sortinput;
+                                child = <Select
+                                    placeholder={placeholder ? placeholder : label}
+                                    className={styles.line}
+                                    allowClear>{
+                                        data && data.map((dt, index) => (
+                                            typeof dt === "object"
+                                                ? <Option key={dt.value} value={dt.value}>{dt.label}</Option>
+                                                : <Option key={index} value={dt}>{dt}</Option>
+                                        ))
+                                    }
+                                </Select>;
+                                break;
+                            case "dateRange":
+                                className = styles.sortrange;
+                                child = <RangePicker
+                                    format="YYYY-MM-DD"
+                                    className={styles.line}
+                                    allowClear
+                                    placeholder={placeholder}
+                                />;
+                                break;
+                            default:
+                                break;
+                        }
                     item.key = item.key ? item.key : item.name;
                     return (
                         <FormItem className={className} {...item}>{child}</FormItem>

@@ -6,8 +6,8 @@ import styles from './comp.module.scss';
 import logo from '../../assets/images/logo.png';
 import { toLoginOut } from 'actions';
 
-import { Dropdown, Menu, Space, Button, Tag } from 'antd';
-import { MenuUnfoldOutlined, MenuFoldOutlined, ExportOutlined, CloseOutlined } from '@ant-design/icons';
+import { Dropdown, Menu } from 'antd';
+import { MenuUnfoldOutlined, MenuFoldOutlined, ExportOutlined } from '@ant-design/icons';
 
 
 class TopInfo extends Component {
