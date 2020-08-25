@@ -63,7 +63,8 @@ const moduleRouter = [
         component: "/product/manage",
         meta: {
           name: "商品管理",
-          icon: ""
+          icon: "",
+          introduce: ""
         },
         key: "productManage"
       },

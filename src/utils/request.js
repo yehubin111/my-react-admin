@@ -48,8 +48,9 @@ class Axios {
         const r = response.data;
         // 暂时只是导出接口特殊情况
         if (r.code === undefined) {
-          let exportname = response.headers["content-disposition"]
-            ? response.headers["content-disposition"].match(/(?<==).*/g)[0]
+          let reg = new RegExp("=(.*)", "g");
+          let exportname = response.headers["content-disposition"].match(reg)
+            ? RegExp.$1
             : "无名";
           return { data: r, filename: decodeURIComponent(exportname) };
         } else if (r.code === "0") {

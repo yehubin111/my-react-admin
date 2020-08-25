@@ -38,6 +38,7 @@ const AddInviteCode = (props) => {
     ]
     return (
         <Modal title={`${theme}邀请码`} visible={visible} okText="确 定" cancelText="取 消"
+            width={600}
             onOk={() => {
                 form.submit();
             }}

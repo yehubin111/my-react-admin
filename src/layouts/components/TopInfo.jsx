@@ -7,12 +7,12 @@ import logo from '../../assets/images/logo.png';
 import { toLoginOut } from 'actions';
 
 import { Dropdown, Menu } from 'antd';
-import { MenuUnfoldOutlined, MenuFoldOutlined, ExportOutlined } from '@ant-design/icons';
+import { MenuUnfoldOutlined, MenuFoldOutlined, ExportOutlined, EditOutlined } from '@ant-design/icons';
 
 
 class TopInfo extends Component {
     render() {
-        const { onMenu, collapsed, userInfo, toLoginOut, location } = this.props;
+        const { onMenu, collapsed, userInfo, toLoginOut, location, isMobile } = this.props;
         const menu = (
             <Menu>
                 <Menu.Item>
@@ -20,23 +20,28 @@ class TopInfo extends Component {
                         toLoginOut(location.pathname);
                     }}><ExportOutlined /> 退出登录</p>
                 </Menu.Item>
+                <Menu.Item>
+                    <p className={styles.downmenu} onClick={() => {
+
+                    }}><EditOutlined /> 修改密码</p>
+                </Menu.Item>
             </Menu>
         )
         return (
             <div className={`rf jsb ac ${styles.top}`}>
-                {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+                {isMobile ? React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
                     className: styles.menu,
                     onClick: onMenu
-                })}
+                }) : <span></span>}
                 {/* <Space size="small" className={styles["cache-list"]}> */}
-                    {/* <Tag className={styles.cache} closeIcon={<CloseOutlined />} closable onClose={() => {}}>
+                {/* <Tag className={styles.cache} closeIcon={<CloseOutlined />} closable onClose={() => {}}>
                         商品管理
                     </Tag>
                     <Tag className={styles.cache} closable onClose={() => {}}>
                         banner管理
                     </Tag> */}
-                    {/* <Button type="primary">商品管理<CloseOutlined /></Button> */}
-                    {/* <span className={styles.cache}>商品管理<CloseOutlined /></span>
+                {/* <Button type="primary">商品管理<CloseOutlined /></Button> */}
+                {/* <span className={styles.cache}>商品管理<CloseOutlined /></span>
                     <span className={styles.cache}>banner管理<CloseOutlined /></span> */}
                 {/* </Space> */}
                 <div className={styles.right}>

@@ -21,9 +21,10 @@ const AddCategory = (props) => {
     }
 
     useEffect(() => {
-        form.setFieldsValue({
-            parentName: parent.nameZh
-        })
+        if (parent.nameZh)
+            form.setFieldsValue({
+                parentName: parent.nameZh
+            })
     }, [parent])
     useEffect(() => {
         if (editData.id) {
@@ -52,6 +53,7 @@ const AddCategory = (props) => {
     ]
     return (
         <Modal title={`${theme}类目`} visible={visible} confirmLoading={loading} okText="确 定" cancelText="取 消"
+            width={600}
             onOk={() => {
                 form.submit();
             }}

@@ -1,31 +1,35 @@
 import React from "react";
 
-import { Form, Input, DatePicker, Switch, Select, Row, Col, Radio } from "antd";
+import { Form, Input, DatePicker, Switch, Select, Row, Col, Radio, Checkbox } from "antd";
 import Upload from "components/Upload";
 const { Item: FormItem } = Form;
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 const { Group: RadioGroup } = Radio;
+const { Group: CheckboxGroup } = Checkbox;
 
 
 const VerticalItems = ({ col = {}, index, children }) => {
     const col1 = {
         lg: 6,
         md: 12,
-        sm: 24
+        sm: 24,
+        xs: 24
     }
     const col2 = {
         xl: { span: 6, offset: 2 },
         lg: { span: 8 },
         md: { span: 12 },
-        sm: 24
+        sm: 24,
+        xs: 24
     }
     const col3 = {
         xl: { span: 8, offset: 2 },
         lg: { span: 10 },
         md: { span: 24 },
-        sm: 24
+        sm: 24,
+        xs: 24
     }
     return <Col {...eval(`col${index % 3 + 1}`)} {...col}>
         {children}
@@ -61,6 +65,9 @@ const MainFormItems = props => {
                     break;
                 case "radio":
                     child = <RadioGroup options={Array.isArray(data) && data} {...options} />
+                    break;
+                case "checkbox":
+                    child = <CheckboxGroup options={Array.isArray(data) && data} {...options}/>
                     break;
                 case "select":
                     child = <Select

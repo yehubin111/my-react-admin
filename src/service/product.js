@@ -2,7 +2,7 @@ import Axios from "utils/request";
 
 // 商品管理列表
 export function requestProductManage(payload = {}) {
-    return Axios.post("spulist", payload)
+    return Axios.post("spuGetList", payload)
 }
 // 编辑获取商品详情
 export function requestGetSpuDetail(payload = {}) {
@@ -34,7 +34,7 @@ export function requestSpuSetRules(payload = {}) {
 }
 // 类目管理
 export function requestCategoryList(payload = {}) {
-    return Axios.post("catelist", payload)
+    return Axios.post("categoryGetList", payload)
 }
 // 新增/编辑类目
 export function requestUpdateCate(payload = {}) {

@@ -107,6 +107,7 @@ const AddRule = (props) => {
     ]
     return (
         <Modal title={`${theme}采购规则`} visible={visible} confirmLoading={loading} okText="确 定" cancelText="取 消"
+            width={600}
             onOk={() => {
                 form.submit();
             }}

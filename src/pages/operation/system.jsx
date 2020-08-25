@@ -19,7 +19,8 @@ const System = props => {
         {
             title: "内容",
             dataIndex: "configValue",
-            key: "configValue"
+            key: "configValue",
+            width: 200
         },
         {
             title: "修改时间",

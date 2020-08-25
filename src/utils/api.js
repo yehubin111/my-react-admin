@@ -26,9 +26,9 @@
 
 export default {
     // common
-    login: '/backUser/login', // 登录
+    backUserLogin: '/backUser/login', // 登录
     upload: 'http://up.qiniu.com/', // 七牛上传
-    qiniutoken: '/common/getQiniuToken', // 获取七牛token
+    commonGetQiniuToken: '/common/getQiniuToken', // 获取七牛token
     // base基础数据
     topicIdNameList: '/topic/idNameList', // 专题下拉列表
     brandIdNameList: '/brand/idNameList', // 品牌下拉列表
@@ -38,8 +38,8 @@ export default {
     storageGetList: '/storage/getList', // 仓库下拉列表
     rulesIdNameList: '/rules/idNameList', // 采购规则下拉
     // 商品中心
-    spulist: '/spu/getList', // 商品管理列表
-    catelist: '/category/getList', // 类目列表
+    spuGetList: '/spu/getList', // 商品管理列表
+    categoryGetList: '/category/getList', // 类目列表
     spuGetDetial: '/spu/getDetial', // 编辑获取商品详情
     spuUpdate: '/spu/update', // 编辑商品
     spuExport: '/spu/export', // 商品中心批量导出
@@ -54,20 +54,22 @@ export default {
     brandUpdate: '/brand/update', // 新增/编辑品牌
     // 用户管理
     userGetList: '/user/getList', // 用户管理列表
-    invitecodelist: '/inviteCode/getList', // 邀请码管理列表
-    changeinvitecode: '/inviteCode/update', // 新建/编辑/禁用/启用邀请码
+    inviteCodeGetList: '/inviteCode/getList', // 邀请码管理列表
+    inviteCodeUpdate: '/inviteCode/update', // 新建/编辑/禁用/启用邀请码
     // 运营管理
-    bannerlist: '/column/getList', // banner管理列表
-    bannersort: '/column/saveSort', // banner管理排序
-    bannerstatus: '/column/update', // 新增/编辑/上下架banner
-    systemlist: '/config/getList', // 运营配置列表
-    topiclist: '/topic/getList', // 专题库列表
-    topicspulist: '/topicSpu/getList', // 专题库商品列表
-    topicsort: '/topicSpu/saveSort', // 专题库商品保存排序
-    topicdel: '/topic/removeSpu', // 专题库商品保存删除
+    columnGetList: '/column/getList', // banner管理列表
+    columnSaveSort: '/column/saveSort', // banner管理排序
+    columnUpdate: '/column/update', // 新增/编辑/上下架banner
+    configGetList: '/config/getList', // 运营配置列表
+    topicGetList: '/topic/getList', // 专题库列表
+    topicSpuGetList: '/topicSpu/getList', // 专题库商品列表
+    topicSpuSaveSort: '/topicSpu/saveSort', // 专题库商品保存排序
+    topicRemoveSpu: '/topic/removeSpu', // 专题库商品保存删除
     // 采购单管理
     orderlist: '/order/list', // 采购单列表
     // 权限管理
     backUserList: 'backUser/list', // 人员管理列表
+    backUserAddOrUpdate: '/backUser/addOrUpdate', // 新增/编辑用户
+    backRoleList: '/backRole/list', // 角色列表
     
 }

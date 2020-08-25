@@ -14,9 +14,9 @@ const FormHeader = (props) => {
             <h1 className={styles.title}>{title}</h1>
             <div className={styles.ctrl}>
                 <Space size="middle">
-                    <Radio.Group defaultValue={defaultValue} options={tabs} optionType="button" onChange={e => {
+                    {(tabs && Array.isArray(tabs)) && <Radio.Group defaultValue={defaultValue} options={tabs} optionType="button" onChange={e => {
                         onTab(e.target.value);
-                    }} />
+                    }} />}
                     {ctrl}
                 </Space>
             </div>

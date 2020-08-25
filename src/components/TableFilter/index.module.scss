@@ -24,3 +24,13 @@
         margin-left: 16px;
     }
 }
+@media screen and (max-width: 575px) {
+    .sort {
+        .sortinput {
+            max-width: none;
+        }
+        .sortrange {
+            min-width: max-content;
+        }
+    }
+}

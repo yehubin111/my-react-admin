@@ -161,7 +161,8 @@ const Public = props => {
         xl: { span: 16, offset: 2 },
         lg: { span: 18 },
         md: { span: 12 },
-        sm: 24
+        sm: 24,
+        xs: 24
     }
     const cateItems = [
         {

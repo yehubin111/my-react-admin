@@ -12,7 +12,7 @@ const ThemeTitle = props => {
   let { pathname: path } = useLocation();
   let patharr = path.split("/").filter(v => v);
   // 匹配
-  let reg = /\/:.+\??/;
+  let reg = new RegExp("\\/:.+\\??"); // /\/:.+\??/;
   return (
     <div className={styles.themetitle}>
       <Breadcrumb>

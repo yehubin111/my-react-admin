@@ -57,7 +57,7 @@ class MenuNav extends Component {
     return { defaultOpenKeys, defaultSelectedKeys };
   }
   render() {
-    let { location: { pathname: path }, routes } = this.props;
+    let { location: { pathname: path }, routes, onRoute } = this.props;
     let { defaultOpenKeys, defaultSelectedKeys } = this.menuSelect(routes, path);
     // console.log(defaultOpenKeys, selectedKeys);
     // let { openKeys } = this.state;
@@ -70,6 +70,9 @@ class MenuNav extends Component {
         // }}
         defaultOpenKeys={defaultOpenKeys}
         defaultSelectedKeys={defaultSelectedKeys}
+        onClick={() => {
+          onRoute && onRoute();
+        }}
         // openKeys={openKeys}
         // selectedKeys={selectedKeys}
       >

@@ -1,8 +1,9 @@
 import React from 'react';
-import { Result, Button } from 'antd';
 import { withRouter } from "react-router-dom";
 
 import styles from "./page.module.scss";
+
+import { Result, Button } from 'antd';
 
 const NoMatch = (props) => {
     return (

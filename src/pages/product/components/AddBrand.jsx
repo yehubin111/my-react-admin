@@ -12,7 +12,7 @@ const AddBrand = (props) => {
     const [theme, setTheme] = useState("新增");
     const [loading, changeLoading] = useState(false);
     const config = {
-        labelCol: { span: 7 },
+        labelCol: { span: 6 },
         wrapperCol: { span: 17 }
     }
     function handleCancel() {
@@ -47,6 +47,7 @@ const AddBrand = (props) => {
     ]
     return (
         <Modal title={`${theme}品牌`} visible={visible} confirmLoading={loading} okText="确 定" cancelText="取 消"
+            width={600}
             onOk={() => {
                 form.submit();
             }}

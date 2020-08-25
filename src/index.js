@@ -35,7 +35,7 @@ const render = Component => {
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <ConfigProvider locale={zhCN}>
-        <Component />
+          <Component />
         </ConfigProvider>
       </PersistGate>
     </Provider>,

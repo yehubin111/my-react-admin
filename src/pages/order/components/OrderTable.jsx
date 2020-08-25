@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
 import styles from './comp.module.scss';
+import { wrapContext } from "utils/context";
 
 import { Table, Descriptions, Pagination, Spin, Empty, Space } from 'antd';
 import ImageView from "components/ImageView";
@@ -12,6 +13,7 @@ const OrderTable = (props) => {
     const [viewImages, setViewImages] = useState([]);
     const [viewStatus, changeViewStatus] = useState(false);
     const [orderList, changeOrderList] = useState([]);
+    const global = useContext(wrapContext);
 
     const columns = [
         // {
@@ -153,7 +155,7 @@ const OrderTable = (props) => {
                 {
                     orderList.length > 0 ? orderList.map(order => (
                         <div className={styles.order} key={order.mainOrderCode}>
-                            <Descriptions bordered size="small" column={{xs: 1, sm: 2, lg: 3, xxl: 4}}>
+                            <Descriptions bordered size="small" layout={global.device === "h5" ? "vertical" : "horizontal"} column={{ xs: 1, sm: 2, lg: 3, xxl: 4 }}>
                                 <Descriptions.Item label="订单号">
                                     <span className={styles.code}>{order.mainOrderCode}</span>
                                 </Descriptions.Item>

@@ -10,7 +10,7 @@ import { CloseOutlined, MinusOutlined } from "@ant-design/icons";
 import CardGrid from "./CardGrid";
 
 const TopicTable = props => {
-    const { dataSource, pagination, loading } = props;
+    const { dataSource, pagination, loading, scroll } = props;
     const [topicProducts, setTopicProducts] = useState({});
     const [loadingList, setLoadingList] = useState({});
     const [sortStatusList, setSortStatusList] = useState({});
@@ -236,6 +236,7 @@ const TopicTable = props => {
                 rowKey="id"
                 loading={loading}
                 pagination={pagination}
+                scroll={scroll}
                 expandable={{
                     expandedRowRender,
                     onExpand: (expanded, record) => {

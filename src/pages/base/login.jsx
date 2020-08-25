@@ -59,12 +59,13 @@ class Login extends Component {
                 // 根据路由和来源页面跳转
                 if (response.backMenuList && response.backMenuList.length > 0) {
                   message.success("登录成功");
-
-                  let redirect = location.search.match(/(?<=\?redirect=).*/);
+                  // ios系统不支持正则表达式零宽断言 new RegExp("(?<=\\?redirect=).*")
+                  let reg = new RegExp("\\?redirect=(.*)");
+                  let redirect = location.search.match(reg) ? decodeURIComponent(RegExp.$1) : "/";
                   setTimeout(() => {
-                    history.push(redirect ? decodeURIComponent(redirect[0]) : "/");
-                  //   console.log('redirect')
-                  //   history.push("/");
+                    history.push(redirect);
+                    //   console.log('redirect')
+                    //   history.push("/");
                     // window.location.href = redirect ? decodeURIComponent(redirect[0]) : "/";
                   }, 0)
                 } else message.error("请给该角色配置权限");

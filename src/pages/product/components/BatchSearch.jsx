@@ -6,13 +6,14 @@ const { TextArea } = Input;
 const BatchSearch = props => {
     const { visible, onOk, onCancel } = props;
     const [ids, setIds] = useState("");
+    const reg = new RegExp("\\n", "g");
 
     return (
         <Modal title="批量查找商品" visible={visible}
             okText="确定"
             cancelText="取消"
             onOk={() => {
-                onOk(ids.replace(/\n/g, ","));
+                onOk(ids.replace(reg, ","));
                 setIds("");
             }} onCancel={() => {
                 onCancel();

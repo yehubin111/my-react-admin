@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 
 import { requestUserList } from "service/limit";
 
 import { Button, Space, Popconfirm } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import MainTable from "components/MainTable";
-
+import AddUser from "./components/AddUser";
 
 const Users = () => {
+    const [addStatus, changeAddStatus] = useState(false);
+    const tableRef = useRef();
     const userStatusList = [
         { value: 0, label: "禁用" },
         { value: 1, label: "启用" }
@@ -15,7 +17,24 @@ const Users = () => {
     const getListData = (payload) => {
         return requestUserList(payload)
     }
-    const filterConfig = [];
+    const filterConfig = [
+        {
+            label: "姓名",
+            type: "input",
+            name: "backUserName"
+        },
+        {
+            label: "登录名",
+            type: "input",
+            name: "backUserAccount"
+        },
+        {
+            label: "状态",
+            type: "select",
+            name: "useStatus",
+            data: userStatusList
+        }
+    ];
     const columns = [
         {
             title: "人员姓名",
@@ -64,15 +83,14 @@ const Users = () => {
     ];
     return <>
         <MainTable
+            tableRef={tableRef}
             filterConfig={filterConfig}
             headerCtrl={
                 <Button
                     type="primary"
                     icon={<PlusOutlined />}
                     onClick={() => {
-                        this.setState({
-                            "visible": true
-                        })
+                        changeAddStatus(true);
                     }}
                 >
                     新增用户
@@ -84,6 +102,11 @@ const Users = () => {
                 rowKey: "backUserId"
             }}
         />
+        <AddUser visible={addStatus} onCancel={() => {
+            changeAddStatus(false);
+        }} onOk={() => {
+            tableRef.current.reload();
+        }} />
     </>
 }
 

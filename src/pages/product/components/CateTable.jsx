@@ -7,7 +7,7 @@ import { Table, Button } from "antd";
 import AddCategory from "./AddCategory";
 
 const CateTable = props => {
-    const { dataSource, pagination, loading, onInit } = props;
+    const { dataSource, pagination, loading, onInit, scroll } = props;
     // 二级菜单集合
     const [secCategoryList, setSecCategoryList] = useState({});
     // 二级菜单列表loading状态集合
@@ -115,6 +115,7 @@ const CateTable = props => {
                 loading={loading}
                 rowKey="id"
                 pagination={pagination}
+                scroll={scroll}
                 expandable={{
                     // expandIconColumnIndex: 4,
                     // expandIcon: ({ expanded, onExpand, record }) => (

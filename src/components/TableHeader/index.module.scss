@@ -1,11 +1,18 @@
 .header {
-    background-color: #fff;
-    height: 64px;
-    padding: 0 24px;
+  background-color: #fff;
+  height: 64px;
+  padding: 0 24px;
+  .title {
+    font-weight: normal;
+  }
+  .ctrl {
+  }
+}
+@media screen and (max-width: 575px) {
+  .header {
     .title {
-        font-weight: normal;
+      width: 0;
+      overflow: hidden;
     }
-    .ctrl {
-
-    }
+  }
 }

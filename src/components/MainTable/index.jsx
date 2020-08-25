@@ -1,4 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
+
+import { wrapContext } from "utils/context";
 
 import TableFilter from "../TableFilter";
 import TableHeader from "../TableHeader";
@@ -26,6 +28,10 @@ const MainTable = props => {
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [loading, changeLoading] = useState(false);
     const filterRef = useRef();
+    const global = useContext(wrapContext);
+    tableConfig.scroll = {
+        x: 'max-content'
+    }
 
     const getListData = (params = payload, type = "") => {
         // loading
@@ -68,6 +74,8 @@ const MainTable = props => {
         total,
         current: payload.pageIndex,
         showSizeChanger: false,
+        size: global.device === "h5" ? "small" : "default",
+        // simple: global.device === "h5" ? true : false,
         showTotal: total => `共 ${total} 条`,
         onChange: (page, pageSize) => {
             let params = {
