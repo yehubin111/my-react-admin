@@ -27,30 +27,37 @@ const defaultOrderStatusList = [
     },
     {
         value: 0,
-        label: "待支付"
+        label: "待支付",
+        ctrl: ["cancel", "pay"]
     }, {
         value: 100,
-        label: "待确认"
+        label: "待确认",
+        ctrl: ["refund"]
     },
     {
         value: 110,
-        label: "待发货"
+        label: "待发货",
+        ctrl: ["refund"]
     },
     {
         value: 200,
-        label: "已发货"
+        label: "已发货",
+        ctrl: ["refund", "logistics"]
     },
     {
         value: 400,
-        label: "已完成"
+        label: "已完成",
+        ctrl: ["refund", "logistics"]
     },
     {
         value: 500,
-        label: "已退款"
+        label: "已退款",
+        ctrl: []
     },
     {
         value: 600,
-        label: "已取消"
+        label: "已取消",
+        ctrl: []
     }
 ]
 export const orderStatusList = (state = defaultOrderStatusList, action = {}) => {

@@ -65,9 +65,8 @@ const CateTable = props => {
             title: "操作",
             dataIndex: "action",
             key: "action",
-            render: (text, record, e, f) => (
+            render: (text, record) => (
                 <span className="button" onClick={() => {
-                    console.log(record, e, f);
                     if (record.parentId !== 0)
                         setAddParent({ id: record.parentId, nameZh: record.parentName });
                     setAddLevel(record.categoryLevel);
@@ -141,6 +140,7 @@ const CateTable = props => {
                     onInit();
                 else getDataList(addParent.id)
             }} onCancel={() => {
+                setEditData({});
                 changeAddStatus(false);
             }} />
         </>

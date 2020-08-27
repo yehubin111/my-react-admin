@@ -66,10 +66,16 @@ export default {
     topicSpuSaveSort: '/topicSpu/saveSort', // 专题库商品保存排序
     topicRemoveSpu: '/topic/removeSpu', // 专题库商品保存删除
     // 采购单管理
-    orderlist: '/order/list', // 采购单列表
+    orderList: '/order/list', // 采购单列表
+    orderAddressUpdate: '/order/address/update', // 收货人详情编辑
+    orderSetPaid: '/order/setPaid', // 确认付款
+    orderCancel: '/order/cancel', // 订单取消
+    orderLogisticsList: '/order/logistics/list', // 订单物流信息
     // 权限管理
     backUserList: 'backUser/list', // 人员管理列表
     backUserAddOrUpdate: '/backUser/addOrUpdate', // 新增/编辑用户
     backRoleList: '/backRole/list', // 角色列表
+    backMenuList: '/backMenu/list', // 权限菜单列表
+    backRoleAddOrUpdate: '/backRole/addOrUpdate', // 新增/编辑角色
     
 }

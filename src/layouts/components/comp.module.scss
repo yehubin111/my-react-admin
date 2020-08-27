@@ -1,70 +1,70 @@
 .top {
+  height: 100%;
+  .cache-list {
+    padding-left: 20px;
+    .cache {
+      padding: 5px 10px;
+    }
+  }
+  .left {
     height: 100%;
-    .cache-list {
-        padding-left: 20px;
-        .cache {
-            padding: 5px 10px;
-        }
+    padding-left: 20px;
+    .logo {
+      height: 28px;
     }
     .menu {
-        font-size: 18px;
-        padding: 0 24px;
-        cursor: pointer;
-        transition: color 0.3s;
+      font-size: 18px;
+      padding: 0 0 0 16px;
+      cursor: pointer;
+      transition: color 0.3s;
 
-        &:hover {
-            color: #1890ff;
-        }
+      &:hover {
+        color: #1890ff;
+      }
     }
+  }
+  .right {
+    height: 100%;
 
-    .right {
-        padding-right: 20px;
-        height: 100%;
+    .head {
+      cursor: pointer;
+      padding: 0 20px;
+      height: 100%;
+      margin: 0;
+      transition: all 0.3s;
 
-        .head {
-            cursor: pointer;
-            padding: 0 20px;
-            height: 100%;
-            margin: 0;
-            transition: all .3s;
+      .face {
+        margin-right: 6px;
+      }
 
-            .face {
-                width: 24px;
-                height: 24px;
-                overflow: hidden;
-                border-radius: 50%;
-                margin-right: 6px;
-                background-color: #eee;
-            }
+      .user {
+        font-size: 14px;
+      }
 
-            .user {
-                font-size: 14px;
-            }
-
-            &:hover {
-                background: rgba(0, 0, 0, .025);
-            }
-        }
+      &:hover {
+        background: rgba(0, 0, 0, 0.025);
+      }
     }
+  }
 }
 
 .downmenu {
-    margin: 0;
+  margin: 0;
 }
 
 .themetitle {
-    width: 100%;
-    background-color: #fff;
-    padding: 12px 20px 16px 20px;
+  width: 100%;
+  background-color: #fff;
+  padding: 12px 20px 16px 20px;
 
-    .title {
-        font-size: 20px;
-        margin: 12px 0 4px 0;
-    }
+  .title {
+    font-size: 20px;
+    margin: 12px 0 4px 0;
+  }
 
-    .introduce {
-        line-height: 22px;
-        padding-top: 12px;
-        margin: 0;
-    }
+  .introduce {
+    line-height: 22px;
+    padding-top: 12px;
+    margin: 0;
+  }
 }

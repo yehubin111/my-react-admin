@@ -5,7 +5,7 @@ import { requestOrderList } from 'service/order';
 
 import { Button } from "antd";
 import MainTable from "components/MainTable";
-import OrderTable from "./components/OrderTable";
+import ManageTable  from "./components/ManageTable";
 
 const OrderManage = (props) => {
     const { childExceptionStatusList, orderStatusList } = props;
@@ -82,7 +82,7 @@ const OrderManage = (props) => {
                         导出Excel
                     </Button>
                 }
-                tableRender={OrderTable}
+                tableRender={ManageTable}
                 // tableConfig={{
                 //     bordered: true,
                 //     columns,

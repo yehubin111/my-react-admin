@@ -12,3 +12,11 @@ export function requestUpdateUser(payload = {}) {
 export function requestRoleList(payload = {}) {
     return Axios.post('backRoleList', payload)
 }
+// 角色权限列表
+export function requestMenuList(payload = {}) {
+    return Axios.post('backMenuList', payload)
+}
+// 新增编辑角色
+export function requestUpdateRole(payload = {}) {
+    return Axios.post('backRoleAddOrUpdate', payload)
+}

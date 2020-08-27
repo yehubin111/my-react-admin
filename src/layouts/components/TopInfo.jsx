@@ -3,12 +3,14 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import styles from './comp.module.scss';
-import logo from '../../assets/images/logo.png';
+import head from 'assets/images/head.jpg';
+import defaultConfig from "defaultConfig";
 import { toLoginOut } from 'actions';
 
-import { Dropdown, Menu } from 'antd';
+import { Dropdown, Menu, Avatar } from 'antd';
 import { MenuUnfoldOutlined, MenuFoldOutlined, ExportOutlined, EditOutlined } from '@ant-design/icons';
 
+const { logo } = defaultConfig;
 
 class TopInfo extends Component {
     render() {
@@ -29,10 +31,15 @@ class TopInfo extends Component {
         )
         return (
             <div className={`rf jsb ac ${styles.top}`}>
-                {isMobile ? React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-                    className: styles.menu,
-                    onClick: onMenu
-                }) : <span></span>}
+                {isMobile ? <div className={`rf ac ${styles.left}`}>
+                    <img className={styles.logo} src={logo} alt="" />
+                    {
+                        React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+                            className: styles.menu,
+                            onClick: onMenu
+                        })
+                    }
+                </div> : <span></span>}
                 {/* <Space size="small" className={styles["cache-list"]}> */}
                 {/* <Tag className={styles.cache} closeIcon={<CloseOutlined />} closable onClose={() => {}}>
                         商品管理
@@ -47,7 +54,7 @@ class TopInfo extends Component {
                 <div className={styles.right}>
                     <Dropdown overlay={menu}>
                         <p className={styles.head}>
-                            <img className={styles.face} src={logo} alt="" />
+                            <Avatar className={styles.face} src={head} size={28} />
                             <span className={styles.user}>{userInfo.backUserName}</span>
                         </p>
                     </Dropdown>

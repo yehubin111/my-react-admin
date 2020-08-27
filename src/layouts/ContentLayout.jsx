@@ -1,8 +1,7 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { connect } from "react-redux";
 
-import loading from "router/loading";
-// import { wrapContext } from "utils/context";
+import PageLoading from "components/PageLoading";
 
 import { Route, Redirect, Switch } from "react-router-dom";
 
@@ -19,16 +18,17 @@ const ContentLayout = props => {
           router.key
         );
       } else {
-        // let Component = require(`../pages${router.component}`).default;
-        let component = () => import(`../pages${router.component}`);
+        // 组件懒加载
+        let Component = React.lazy(() => import(`../pages${router.component}`));
         return (
           <Route
             path={router.path}
             key={router.key}
             render={() => {
               document.title = router.meta.name;
-              // return <Component />
-              return React.createElement(loading(component), {});
+              return <Suspense fallback={<PageLoading />}>
+                <Component />
+              </Suspense>
             }}
           />
         );
@@ -47,11 +47,7 @@ const ContentLayout = props => {
   };
   // return <>{routerCreate(routes, redirectFrom, redirectTo, redirectKey)}</>; <Suspense fallback={<PageLoading />}>
   return (
-    // <wrapContext.Provider value={{
-    //   device: "h8"
-    // }}>
-      <Switch>{routerCreate(routes, redirectFrom, redirectTo, redirectKey)}</Switch>
-    // </wrapContext.Provider>
+    <Switch>{routerCreate(routes, redirectFrom, redirectTo, redirectKey)}</Switch>
   )
 };
 export default connect(() => ({}), {})(ContentLayout);

@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import history from "utils/history";
 import { Switch, Route, Router, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
+import history from "utils/history";
+import { wrapContext } from "utils/context";
 import defaultConfig from "defaultConfig";
 import { toLoginOut } from 'actions';
 
@@ -11,7 +12,8 @@ import {
   TeamOutlined,
   LineChartOutlined,
   UnorderedListOutlined,
-  AppstoreOutlined
+  AppstoreOutlined,
+  HomeOutlined
 } from "@ant-design/icons";
 
 /**
@@ -45,6 +47,29 @@ const moduleRouter = [
           icon: ""
         },
         key: "login"
+      }
+    ]
+  },
+  {
+    path: "/home",
+    component: "/BasicLayout",
+    redirect: "/home/index",
+    noLimit: true,
+    meta: {
+      name: "首页",
+      icon: <HomeOutlined />
+    },
+    key: "home",
+    children: [
+      {
+        path: "/home/index",
+        component: "/home/index",
+        meta: {
+          name: "首页",
+          icon: "",
+          introduce: ""
+        },
+        key: "homeIndex"
       }
     ]
   },
@@ -294,6 +319,10 @@ const baseRouter = [
 export const routerConfig = [...moduleRouter, ...baseRouter];
 
 class RouteConfig extends Component {
+  state = {
+    isMobile: false,
+    mobileNormalWidth: 576
+  }
   // 路由权限判断
   getLimitMenus() {
     let menus = [];
@@ -330,10 +359,10 @@ class RouteConfig extends Component {
   setRedirectLink(menus) {
     /**
      * basic重定向逻辑
-     * 如果获取到权限路由，并且可以拿到受权限约束的路由，则basic重定向路径未该页面
+     * 如果获取到权限路由，并且可以拿到受权限约束的路由，则basic重定向路径为该页面
      * 否则重定向路径为登录页
      */
-    let mode = menus.find(router => !router.noLimit);
+    let mode = menus.find(router => !router.hidden);
     let base = moduleRouter.find(router => router.key === 'base');
     let basic = baseRouter.find(router => router.key === 'basic');
     let redirect = !mode ? base.redirect : mode.redirect;
@@ -341,47 +370,86 @@ class RouteConfig extends Component {
     basic.redirect = redirect;
     return redirect;
   }
+  componentDidMount() {
+    let screenWidth = document.body.clientWidth;
+    if (screenWidth < this.state.mobileNormalWidth) {
+      this.setState({
+        isMobile: true
+      })
+    } else {
+      this.setState({
+        isMobile: false
+      })
+    }
+    // // 监听屏幕尺寸变化
+    // this.screenWatch();
+  }
+  componentWillUnmount() {
+    console.log("unbind resize")
+    window.removeEventListener("resize", this.screenResize.bind(this));
+  }
+  screenWatch() {
+    console.log("bind resize")
+    window.addEventListener("resize", this.screenResize.bind(this))
+  }
+  screenResize(e) {
+    console.log(e.target.innerWidth);
+    if (e.target.innerWidth < this.state.mobileNormalWidth) {
+      this.setState({
+        isMobile: true
+      })
+    } else {
+      this.setState({
+        isMobile: false
+      })
+    }
+  }
   render() {
     const { toLoginOut, token } = this.props;
+    const { isMobile } = this.state;
     let menus = this.getLimitMenus();
     // 设置basic重定向地址
     this.setRedirectLink(menus);
 
     return (
-      <Router history={history}>
-        <Switch>
-          {routerConfig.map(router => {
-            if (router.path === "/") {
-              return <Redirect exact key={router.key} from={router.path} to={router.redirect}></Redirect>
-            } else {
-              let component = require(`../${
-                router.children ? "layouts" : "pages"
-                }${router.component}`).default;
-              return (
-                <Route
-                  path={router.path}
-                  key={router.key}
-                  render={() => {
-                    // 拿到权限路由之后，渲染子路由
-                    menus = this.getLimitMenus();
-                    // 路由加载的时候，判断token是否存在
-                    if (!token && !router.noLimit) {
-                      toLoginOut(router.path);
-                      return;
-                    };
-                    return React.createElement(component, {
-                      routes: menus,
-                      redirectFrom: router.path,
-                      redirectTo: router.redirect,
-                      redirectKey: router.key
-                    })
-                  }}
-                />
-              );
-            }
-          })}
-        </Switch>
-      </Router>
+      <wrapContext.Provider value={{
+        device: isMobile ? "h5" : "web"
+      }}>
+        <Router history={history}>
+          <Switch>
+            {routerConfig.map(router => {
+              if (router.path === "/") {
+                return <Redirect exact key={router.key} from={router.path} to={router.redirect}></Redirect>
+              } else {
+                let component = require(`../${
+                  router.children ? "layouts" : "pages"
+                  }${router.component}`).default;
+                return (
+                  <Route
+                    path={router.path}
+                    key={router.key}
+                    render={() => {
+                      // 拿到权限路由之后，渲染子路由
+                      menus = this.getLimitMenus();
+                      // 路由加载的时候，判断token是否存在
+                      if (!token && !router.noLimit) {
+                        toLoginOut(router.path);
+                        return;
+                      };
+                      return React.createElement(component, {
+                        routes: menus,
+                        redirectFrom: router.path,
+                        redirectTo: router.redirect,
+                        redirectKey: router.key
+                      })
+                    }}
+                  />
+                );
+              }
+            })}
+          </Switch>
+        </Router>
+      </wrapContext.Provider>
     );
   }
 }

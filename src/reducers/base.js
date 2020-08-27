@@ -33,6 +33,18 @@ export const userInfo = (state = defaultInfo, action = {}) => {
   let { type, response } = action;
   switch (type) {
     case constants.SAVEINFO:
+      // let home = {
+      //   backMenuId: 100,
+      //   backMenuList: [],
+      //   backMenuName: "首页",
+      //   createTime: 1574240489000,
+      //   createUserId: 1,
+      //   delStatus: 0,
+      //   modifyTime: 1584326735000,
+      //   modifyUserId: 1,
+      //   parentBackMenuId: 0
+      // }
+      // response.backMenuList.unshift(home);
       return state = {
         backMenuList: response.backMenuList,
         backRoleList: response.backRoleList,

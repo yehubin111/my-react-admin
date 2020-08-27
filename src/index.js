@@ -30,7 +30,6 @@ const persistor = persistStore(
 )
 
 const render = Component => {
-  // moment.locale('zh-cn');
   ReactDOM.render(
     <Provider store={store}>
       <PersistGate persistor={persistor}>
