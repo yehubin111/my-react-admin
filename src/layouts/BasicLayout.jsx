@@ -25,7 +25,7 @@ class BasicLayout extends Component {
   }
   render() {
     const { routes, redirectFrom, redirectTo, redirectKey } = this.props;
-    const { collapsed } = this.state;
+    // const { collapsed } = this.state;
     return (
       <wrapContext.Consumer>
         {global => {
@@ -42,13 +42,12 @@ class BasicLayout extends Component {
                   onClose={() => {
                     this.onClose();
                   }}
-                  visible={collapsed}
+                  // visible={collapsed}
                   width="200"
                 >
                   <Sider
                     breakpoint="lg"
                     collapsed={false}
-                    // collapsedWidth={0}
                     trigger={null}
                     className={styles.sider}
                   >
@@ -63,7 +62,6 @@ class BasicLayout extends Component {
                 : <Sider
                   breakpoint="lg"
                   collapsed={false}
-                  // collapsedWidth={0}
                   trigger={null}
                   className={styles.sider}
                 >

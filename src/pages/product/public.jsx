@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { useParams, withRouter, useHistory } from "react-router-dom";
+import { useParams, withRouter, useHistory, } from "react-router-dom";
 
 import {
     requestBrandList,
@@ -68,7 +68,7 @@ const Size = ({ value = [] }) => {
     />
 }
 const Public = props => {
-    const { sexList, luxuryList, countryList, deliveryList, refundServiceList, saleList } = props;
+    const { sexList, luxuryList, countryList, deliveryList, refundServiceList, saleList, location } = props;
     const { productId } = useParams();
     const history = useHistory();
     // const [cateform] = Form.useForm();
@@ -398,7 +398,10 @@ const Public = props => {
             .then(response => {
                 message.success("编辑成功");
                 changeSubmitLoading(true);
-                history.push("/product/manage");
+                // 判断来源
+                let reg = new RegExp("\\?from=(.*)");
+                let redirect = location.search.match(reg) ? decodeURIComponent(RegExp.$1) : "/product/manage";
+                history.push(redirect);
             })
     }
 

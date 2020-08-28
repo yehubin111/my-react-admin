@@ -4,7 +4,7 @@ const constants = {
     SAVEINFO: 'SAVEINFO',
     CLEARINFO: 'CLEARINFO',
     SAVEQINIUINFO: 'SAVEQINIUINFO',
-    LOGINOUT: 'LOGINOUT',
+    // LOGINOUT: 'LOGINOUT',
     /**
      * base基础数据
      */

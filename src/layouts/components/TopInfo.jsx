@@ -5,7 +5,6 @@ import { withRouter } from 'react-router-dom';
 import styles from './comp.module.scss';
 import head from 'assets/images/head.jpg';
 import defaultConfig from "defaultConfig";
-import { toLoginOut } from 'actions';
 
 import { Dropdown, Menu, Avatar } from 'antd';
 import { MenuUnfoldOutlined, MenuFoldOutlined, ExportOutlined, EditOutlined } from '@ant-design/icons';
@@ -14,12 +13,15 @@ const { logo } = defaultConfig;
 
 class TopInfo extends Component {
     render() {
-        const { onMenu, collapsed, userInfo, toLoginOut, location, isMobile } = this.props;
+        const { onMenu, collapsed, userInfo, location, isMobile, history } = this.props;
         const menu = (
             <Menu>
                 <Menu.Item>
                     <p className={styles.downmenu} onClick={() => {
-                        toLoginOut(location.pathname);
+                        // 保存token
+                        localStorage.removeItem(`${defaultConfig.productName}-token`);
+                        let redirect = location.pathname;
+                        history.push("/base/login?redirect=" + encodeURIComponent(redirect));
                     }}><ExportOutlined /> 退出登录</p>
                 </Menu.Item>
                 <Menu.Item>
@@ -70,4 +72,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, { toLoginOut })(withRouter(TopInfo));
+export default connect(mapStateToProps, {})(withRouter(TopInfo));

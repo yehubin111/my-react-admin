@@ -61,7 +61,8 @@ class Axios {
           if (r.code === "1003") {
             localStorage.removeItem(`${defaultConfig.productName}-token`);
           }
-          message.error(msg);
+          message.destroy("apiError");
+          message.error({ content: msg, key: "apiError" });
           return Promise.reject(msg);
         }
       },

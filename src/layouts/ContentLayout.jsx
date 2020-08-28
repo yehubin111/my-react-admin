@@ -1,9 +1,10 @@
 import React, { Suspense } from "react";
-import { connect } from "react-redux";
-
-import PageLoading from "components/PageLoading";
-
 import { Route, Redirect, Switch } from "react-router-dom";
+
+import defaultConfig from "defaultConfig";
+
+import { message } from "antd";
+import PageLoading from "components/PageLoading";
 
 const ContentLayout = props => {
   const { routes, redirectFrom, redirectTo, redirectKey } = props;
@@ -26,6 +27,17 @@ const ContentLayout = props => {
             key={router.key}
             render={() => {
               document.title = router.meta.name;
+              console.log("render");
+              let token = localStorage.getItem(`${defaultConfig.productName}-token`);
+              // 页面加载的时候，判断token是否存在
+              if (!token && !router.noLimit) {
+                setTimeout(() => {
+                  message.destroy("tokenFailure");
+                  message.warning({ content: "token失效，请重新登录", key: "tokenFailure" });
+                }, 0)
+                let redirect = router.path;
+                return <Redirect to={`/base/login?redirect=${encodeURIComponent(redirect)}`}></Redirect>
+              };
               return <Suspense fallback={<PageLoading />}>
                 <Component />
               </Suspense>
@@ -50,4 +62,10 @@ const ContentLayout = props => {
     <Switch>{routerCreate(routes, redirectFrom, redirectTo, redirectKey)}</Switch>
   )
 };
-export default connect(() => ({}), {})(ContentLayout);
+
+// const mapStateToProps = (state) => {
+//   return {
+
+//   }
+// }
+export default ContentLayout;

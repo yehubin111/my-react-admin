@@ -128,7 +128,7 @@ const ManageTable = props => {
             render: (text, record) => (
                 <Space size="middle">
                     <span className="button" onClick={() => {
-                        history.push("/product/public/" + record.id);
+                        history.push("/product/public/" + record.id + "?from=" + encodeURIComponent(location.pathname));
                     }}>编辑</span>
                     {
                         isAudit
