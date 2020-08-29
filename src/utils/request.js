@@ -1,13 +1,16 @@
-// import {  } from "redux";
 import axios from "axios";
+
 import Api from "./api";
 import defaultConfig from "defaultConfig";
-import { message } from "antd";
 import { exportExcelFromData } from "utils/common";
+
+import { message } from "antd";
+
+const { api, productName } = defaultConfig;
 
 class Axios {
   axios = axios.create({
-    baseURL: defaultConfig.api.path,
+    baseURL: api.path,
     timeout: 60000,
     headers: {
       Authorization: ""
@@ -27,7 +30,7 @@ class Axios {
          */
         let data = config.data;
         let rdata = {};
-        let token = localStorage.getItem(`${defaultConfig.productName}-token`);
+        let token = localStorage.getItem(`${productName}-token`);
 
         Object.keys(data).forEach(v => {
           if (data[v] !== "" && data[v] !== null) rdata[v] = data[v];
@@ -59,7 +62,9 @@ class Axios {
           const msg = r.msg;
           // 1003 token失效情况，跳转登录
           if (r.code === "1003") {
-            localStorage.removeItem(`${defaultConfig.productName}-token`);
+            localStorage.removeItem(`${productName}-token`);
+            let redirect = window.location.pathname;
+            window.location.href = "/base/login?redirect=" + encodeURIComponent(redirect);
           }
           message.destroy("apiError");
           message.error({ content: msg, key: "apiError" });

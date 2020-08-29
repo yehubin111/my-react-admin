@@ -100,7 +100,7 @@ const Banner = (props) => {
             dataIndex: "columnPic",
             render: (text, record) => {
                 let images = record.columnPic.split(',');
-                return <img src={images[0]} width="100" onClick={() => {
+                return <img alt="" src={images[0]} width="100" onClick={() => {
                     setViewImages(images);
                     changeViewStatus(true);
                 }} />

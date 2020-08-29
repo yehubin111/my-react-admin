@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import { Switch, Route, Redirect, BrowserRouter, Router } from "react-router-dom";
+import { Switch, Route, Redirect, BrowserRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
-import history from "utils/history";
 import { wrapContext } from "utils/context";
 import defaultConfig from "defaultConfig";
-import { routerConfig, moduleRouter, baseRouter } from "./config";
+import { moduleRouter, baseRouter } from "./config";
+
+const { productName } = defaultConfig;
 
 class RouteConfig extends Component {
   state = {
@@ -109,12 +110,12 @@ class RouteConfig extends Component {
     }
   }
   render() {
-    // const { token } = this.props;
     const { isMobile } = this.state;
     let menus = this.getLimitMenus();
     // 设置basic重定向地址
     this.setRedirectLink(menus);
-
+    
+    const routerConfig = [...moduleRouter, ...baseRouter]
     return (
       <wrapContext.Provider value={{
         device: isMobile ? "h5" : "web"
@@ -133,8 +134,8 @@ class RouteConfig extends Component {
                     path={router.path}
                     key={router.key}
                     render={() => {
-                      // 拿到权限路由之后，渲染子路由
                       menus = this.getLimitMenus();
+                      // 拿到权限路由之后，渲染子路由
                       return React.createElement(component, {
                         routes: menus,
                         redirectFrom: router.path,
@@ -156,7 +157,7 @@ class RouteConfig extends Component {
 const mapStateToProps = (state) => {
   return {
     userInfo: state.userInfo,
-    token: localStorage.getItem(`${defaultConfig.productName}-token`)
+    token: localStorage.getItem(`${productName}-token`)
   }
 }
 

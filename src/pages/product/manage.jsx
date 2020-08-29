@@ -118,6 +118,11 @@ class ProductManage extends Component {
             })
         })
     }
+    componentWillUnmount = () => {
+        this.setState = (state, callback) => {
+            return;
+        };
+    }
     handleMenuClick(e) {
         const { selectedRowKeys } = this.state;
         if (e.key === "1" && (!selectedRowKeys || selectedRowKeys.length === 0)) {
@@ -346,7 +351,7 @@ class ProductManage extends Component {
                     selectedRowKeys={selectedRowKeys}
                     ctrlKey={ctrlKey}
                     onOk={() => {
-                        tableRef.current.reload(); 
+                        tableRef.current.reload();
                     }} onCancel={() => {
                         this.setState({
                             batchStatus: false

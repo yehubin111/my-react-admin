@@ -84,7 +84,7 @@ const AddBanner = (props) => {
             shelfStatus: Boolean(banner.shelfStatus)
         })
         setTheme("编辑");
-    }, [banner])
+    }, [banner, form])
 
     const handleSubmit = (values) => {
         let payload = {

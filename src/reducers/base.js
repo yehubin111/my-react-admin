@@ -1,6 +1,6 @@
 import constants from "../constants";
-import defaultConfig from "defaultConfig";
-import history from "utils/history";
+// import defaultConfig from "defaultConfig";
+// import history from "utils/history";
 
 const defaultQiniuInfo = {
   token: "",

@@ -71,9 +71,6 @@ const Public = props => {
     const { sexList, luxuryList, countryList, deliveryList, refundServiceList, saleList, location } = props;
     const { productId } = useParams();
     const history = useHistory();
-    // const [cateform] = Form.useForm();
-    // const [baseform] = Form.useForm();
-    // const [logiform] = Form.useForm();
     const [spuform] = Form.useForm();
     const [brandList, setBrandList] = useState([]);
     const [originList, setOriginList] = useState([]);
@@ -86,76 +83,79 @@ const Public = props => {
         marginBottom: "20px"
     }
 
+    let isUnMounted = false;
+    const toInitDetailInfo = response => {
+        let product = response;
+        product.measure = {
+            length: product.length,
+            width: product.width,
+            height: product.height
+        }
+        product.category = product.categorys
+            ? product.categorys.map(cate => cate.id).reverse()
+            : [];
+        if (product.deliveryFee === 0) {
+            product.deliveryFeeType = 0;
+        } else {
+            product.deliveryFeeType = 1;
+        }
+        product.skus = product.skus.map(sku => ({
+            id: sku.id,
+            code: "系统生成",
+            size: sku.size,
+            storeNumber: sku.storeNumber
+        }))
+        spuform.setFieldsValue(product)
+    }
     useEffect(() => {
-        // 商品详情
-        requestGetSpuDetail({ id: productId })
-            .then(response => {
-                let product = response;
-                product.measure = {
-                    length: product.length,
-                    width: product.width,
-                    height: product.height
-                }
-                product.category = product.categorys
-                    ? product.categorys.map(cate => cate.id).reverse()
-                    : [];
-                if (product.deliveryFee === 0) {
-                    product.deliveryFeeType = 0;
-                } else {
-                    product.deliveryFeeType = 1;
-                }
-                product.skus = product.skus.map(sku => ({
-                    id: sku.id,
-                    code: "系统生成",
-                    size: sku.size,
-                    storeNumber: sku.storeNumber
-                }))
-                spuform.setFieldsValue(product)
-            })
-        // 品牌
-        requestBrandList()
-            .then(response => {
-                let list = response.list.map(brand => ({ value: brand.id, label: [brand.nameEn, brand.nameZh].filter(v => v).join("-") }));
-                setBrandList(list);
-            })
-        // 产地
-        requestOriginList()
-            .then(response => {
-                let list = response.list.map(origin => ({ value: origin.id, label: origin.nameZh }));
-                setOriginList(list);
-            })
-        // 季节
-        requestSeasonList()
-            .then(response => {
-                let list = response.list.map(season => ({ value: season.id, label: season.nameZh }));
-                setSeasonList(list);
-            })
-        // 发货仓库
-        requestStorageList()
-            .then(response => {
-                let list = response.list.map(storage => ({ value: storage.id, label: storage.name }));
-                setStorageList(list);
-            })
-        // 采购规则
-        requestRulesList()
-            .then(response => {
-                let list = response.list.map(rule => ({ value: rule.id, label: rule.rulesName }));
-                setRulesList(list);
-            })
-        // 类目
         let payload = {
             categoryLevel: 1,
             parentId: 0
         }
-        requestCategoryList(payload).then(response => {
-            let list = response.list.map(cate => ({
+        Promise.all([
+            requestBrandList(),
+            requestOriginList(),
+            requestSeasonList(),
+            requestStorageList(),
+            requestRulesList(),
+            requestCategoryList(payload),
+            requestGetSpuDetail({ id: productId })
+        ]).then((response) => {
+            if (isUnMounted)
+                return;
+            // 品牌
+            let list = response[0].list.map(brand => ({ value: brand.id, label: [brand.nameEn, brand.nameZh].filter(v => v).join("-") }));
+            setBrandList(list);
+            // 产地
+            list = response[1].list.map(origin => ({ value: origin.id, label: origin.nameZh }));
+            setOriginList(list);
+            // 季节
+            list = response[2].list.map(season => ({ value: season.id, label: season.nameZh }));
+            setSeasonList(list);
+            // 发货仓库
+            list = response[3].list.map(storage => ({ value: storage.id, label: storage.name }));
+            setStorageList(list);
+            // 采购规则
+            list = response[4].list.map(rule => ({ value: rule.id, label: rule.rulesName }));
+            setRulesList(list);
+            // 类目
+            list = response[5].list.map(cate => ({
                 value: cate.id,
                 label: cate.nameZh,
                 isLeaf: false
             }))
             setCateList(list);
+            // 商品详情
+            toInitDetailInfo(response[6])
         })
     }, [productId])
+
+    useEffect(() => {
+        // 销毁组件之后，阻止请求回调改变组件状态
+        return () => {
+            isUnMounted = true;
+        }
+    }, [])
 
     const col4 = {
         xl: { span: 16, offset: 2 },

@@ -13,7 +13,7 @@ import { UserOutlined, LockOutlined } from "@ant-design/icons";
 
 const FormItem = Form.Item;
 const { Password } = Input;
-const { logo, introduce } = defaultConfig;
+const { logo, introduce, productName } = defaultConfig;
 
 class Login extends Component {
   state = {
@@ -52,7 +52,7 @@ class Login extends Component {
                  * 保存token
                  * 暂未找到组件外js文件内使用redux状态方法，token单独保存
                  */
-                localStorage.setItem(`${defaultConfig.productName}-token`, response.token);
+                localStorage.setItem(`${productName}-token`, response.token);
                 // 保存信息
                 saveUserInfo(response);
                 saveQiniuInfo(qiniu);

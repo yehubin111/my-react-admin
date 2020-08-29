@@ -36,6 +36,11 @@ class ProductManage extends Component {
         // 基础数据
         this.getSortData();
     }
+    componentWillUnmount = () => {
+        this.setState = (state, callback) => {
+            return;
+        };
+    }
     getListData(payload) {
         let params = {
             ...payload

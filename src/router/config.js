@@ -6,7 +6,7 @@ import {
   LineChartOutlined,
   UnorderedListOutlined,
   AppstoreOutlined,
-  HomeOutlined
+  // HomeOutlined
 } from "@ant-design/icons";
 
 /**
@@ -309,4 +309,4 @@ export const baseRouter = [
   }
 ];
 
-export const routerConfig = [...moduleRouter, ...baseRouter];
+// export const routerConfig = [...moduleRouter, ...baseRouter];

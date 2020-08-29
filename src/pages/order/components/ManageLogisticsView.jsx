@@ -20,9 +20,9 @@ const ManageLogisticsView = props => {
                 .then(response => {
                     let logistics = response;
                     // 通用仓
-                    setTyLogistics(logistics.logisticsCompanyList.find(v => v.isTyLogistics == 1));
+                    setTyLogistics(logistics.logisticsCompanyList.find(v => v.isTyLogistics === 1));
                     // 物流公司
-                    setLogisticsCompany(logistics.logisticsCompanyList.filter(v => v.isTyLogistics != 1));
+                    setLogisticsCompany(logistics.logisticsCompanyList.filter(v => v.isTyLogistics !== 1));
                     // 物流轨迹
                     setLogisticsList(logistics.logisticsTraceList);
                 })

@@ -9,7 +9,7 @@ import defaultConfig from "defaultConfig";
 import { Dropdown, Menu, Avatar } from 'antd';
 import { MenuUnfoldOutlined, MenuFoldOutlined, ExportOutlined, EditOutlined } from '@ant-design/icons';
 
-const { logo } = defaultConfig;
+const { mainLogo } = defaultConfig;
 
 class TopInfo extends Component {
     render() {
@@ -34,7 +34,7 @@ class TopInfo extends Component {
         return (
             <div className={`rf jsb ac ${styles.top}`}>
                 {isMobile ? <div className={`rf ac ${styles.left}`}>
-                    <img className={styles.logo} src={logo} alt="" />
+                    <img className={styles.logo} src={mainLogo} alt="" />
                     {
                         React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
                             className: styles.menu,

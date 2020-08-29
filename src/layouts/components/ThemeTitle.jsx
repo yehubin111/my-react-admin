@@ -17,7 +17,7 @@ const ThemeTitle = props => {
     <div className={styles.themetitle}>
       <Breadcrumb>
         {patharr.map((_, index) => {
-          if (typeOf(routes) !== "Array") return;
+          if (typeOf(routes) !== "Array") return false;
           let route = routes.find(
             rt => rt.path.replace(reg, "") === `/${patharr.slice(0, index + 1).join("/")}`
           );

@@ -1,10 +1,13 @@
 import React, { Suspense } from "react";
+import { connect } from "react-redux";
 import { Route, Redirect, Switch } from "react-router-dom";
 
 import defaultConfig from "defaultConfig";
 
 import { message } from "antd";
 import PageLoading from "components/PageLoading";
+
+const { productName } = defaultConfig;
 
 const ContentLayout = props => {
   const { routes, redirectFrom, redirectTo, redirectKey } = props;
@@ -27,8 +30,7 @@ const ContentLayout = props => {
             key={router.key}
             render={() => {
               document.title = router.meta.name;
-              console.log("render");
-              let token = localStorage.getItem(`${defaultConfig.productName}-token`);
+              let token = localStorage.getItem(`${productName}-token`);
               // 页面加载的时候，判断token是否存在
               if (!token && !router.noLimit) {
                 setTimeout(() => {
@@ -68,4 +70,4 @@ const ContentLayout = props => {
 
 //   }
 // }
-export default ContentLayout;
+export default connect(() => ({}), {})(ContentLayout);

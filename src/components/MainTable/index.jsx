@@ -12,7 +12,7 @@ const MainTable = props => {
         onRequest,
         onSelect,
         title,
-        headerTab: { key: headerTabKey, config: headerTabConfig } = {},
+        headerTab: { config: headerTabConfig } = {},
         headerCtrl,
         tableConfig: { onEditChange, pagination, ...tableConfig } = {},
         tableRender,

@@ -32,7 +32,7 @@ const OrderTable = (props) => {
             key: "mainPicAddress",
             render: (text, record) => {
                 let images = record.mainPicAddress.split(',');
-                return <img src={images[0] + '?imageView2/0/w/100'} width="100" onClick={() => {
+                return <img alt="" src={images[0] + '?imageView2/0/w/100'} width="100" onClick={() => {
                     setViewImages(images);
                     changeViewStatus(true);
                 }} />
