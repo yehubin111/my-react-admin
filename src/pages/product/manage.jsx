@@ -41,6 +41,7 @@ class ProductManage extends Component {
         payload: {},
         ctrlKey: ""
     }
+    isUnMounted = false
     componentDidMount() {
         // 基础数据
         this.getSortData();
@@ -74,7 +75,7 @@ class ProductManage extends Component {
     getSortData() {
         // 品牌
         requestBrandList().then(response => {
-            this.setState({
+            !this.isUnMounted && this.setState({
                 brandList: response.list.map(brand => ({
                     ...brand,
                     value: brand.id,
@@ -84,7 +85,7 @@ class ProductManage extends Component {
         });
         // 季节
         requestSeasonList().then(response => {
-            this.setState({
+            !this.isUnMounted && this.setState({
                 seasonList: response.list.map(season => ({
                     ...season,
                     value: season.id,
@@ -94,7 +95,7 @@ class ProductManage extends Component {
         });
         // 采购规则
         requestRulesList().then(response => {
-            this.setState({
+            !this.isUnMounted && this.setState({
                 ruleList: response.list.map(rule => ({
                     ...rule,
                     value: rule.id,
@@ -108,7 +109,7 @@ class ProductManage extends Component {
             parentId: 0
         }
         requestCategoryList(payload).then(response => {
-            this.setState({
+            !this.isUnMounted && this.setState({
                 cateList: response.list.map(cate => ({
                     value: cate.id,
                     label: cate.nameZh,
@@ -119,9 +120,7 @@ class ProductManage extends Component {
         })
     }
     componentWillUnmount = () => {
-        this.setState = (state, callback) => {
-            return;
-        };
+        this.isUnMounted = true;
     }
     handleMenuClick(e) {
         const { selectedRowKeys } = this.state;

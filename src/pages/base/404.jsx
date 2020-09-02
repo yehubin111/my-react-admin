@@ -14,7 +14,7 @@ const NoMatch = (props) => {
                 subTitle="Sorry, the page you visited does not exist."
                 extra={<Button type="primary" onClick={() => {
                     props.history.push("/");
-                }}>Back Home</Button>}
+                }}>返回首页</Button>}
             />
         </div>
     )

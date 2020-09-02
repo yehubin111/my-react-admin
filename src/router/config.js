@@ -18,7 +18,7 @@ import {
  * redirect: String 会生成一个Redirect路由组件
  * children: Array 子组件
  */
-export const moduleRouter = [
+const baseRouter = [
   {
     path: "/base",
     component: "/BlankLayout",
@@ -40,32 +40,21 @@ export const moduleRouter = [
           icon: ""
         },
         key: "login"
+      },
+      {
+        path: "*",
+        component: "/base/404",
+        hidden: true,
+        meta: {
+          name: "404",
+          icon: ""
+        },
+        key: "404"
       }
     ]
   },
-  // {
-  //   path: "/home",
-  //   component: "/BasicLayout",
-  //   redirect: "/home/index",
-  //   noLimit: true,
-  //   meta: {
-  //     name: "首页",
-  //     icon: <HomeOutlined />
-  //   },
-  //   key: "home",
-  //   children: [
-  //     {
-  //       path: "/home/index",
-  //       component: "/home/index",
-  //       meta: {
-  //         name: "首页",
-  //         icon: "",
-  //         introduce: ""
-  //       },
-  //       key: "homeIndex"
-  //     }
-  //   ]
-  // },
+]
+const navRouter = [
   {
     path: "/product",
     component: "/BasicLayout",
@@ -285,28 +274,109 @@ export const moduleRouter = [
         key: "limitRoles"
       }
     ]
-  }
-];
-export const baseRouter = [
-  // 重定向
+  },
+  // {
+  //   path: "*",
+  //   component: "/base/404",
+  //   noLimit: true,
+  //   hidden: true,
+  //   meta: {
+  //     name: "404",
+  //     icon: ""
+  //   },
+  //   key: "404"
+  // }
+]
+export const moduleRouter = [
+  // {
+  //   path: "/base",
+  //   component: "/BlankLayout",
+  //   redirect: "/base/login",
+  //   key: "base",
+  //   noLimit: true,
+  //   hidden: true,
+  //   meta: {
+  //     name: "基础",
+  //     icon: ""
+  //   },
+  //   children: [
+  //     {
+  //       path: "/base/login",
+  //       component: "/base/login",
+  //       hidden: true,
+  //       meta: {
+  //         name: "登录",
+  //         icon: ""
+  //       },
+  //       key: "login"
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: "/home",
+  //   component: "/BasicLayout",
+  //   redirect: "/home/index",
+  //   noLimit: true,
+  //   meta: {
+  //     name: "首页",
+  //     icon: <HomeOutlined />
+  //   },
+  //   key: "home",
+  //   children: [
+  //     {
+  //       path: "/home/index",
+  //       component: "/home/index",
+  //       meta: {
+  //         name: "首页",
+  //         icon: "",
+  //         introduce: ""
+  //       },
+  //       key: "homeIndex"
+  //     }
+  //   ]
+  // },
+  {
+    path: "/base",
+    component: "/BlankLayout",
+    redirect: "",
+    key: "BlankLayout",
+    children: [...baseRouter]
+  },
   {
     path: "/",
     component: "/BasicLayout",
-    redirect: "/user/manage",
-    noLimit: true,
-    key: "basic"
+    redirect: "/product/manage",
+    key: "BasicLayout",
+    children: [...navRouter]
   },
-  {
-    path: "*",
-    component: "/base/404",
-    noLimit: true,
-    hidden: true,
-    meta: {
-      name: "404",
-      icon: ""
-    },
-    key: "404"
-  }
+  // {
+  //   path: "/",
+  //   component: "/BasicLayout",
+  //   redirect: "/user/manage",
+  //   noLimit: true,
+  //   key: "basic"
+  // },
 ];
+// export const baseRouter = [
+//   // 重定向
+//   // {
+//   //   path: "/",
+//   //   component: "/BasicLayout",
+//   //   redirect: "/user/manage",
+//   //   noLimit: true,
+//   //   key: "basic"
+//   // },
+//   {
+//     path: "*",
+//     component: "/base/404",
+//     noLimit: true,
+//     hidden: true,
+//     meta: {
+//       name: "404",
+//       icon: ""
+//     },
+//     key: "404"
+//   }
+// ];
 
 // export const routerConfig = [...moduleRouter, ...baseRouter];

@@ -48,6 +48,7 @@ const ContentLayout = props => {
         );
       }
     });
+
     if (redirectTo)
       routers.push(
         <Redirect
@@ -59,9 +60,17 @@ const ContentLayout = props => {
       );
     return routers;
   };
-  // return <>{routerCreate(routes, redirectFrom, redirectTo, redirectKey)}</>; <Suspense fallback={<PageLoading />}>
+  // return <>{routerCreate(routes, redirectFrom, redirectTo, redirectKey)}</>;  // <Suspense fallback={<PageLoading />}>
   return (
-    <Switch>{routerCreate(routes, redirectFrom, redirectTo, redirectKey)}</Switch>
+    <Switch>
+      {routerCreate(routes, redirectFrom, redirectTo, redirectKey)}
+      <Redirect
+        exact
+        from="*"
+        to="/base/404"
+        key="404"
+      ></Redirect>
+    </Switch>
   )
 };
 

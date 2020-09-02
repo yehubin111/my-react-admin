@@ -3,21 +3,25 @@ import { Menu } from "antd";
 import { Link, withRouter } from "react-router-dom";
 
 class MenuNav extends Component {
-  // state = {
-  //   openKeys: []
-  // };
+  state = {
+    openKeys: [],
+    selectedKeys: []
+  };
   componentDidMount() {
+    console.log("nav didMount")
+    let { location: { pathname: path }, routes } = this.props;
+    this.menuSelect(routes, path);
   }
-  // handleClick(e) {
-  //   this.setState({
-  //     selectedKeys: [e.key]
-  //   });
-  // }
-  // handleOpenChange(e) {
-  //   this.setState({
-  //     openKeys: e
-  //   });
-  // }
+  handleClick(e) {
+    this.setState({
+      selectedKeys: [e.key]
+    });
+  }
+  handleOpenChange(e) {
+    this.setState({
+      openKeys: [e[e.length - 1]]
+    });
+  }
   menuCreate(routes) {
     return routes.map(router => {
       // 隐藏菜单
@@ -46,7 +50,7 @@ class MenuNav extends Component {
       let route = routes.find(
         rt => rt.path === `/${patharr.slice(0, index + 1).join("/")}`
       );
-      if (!route) {}
+      if (!route) { }
       else if (route.children && route.children.length > 0) {
         routes = route.children;
         defaultOpenKeys.push(route.key);
@@ -54,27 +58,31 @@ class MenuNav extends Component {
         defaultSelectedKeys.push(route.key);
       }
     });
+    this.setState({
+      openKeys: defaultOpenKeys,
+      selectedKeys: defaultSelectedKeys
+    })
     return { defaultOpenKeys, defaultSelectedKeys };
   }
   render() {
-    let { location: { pathname: path }, routes, onRoute } = this.props;
-    let { defaultOpenKeys, defaultSelectedKeys } = this.menuSelect(routes, path);
-    // console.log(defaultOpenKeys, selectedKeys);
-    // let { openKeys } = this.state;
+    let { routes, onRoute } = this.props;
+    let { selectedKeys, openKeys } = this.state;
+    
     return (
       <Menu
         theme="dark"
         mode="inline"
-        // onOpenChange={e => {
-        //   this.handleOpenChange(e);
-        // }}
-        defaultOpenKeys={defaultOpenKeys}
-        defaultSelectedKeys={defaultSelectedKeys}
-        onClick={() => {
+        onOpenChange={e => {
+          this.handleOpenChange(e);
+        }}
+        // defaultOpenKeys={defaultOpenKeys}
+        // defaultSelectedKeys={defaultSelectedKeys}
+        selectedKeys={selectedKeys}
+        openKeys={openKeys}
+        onClick={(e) => {
+          this.handleClick(e);
           onRoute && onRoute();
         }}
-        // openKeys={openKeys}
-        // selectedKeys={selectedKeys}
       >
         {this.menuCreate(routes)}
       </Menu>

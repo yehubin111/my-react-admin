@@ -12,6 +12,7 @@ const { copyright } = defaultConfig;
 
 const BlankLayout = props => {
   const { routes, redirectFrom, redirectTo, redirectKey } = props;
+
   return (
     <Layout className={styles.layout}>
       <Content>

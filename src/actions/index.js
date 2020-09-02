@@ -15,13 +15,13 @@ export const saveQiniuInfo = response => {
     response
   }
 }
-// // 退出登录
-// export const toLoginOut = response => {
-//   return {
-//     type: constants.LOGINOUT,
-//     response
-//   }
-// }
+// 退出登录
+export const toLoginOut = response => {
+  return {
+    type: constants.LOGINOUT,
+    response
+  }
+}
 /**
  * base基础数据
  * @param {*} response 

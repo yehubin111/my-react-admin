@@ -22,8 +22,6 @@ const BatchCtrl = props => {
             isStand: 0
         }
     }
-    useEffect(() => {
-    }, [])
 
     const handleCancel = () => {
         form.resetFields();

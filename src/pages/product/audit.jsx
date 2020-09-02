@@ -32,14 +32,13 @@ class ProductManage extends Component {
         payload: {},
         ctrlKey: ""
     }
+    isUnMounted = false
     componentDidMount() {
         // 基础数据
         this.getSortData();
     }
     componentWillUnmount = () => {
-        this.setState = (state, callback) => {
-            return;
-        };
+        this.isUnMounted = true;
     }
     getListData(payload) {
         let params = {
@@ -64,7 +63,7 @@ class ProductManage extends Component {
     getSortData() {
         // 品牌
         requestBrandList().then(response => {
-            this.setState({
+            !this.isUnMounted && this.setState({
                 brandList: response.list.map(brand => ({
                     ...brand,
                     value: brand.id,
@@ -74,7 +73,7 @@ class ProductManage extends Component {
         });
         // 季节
         requestSeasonList().then(response => {
-            this.setState({
+            !this.isUnMounted && this.setState({
                 seasonList: response.list.map(season => ({
                     ...season,
                     value: season.id,
@@ -88,7 +87,7 @@ class ProductManage extends Component {
             parentId: 0
         }
         requestCategoryList(payload).then(response => {
-            this.setState({
+            !this.isUnMounted && this.setState({
                 cateList: response.list.map(cate => ({
                     value: cate.id,
                     label: cate.nameZh,

@@ -108,6 +108,16 @@ const Public = props => {
         spuform.setFieldsValue(product)
     }
     useEffect(() => {
+        // 商品详情
+        requestGetSpuDetail({ id: productId })
+            .then(response => {
+                if (isUnMounted)
+                    return;
+                // 商品详情
+                toInitDetailInfo(response)
+            })
+
+        // 基础数据
         let payload = {
             categoryLevel: 1,
             parentId: 0
@@ -118,8 +128,7 @@ const Public = props => {
             requestSeasonList(),
             requestStorageList(),
             requestRulesList(),
-            requestCategoryList(payload),
-            requestGetSpuDetail({ id: productId })
+            requestCategoryList(payload)
         ]).then((response) => {
             if (isUnMounted)
                 return;
@@ -145,8 +154,6 @@ const Public = props => {
                 isLeaf: false
             }))
             setCateList(list);
-            // 商品详情
-            toInitDetailInfo(response[6])
         })
     }, [productId])
 
@@ -356,7 +363,7 @@ const Public = props => {
     ];
     const purchaseItems = [
         {
-            label: "发货仓库",
+            label: "采购规则",
             name: "rulesId",
             type: "select",
             data: rulesList

@@ -63,10 +63,10 @@ class Login extends Component {
                   let reg = new RegExp("\\?redirect=(.*)");
                   let redirect = location.search.match(reg) ? decodeURIComponent(RegExp.$1) : "/";
                   setTimeout(() => {
-                    history.push(redirect);
+                    // history.push(redirect);
                     //   console.log('redirect')
                     //   history.push("/");
-                    // window.location.href = redirect ? decodeURIComponent(redirect[0]) : "/";
+                    window.location.href = redirect;
                   }, 0)
                 } else message.error("请给该角色配置权限");
               }

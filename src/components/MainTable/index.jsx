@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef, useContext } from 'react';
 
+import { useSafeState } from "hooks";
 import { wrapContext } from "utils/context";
 
 import TableFilter from "../TableFilter";
@@ -23,10 +24,10 @@ const MainTable = props => {
         pageSize: 20
     });
     const [filterOptions, setFilterOptions] = useState({});
-    const [total, setTotal] = useState(0);
-    const [dataSource, setDataSource] = useState([]);
+    const [total, setTotal] = useSafeState(0);
+    const [dataSource, setDataSource] = useSafeState([]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-    const [loading, changeLoading] = useState(false);
+    const [loading, changeLoading] = useSafeState(false);
     const filterRef = useRef();
     const global = useContext(wrapContext);
     tableConfig.scroll = {

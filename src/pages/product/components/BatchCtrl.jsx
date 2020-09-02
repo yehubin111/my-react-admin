@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 
+import { useSafeState } from "hooks";
 import { requestTopicList, requestRulesList } from "service/common";
 import {
     requestSpuAuditStand,
@@ -14,8 +15,8 @@ import MainFormItems from "components/MainFormItems";
 const BatchCtrl = props => {
     const { visible, onCancel, selectedRowKeys, payload, ctrlKey, onOk } = props;
     const [form] = Form.useForm();
-    const [topicList, setTopicList] = useState([]);
-    const [ruleList, setRuleList] = useState([]);
+    const [topicList, setTopicList] = useSafeState([]);
+    const [ruleList, setRuleList] = useSafeState([]);
     const [topicHidden, changeTopicHidden] = useState(false);
     const [standHidden, changeStandHidden] = useState(true);
     const [ruleHidden, changeRuleHidden] = useState(true);

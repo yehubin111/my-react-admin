@@ -1,5 +1,5 @@
 import constants from "../constants";
-// import defaultConfig from "defaultConfig";
+import defaultConfig from "defaultConfig";
 // import history from "utils/history";
 
 const defaultQiniuInfo = {
@@ -53,14 +53,10 @@ export const userInfo = (state = defaultInfo, action = {}) => {
           : response.backUserAccount,
         token: response.token
       };
-    // case constants.LOGINOUT:
-    //   // 保存token
-    //   localStorage.removeItem(`${defaultConfig.productName}-token`);
-
-    //   let redirect = response;
-    //   console.log(redirect);
-    //   history.push("/base/login?redirect=" + encodeURIComponent(redirect));
-    //   return state = defaultInfo;
+    case constants.LOGINOUT:
+      // 保存token
+      localStorage.removeItem(`${defaultConfig.productName}-token`);
+      return state = defaultInfo;
     default:
       return state;
   }
