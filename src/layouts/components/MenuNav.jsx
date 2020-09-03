@@ -8,7 +8,6 @@ class MenuNav extends Component {
     selectedKeys: []
   };
   componentDidMount() {
-    console.log("nav didMount")
     let { location: { pathname: path }, routes } = this.props;
     this.menuSelect(routes, path);
   }
@@ -34,7 +33,7 @@ class MenuNav extends Component {
         );
       } else {
         return (
-          <Menu.Item key={router.key} icon={router.icon}>
+          <Menu.Item key={router.key} icon={router.meta.icon}>
             <Link to={router.path}>{router.meta.name}</Link>
           </Menu.Item>
         );

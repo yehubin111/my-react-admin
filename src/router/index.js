@@ -49,8 +49,16 @@ class RouteConfig extends Component {
               rt.children = [];
               toCycleLimit(limit.backMenuList, child, rt.children);
             }
-            if (rt.children && rt.children.length > 0)
-              rt.redirect = rt.children[0].path;
+            // 20200903新增，如果子菜单只有单一一个路由，则只显示一级，外层icon继承
+            if (rt.children && rt.children.length > 0) {
+              if (rt.children.length > 1)
+                rt.redirect = rt.children[0].path;
+              else {
+                let icon = rt.meta && rt.meta.icon;
+                rt = rt.children[0];
+                rt.meta.icon = icon;
+              }
+            }
             if ((rt.children && rt.children.length > 0) || !rt.children)
               ms.push(rt);
           }
@@ -61,11 +69,11 @@ class RouteConfig extends Component {
     moduleRouter.forEach(layoutRouter => {
       if (layoutRouter.children) {
         let child = layoutRouter.children;
-        layoutRouter.children = [];
         let router = {
           ...layoutRouter
         }
-        toCycleLimit(limits, child, layoutRouter.children);
+        router.children = [];
+        toCycleLimit(limits, child, router.children);
         router.redirect = router.children[0]
           ? (router.children[0].redirect || router.children[0].path)
           : "";
