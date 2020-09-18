@@ -1,16 +1,20 @@
 import React from "react";
 
-import { Form, Input, DatePicker, Switch, Select, Row, Col, Radio, Checkbox } from "antd";
+import styles from "./index.module.scss";
+
+import { Form, Input, DatePicker, TimePicker, Switch, Select, Row, Col, Radio, Checkbox } from "antd";
 import Upload from "components/Upload";
+import Tag from "components/Tag";
 const { Item: FormItem } = Form;
 const { Option } = Select;
 const { RangePicker } = DatePicker;
+const { RangePicker: TimeRangePicker } = TimePicker;
 const { TextArea } = Input;
 const { Group: RadioGroup } = Radio;
 const { Group: CheckboxGroup } = Checkbox;
 
 
-const VerticalItems = ({ col = {}, index, children }) => {
+const VerticalItems = ({ col, index, children }) => {
     const col1 = {
         lg: 6,
         md: 12,
@@ -31,7 +35,7 @@ const VerticalItems = ({ col = {}, index, children }) => {
         sm: 24,
         xs: 24
     }
-    return <Col {...eval(`col${index % 3 + 1}`)} {...col}>
+    return <Col {...(col || eval(`col${index % 3 + 1}`))}>
         {children}
     </Col>
 }
@@ -64,10 +68,10 @@ const MainFormItems = props => {
                     child = <Upload {...options} />;
                     break;
                 case "radio":
-                    child = <RadioGroup options={Array.isArray(data) && data} {...options} />
+                    child = <RadioGroup className={styles['radio-group']} options={Array.isArray(data) && data} {...options} />
                     break;
                 case "checkbox":
-                    child = <CheckboxGroup options={Array.isArray(data) && data} {...options}/>
+                    child = <CheckboxGroup options={Array.isArray(data) && data} {...options} />
                     break;
                 case "select":
                     child = <Select
@@ -90,10 +94,28 @@ const MainFormItems = props => {
                         {...options}
                     />;
                     break;
+                case "date":
+                    child = <DatePicker
+                        style={{ width: "100%" }}
+                        placeholder={placeholder}
+                        {...options} />
+                    break;
+                case "timeRange":
+                    child = <TimeRangePicker
+                        style={{ width: "100%" }}
+                        placeholder={placeholder}
+                        {...options}
+                    />
+                    break;
                 case "switch":
                     child = <Switch
                         {...options}
                     />;
+                    break;
+                case "tag":
+                    child = <Tag
+                        {...options}
+                    />
                     break;
                 default:
                     break;
