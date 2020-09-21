@@ -13,7 +13,7 @@ const MainTable = props => {
         onRequest,
         onSelect,
         title,
-        headerTab: { config: headerTabConfig } = {},
+        headerTab: { config: headerTabConfig, key: headerTabKey } = {},
         headerCtrl,
         tableConfig: { onEditChange, pagination, ...tableConfig } = {},
         tableRender,
@@ -67,7 +67,15 @@ const MainTable = props => {
         };
     }
     useEffect(() => {
-        getListData(payload);
+        let params = {
+            ...payload
+        }
+        // 设置tab
+        if (headerTabKey) {
+            params[headerTabKey] = headerTabConfig.find(tab => tab.default).value;
+            setPayload(params);
+        }
+        getListData(params);
     }, [])
 
     const paginationOption = {
@@ -119,7 +127,7 @@ const MainTable = props => {
                         let options = {
                             ...payload,
                             pageIndex: 1,
-                            orderStatus: e
+                            [headerTabKey]: e
                         }
                         setPayload(options);
                         getListData(options);
