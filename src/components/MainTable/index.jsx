@@ -9,27 +9,29 @@ import EditTable from "../EditTable";
 
 const MainTable = props => {
     const {
-        filterConfig,
-        onRequest,
-        onSelect,
         title,
+        filterConfig,
+        filterRef,
+        filterInitialValues = {},
         headerTab: { config: headerTabConfig, key: headerTabKey } = {},
         headerCtrl,
         tableConfig: { onEditChange, pagination, ...tableConfig } = {},
         tableRender,
-        tableRef
+        tableRef,
+        onRequest,
+        onSelect
     } = props;
     const [payload, setPayload] = useState({
         pageIndex: 1,
         pageSize: 20
     });
+    const _filterRef = useRef();
     const [filterOptions, setFilterOptions] = useState({});
     const [total, setTotal] = useSafeState(0);
     const [dataSource, setDataSource] = useSafeState([]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [loading, changeLoading] = useSafeState(false);
-    const filterRef = useRef();
-    const global = useContext(wrapContext);
+    const GLOBAL = useContext(wrapContext);
     tableConfig.scroll = {
         x: 'max-content'
     }
@@ -45,6 +47,7 @@ const MainTable = props => {
         // 获取数据
         if (onRequest && typeof onRequest == 'function')
             onRequest(params, type).then(response => {
+                if (!response) return;
                 // loading end
                 changeLoading(false);
 
@@ -58,23 +61,50 @@ const MainTable = props => {
             ...payload,
             pageIndex: 1
         })
-        filterRef.current.resetFields();
+        _filterRef.current && _filterRef.current.resetFields();
     }
+
     if (tableRef && typeof tableRef !== 'function') {
         tableRef.current = {
             reload: getListData,
             resetFields: toResetFilter
         };
     }
+
+    const toInitFilterOptions = values => {
+        // 外部初始filter初始值的时候，在内部保存下来
+        setFilterOptions({
+            ...filterOptions,
+            ...values
+        });
+        _filterRef.current && _filterRef.current.setFieldsValue(values)
+    }
+    /**
+     * 20200927新增，头部筛选栏的ref绑定
+     * 分内部生成ref，供内部调用
+     * 和外部传入ref，返回绑定方法供外部调用
+     */
+    if (filterRef && typeof filterRef != 'function') {
+        filterRef.current = {
+            resetFields: _filterRef.current && _filterRef.current.resetFields,
+            setFieldsValue: toInitFilterOptions
+        }
+    }
     useEffect(() => {
+        // filter默认值初始化传参只能带入同步设置的值
         let params = {
-            ...payload
+            ...payload,
+            ...filterInitialValues
         }
         // 设置tab
         if (headerTabKey) {
             params[headerTabKey] = headerTabConfig.find(tab => tab.default).value;
             setPayload(params);
         }
+        // 设置filter默认值
+        if (Object.keys(filterInitialValues).length > 0)
+            setFilterOptions(filterInitialValues);
+
         getListData(params);
     }, [])
 
@@ -83,8 +113,8 @@ const MainTable = props => {
         total,
         current: payload.pageIndex,
         showSizeChanger: false,
-        size: global.device === "h5" ? "small" : "default",
-        // simple: global.device === "h5" ? true : false,
+        size: GLOBAL.device === "h5" ? "small" : "default",
+        // simple: GLOBAL.device === "h5" ? true : false,
         showTotal: total => `共 ${total} 条`,
         onChange: (page, pageSize) => {
             let params = {
@@ -120,7 +150,7 @@ const MainTable = props => {
                     ...values
                 }
                 getListData(params, 'filter');
-            }} config={filterConfig} filterRef={filterRef} />}
+            }} config={filterConfig} filterRef={_filterRef} initialValues={filterInitialValues} />}
             {headerCtrl
                 && <TableHeader
                     onTab={e => {

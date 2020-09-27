@@ -33,7 +33,7 @@ const Range = ({ value = [], onChange, placeholder }) => {
     </div>
 }
 const FormFilter = (props) => {
-    const { config, onFilter, filterRef } = props;
+    const { config, onFilter, filterRef, initialValues } = props;
     const [form] = Form.useForm();
 
     const toResetForm = () => {
@@ -45,9 +45,14 @@ const FormFilter = (props) => {
     const toOnlyReset = () => {
         form.resetFields();
     }
+    // 可供外部调用的初始化设置筛选栏数据
+    const toOnlySet = (values) => {
+        form.setFieldsValue(values);
+    }
     if (filterRef) {
         filterRef.current = {
-            resetFields: toOnlyReset
+            resetFields: toOnlyReset,
+            setFieldsValue: toOnlySet
         }
     }
 
@@ -56,15 +61,15 @@ const FormFilter = (props) => {
             form={form}
             className={`rfw ${styles.sort}`}
             layout="inline"
+            initialValues={initialValues}
             onFinish={values => {
-                console.log(values);
                 onFilter(values);
             }}
         >
             {
                 config.map(cfg => {
                     let child, className;
-                    let { type, placeholder, data, label, render, ...item } = cfg;
+                    let { type, placeholder, data, label, render, options = {}, ...item } = cfg;
 
                     // 优先render
                     if (render) {
@@ -78,6 +83,7 @@ const FormFilter = (props) => {
                                     placeholder={placeholder ? placeholder : label}
                                     className={styles.line}
                                     allowClear
+                                    {...options}
                                 />;
                                 break;
                             case "select":
@@ -85,7 +91,9 @@ const FormFilter = (props) => {
                                 child = <Select
                                     placeholder={placeholder ? placeholder : label}
                                     className={styles.line}
-                                    allowClear>{
+                                    allowClear
+                                    {...options}
+                                >{
                                         data && data.map((dt, index) => (
                                             typeof dt === "object"
                                                 ? <Option key={dt.value} value={dt.value}>{dt.label}</Option>
@@ -101,6 +109,7 @@ const FormFilter = (props) => {
                                     className={styles.line}
                                     allowClear
                                     placeholder={placeholder}
+                                    {...options}
                                 />;
                                 break;
                             case "range":
@@ -108,6 +117,7 @@ const FormFilter = (props) => {
                                 child = <Range
                                     allowClear
                                     placeholder={placeholder}
+                                    {...options}
                                 />;
                                 break;
                             default:
