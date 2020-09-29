@@ -60,7 +60,7 @@ const OrderManage = (props) => {
         {
             label: "订单日期",
             placeholder: ["订单开始日期", "订单结束日期"],
-            type: "dateRange",
+            type: "daterange",
             name: "time"
         },
     ]

@@ -2,14 +2,12 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 
 import Url from "utils/api";
-import { requestQiniuToken } from "service/base";
-import { saveQiniuInfo } from "actions";
 
-import { Upload, Modal, message } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { Upload, Modal, message, Button } from "antd";
+import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
 
 const ImageUpload = props => {
-    const { value, qiniuInfo: { token, deadline, qnUrl }, saveQiniuInfo, multiple, limit = 1, onChange } = props;
+    const { value, userInfo, type = 1, listType = "picture-card", multiple, limit = 1, onChange } = props;
     const [fileList, changeFileList] = useState([]);
     const [preview, setPreview] = useState({
         image: "",
@@ -18,18 +16,28 @@ const ImageUpload = props => {
     const [previewStatus, changePreview] = useState(false);
     const [uploadStatus, changeUploadStatus] = useState(true);
     const [uploadLock, changeUploadLock] = useState(false);
+    // type 1图片 2文件
     const data = {
-        token
+        type
     }
-    // 如果token过期，则重新获取token和计算到期时间
-    if (Date.now() > deadline) {
-        requestQiniuToken()
-            .then(responese => {
-                saveQiniuInfo(responese);
-            });
+    const headers = {
+        Authorization: userInfo.token
     }
+    // 图片文件类型
+    const imgTypes = ['image/jpeg', 'image/png', 'image/bmp', 'image/gif'];
 
+    // 如果token过期，则重新获取token和计算到期时间
+    // useEffect(() => {
+    //     if (Date.now() > deadline)
+    //         requestUploadToken()
+    //             .then(responese => {
+    //                 saveUploadInfo(responese);
+    //             });
+    // }, [])
+
+    // 图片预览
     const handlePreview = (file) => {
+        if (listType === "text") return;
         if (!file.url) file.url = file.thumbUrl;
         setPreview({
             image: file.url,
@@ -47,7 +55,7 @@ const ImageUpload = props => {
         changeFileList(files.fileList);
         // 格式化返回数据
         let data = files.fileList.map(file => {
-            if (file.response && file.response.key) return `${qnUrl}${file.response.key}`
+            if (file.response && file.response.data) return file.response.data;
             else if (file.url) return file.url
         })
         onChange(data.join(','));
@@ -57,7 +65,16 @@ const ImageUpload = props => {
     }
     const handleCheck = (file, checkFileList) => {
         if (!limit) return Promise.resolve();
-        else if (checkFileList.length > limit - fileList.length) {
+        // 格式验证
+        if (listType === "picture-card") {
+            let isImg = imgTypes.includes(file.type);
+            if (!isImg) {
+                message.error(`只能上传${imgTypes.map(type => type.split("/")[1]).join("/")}格式的文件`);
+                return Promise.reject("");
+            }
+        }
+        // 数量验证
+        if (checkFileList.length > limit - fileList.length) {
             message.warning("超过图片上传最大数量");
             return Promise.reject("");
         } else if (checkFileList.length === limit - fileList.length) {
@@ -91,21 +108,27 @@ const ImageUpload = props => {
     return (
         <>
             <Upload
-                action={Url.upload}
-                listType="picture-card"
+                action={Url.commonPutFile}
+                listType={listType}
                 fileList={fileList}
                 onPreview={handlePreview}
                 onChange={handleChange}
                 beforeUpload={handleCheck}
                 data={data}
+                headers={headers}
                 multiple={multiple}
             >
                 {
-                    uploadStatus && (
+                    (listType === "picture-card" && uploadStatus) && (
                         <>
                             <PlusOutlined />
                             <div className="ant-upload-text">Upload</div>
                         </>
+                    )
+                }
+                {
+                    (listType === "text") && (
+                        <Button disabled={!uploadStatus} icon={<UploadOutlined />}>Upload</Button>
                     )
                 }
             </Upload>
@@ -123,8 +146,8 @@ const ImageUpload = props => {
 
 const mapStateToProps = (state) => {
     return {
-        qiniuInfo: state.qiniuInfo
+        userInfo: state.userInfo
     }
 }
 
-export default connect(mapStateToProps, { saveQiniuInfo })(ImageUpload);
+export default connect(mapStateToProps, {})(ImageUpload);

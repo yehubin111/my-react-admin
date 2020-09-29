@@ -59,7 +59,7 @@ const MainForm = props => {
                                 }
                             </Select>;
                             break;
-                        case "dateRange":
+                        case "daterange":
                             child = <RangePicker
                                 // format="YYYY-MM-DD"
                                 className={styles.sortrange}

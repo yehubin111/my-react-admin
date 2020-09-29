@@ -187,7 +187,7 @@ class ProductManage extends Component {
             {
                 label: "",
                 placeholder: ["创建开始日期", "创建结束日期"],
-                type: "dateRange",
+                type: "daterange",
                 name: "filtrateTime"
             }
         ];

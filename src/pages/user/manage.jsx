@@ -86,7 +86,7 @@ class User extends Component {
       {
         label: "",
         placeholder: ["开始时间", "结束时间"],
-        type: "dateRange",
+        type: "daterange",
         name: "filtrateTime"
       }
     ]

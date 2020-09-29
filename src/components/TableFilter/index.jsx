@@ -102,7 +102,7 @@ const FormFilter = (props) => {
                                     }
                                 </Select>;
                                 break;
-                            case "dateRange":
+                            case "daterange":
                                 className = styles.sortrange;
                                 child = <RangePicker
                                     format="YYYY-MM-DD"

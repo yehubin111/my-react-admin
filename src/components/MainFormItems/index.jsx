@@ -67,6 +67,9 @@ const MainFormItems = props => {
                 case "upload":
                     child = <Upload {...options} />;
                     break;
+                case "fileupload":
+                    child = <Upload listType="text" {...options} />;
+                    break;
                 case "radio":
                     child = <RadioGroup className={styles['radio-group']} options={Array.isArray(data) && data} {...options} />
                     break;
@@ -86,7 +89,7 @@ const MainFormItems = props => {
                         }
                     </Select>;
                     break;
-                case "dateRange":
+                case "daterange":
                     child = <RangePicker
                         format="YYYY-MM-DD"
                         style={{ width: "100%" }}

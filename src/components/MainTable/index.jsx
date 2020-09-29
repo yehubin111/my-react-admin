@@ -151,7 +151,7 @@ const MainTable = props => {
                 }
                 getListData(params, 'filter');
             }} config={filterConfig} filterRef={_filterRef} initialValues={filterInitialValues} />}
-            {headerCtrl
+            {(headerCtrl || headerTabKey)
                 && <TableHeader
                     onTab={e => {
                         let options = {

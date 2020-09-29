@@ -127,7 +127,7 @@ const AddPrograma = (props) => {
         {
             label: "展示时间",
             name: "time",
-            type: "dateRange",
+            type: "daterange",
             rules: [{ required: true, message: '请选择展示时间' }],
             options: {
                 showTime: true,
