@@ -111,8 +111,16 @@ const MenuNav = props => {
     let patharr = path.split("/").filter(v => v);
     // 深度遍历
     patharr.forEach((_, index) => {
+      /**
+       * 20201006优化当路由包含参数的情况下，无法匹配到左侧菜单
+       */
       let route = routes.find(
-        rt => rt.path === `/${patharr.slice(0, index + 1).join("/")}`
+        rt => {
+          let path = "^" + rt.path.replace(/(\/:[^\/]*)/g, "[^/]*") + "$";
+          let reg = new RegExp(path);
+          return reg.test(`/${patharr.slice(0, index + 1).join("/")}`);
+          // rt.path === `/${patharr.slice(0, index + 1).join("/")}`
+        }
       );
       if (!route) { }
       else if (route.children && route.children.length > 0) {
@@ -140,7 +148,7 @@ const MenuNav = props => {
       } else {
         return (
           <Menu.Item key={router.key} icon={router.meta.icon}>
-            <Link to={router.path}>{router.meta.name}</Link>
+            <Link to={router.path.split(":")[0]}>{router.meta.name}</Link>
           </Menu.Item>
         );
       }

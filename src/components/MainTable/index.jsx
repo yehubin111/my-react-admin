@@ -98,7 +98,8 @@ const MainTable = props => {
         }
         // 设置tab
         if (headerTabKey) {
-            params[headerTabKey] = headerTabConfig.find(tab => tab.default).value;
+            let defaultTab = headerTabConfig.find(tab => tab.default);
+            params[headerTabKey] = defaultTab ? defaultTab.value : "";
             setPayload(params);
         }
         // 设置filter默认值
