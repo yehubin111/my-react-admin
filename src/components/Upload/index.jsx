@@ -37,7 +37,7 @@ const ImageUpload = props => {
 
     // 图片预览
     const handlePreview = (file) => {
-        if (listType === "text") return;
+        if (listType === "file") return;
         if (!file.url) file.url = file.thumbUrl;
         setPreview({
             image: file.url,
@@ -119,18 +119,18 @@ const ImageUpload = props => {
                 multiple={multiple}
             >
                 {
-                    (listType === "picture-card" && uploadStatus) && (
-                        <>
+                    listType === "picture-card" ? (
+                        uploadStatus && <>
                             <PlusOutlined />
                             <div className="ant-upload-text">Upload</div>
                         </>
-                    )
+                    ) : <Button disabled={!uploadStatus} icon={<UploadOutlined />}>Upload</Button>
                 }
-                {
-                    (listType === "text") && (
+                {/* {
+                    (listType === "file") && (
                         <Button disabled={!uploadStatus} icon={<UploadOutlined />}>Upload</Button>
                     )
-                }
+                } */}
             </Upload>
             <Modal
                 visible={previewStatus}

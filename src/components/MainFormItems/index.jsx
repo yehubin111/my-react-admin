@@ -46,7 +46,11 @@ const MainFormItems = props => {
     const getItems = (config) => {
         let child;
         let { type, placeholder, render, data, col, options = {}, ...item } = config;
-
+        // 20201012新增，简化非空判断规则传参
+        if (required) {
+            !Array.isArray(item.rules) && (item.rules = []);
+            item.rules.push({ required: true, message: item.label + '不能为空' })
+        }
         // 优先render
         if (render) child = render;
         else
@@ -68,7 +72,7 @@ const MainFormItems = props => {
                     child = <Upload {...options} />;
                     break;
                 case "fileupload":
-                    child = <Upload listType="text" {...options} />;
+                    child = <Upload listType="file" {...options} />;
                     break;
                 case "radio":
                     child = <RadioGroup className={styles['radio-group']} options={Array.isArray(data) && data} {...options} />
