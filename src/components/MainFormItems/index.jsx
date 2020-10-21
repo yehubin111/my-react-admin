@@ -45,7 +45,7 @@ const MainFormItems = props => {
 
     const getItems = (config) => {
         let child;
-        let { type, placeholder, render, data, col, options = {}, ...item } = config;
+        let { type, placeholder, render, data, col, options = {}, required, ...item } = config;
         // 20201012新增，简化非空判断规则传参
         if (required) {
             !Array.isArray(item.rules) && (item.rules = []);
