@@ -192,7 +192,7 @@ const Public = props => {
             label: "商品名称",
             name: "spuName",
             type: "input",
-            rules: [{ required: true, message: "请输入商品名称" }]
+            required: true
         },
         {
             label: "商品货号",
