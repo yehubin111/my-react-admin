@@ -14,3 +14,31 @@ export const useSafeState = (oldState) => {
     }
     return [state, callback];
 }
+
+// 定时器
+export const useInterval = (callback, delay) => {
+    const savedCallback = useRef("");
+    let isUnMounted = false;
+
+    useEffect(() => {
+        savedCallback.current = callback;
+    }, [callback])
+    useEffect(() => {
+        return () => {
+            isUnMounted = true;
+        }
+    }, [])
+
+    return useCallback(() => {
+        let interval = null;
+        function tick() {
+            if (isUnMounted)
+                return clearInterval(interval);
+            savedCallback.current();
+        }
+
+        if (delay) {
+            interval = setInterval(tick, delay)
+        }
+    }, [delay])
+}
