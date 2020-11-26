@@ -14,7 +14,6 @@ const ReceiverInfo = props => {
         labelCol: { span: 5 },
         wrapperCol: { span: 17 }
     }
-
     useEffect(() => {
         if (receiver.orderId) {
             form.setFieldsValue({
