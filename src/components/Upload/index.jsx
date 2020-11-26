@@ -64,15 +64,23 @@ const ImageUpload = props => {
         changePreview(false);
     }
     const handleCheck = (file, checkFileList) => {
-        if (!limit) return Promise.resolve();
         // 格式验证
         if (listType === "picture-card") {
+            // 文件类型检测
             let isImg = imgTypes.includes(file.type);
             if (!isImg) {
                 message.error(`只能上传${imgTypes.map(type => type.split("/")[1]).join("/")}格式的文件`);
                 return Promise.reject("");
             }
+            // 文件大小检测，大于2M的无法上传
+            if (file.size > 1024 * 1024 * 2) {
+                message.error(
+                    `最大只能上传2M大小的的文件`
+                );
+                return Promise.reject("");
+            }
         }
+        if (!limit) return Promise.resolve();
         // 数量验证
         if (checkFileList.length > limit - fileList.length) {
             message.warning("超过图片上传最大数量");
